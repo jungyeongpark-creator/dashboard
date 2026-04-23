@@ -1,0 +1,473 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>전 공장 조관계획 통합 대시보드</title>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: "Malgun Gothic", Arial, sans-serif;
+      background: #f3f5f8;
+      color: #1f2937;
+      font-size: 13px;
+    }
+    header {
+      background: linear-gradient(135deg, #17324d 0%, #2d6a9f 100%);
+      color: #fff;
+      padding: 18px 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+      box-shadow: 0 4px 12px rgba(0,0,0,.1);
+    }
+    header h1 { font-size: 22px; font-weight: 700; }
+    header .sub { font-size: 13px; opacity: .9; margin-top: 4px; }
+    header .meta {
+      font-size: 12px;
+      opacity: .9;
+      text-align: right;
+      line-height: 1.6;
+    }
+    .container {
+      max-width: 1600px;
+      margin: 0 auto;
+      padding: 18px;
+    }
+    .summary-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .card {
+      background: #fff;
+      border-radius: 12px;
+      box-shadow: 0 2px 10px rgba(0,0,0,.06);
+      border: 1px solid #e6ebf2;
+    }
+    .summary-card {
+      padding: 16px 18px;
+      text-align: center;
+      border-top: 4px solid #2d6a9f;
+    }
+    .summary-card .label {
+      font-size: 11px;
+      color: #6b7280;
+      margin-bottom: 6px;
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
+    .summary-card .value {
+      font-size: 28px;
+      font-weight: 800;
+      color: #16324c;
+    }
+    .summary-card .sub {
+      font-size: 11px;
+      color: #6b7280;
+      margin-top: 6px;
+      line-height: 1.5;
+    }
+    .summary-card.pohang { border-color: #2d6a9f; }
+    .summary-card.gunsan { border-color: #27ae60; }
+    .summary-card.suncheon { border-color: #e67e22; }
+    .summary-card.total { border-color: #8e44ad; }
+    .section-title {
+      font-size: 15px;
+      font-weight: 800;
+      color: #18334d;
+      padding: 0 0 8px 4px;
+      border-bottom: 2px solid #2d6a9f;
+      margin: 0 0 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .section-title .badge {
+      background: #2d6a9f;
+      color: #fff;
+      font-size: 11px;
+      padding: 2px 8px;
+      border-radius: 10px;
+      font-weight: 700;
+    }
+    .section-title .badge.green { background: #27ae60; }
+    .section-title .badge.orange { background: #e67e22; }
+    .chart-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .chart-card { padding: 16px; }
+    .chart-title {
+      font-size: 12px;
+      font-weight: 700;
+      color: #4b5563;
+      margin-bottom: 10px;
+      text-align: center;
+    }
+    .chart-card canvas { max-height: 240px; }
+    .factory-section { margin-bottom: 20px; }
+    .kpi-wrap { overflow-x: auto; }
+    .kpi-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 12px;
+      min-width: 1040px;
+    }
+    .kpi-table th {
+      background: #17324d;
+      color: #fff;
+      padding: 8px 8px;
+      text-align: center;
+      font-weight: 700;
+      white-space: nowrap;
+      position: sticky;
+      top: 0;
+    }
+    .kpi-table td {
+      padding: 7px 8px;
+      text-align: center;
+      border-bottom: 1px solid #edf1f6;
+      white-space: nowrap;
+      vertical-align: middle;
+    }
+    .kpi-table tr:hover td { background: #f7faff; }
+    .kpi-table .name { font-weight: 800; color: #18334d; }
+    .util-bar {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      justify-content: center;
+    }
+    .util-bar-bg {
+      width: 78px;
+      height: 10px;
+      background: #e5e7eb;
+      border-radius: 999px;
+      overflow: hidden;
+    }
+    .util-bar-fill { height: 100%; border-radius: 999px; }
+    .good { background: #27ae60; }
+    .warn { background: #f39c12; }
+    .low { background: #e74c3c; }
+    .order-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 14px;
+      margin-bottom: 18px;
+    }
+    .order-card { padding: 16px; }
+    .order-card .order-count {
+      font-size: 34px;
+      font-weight: 800;
+      color: #16324c;
+      margin: 6px 0;
+    }
+    .order-row {
+      display: flex;
+      justify-content: space-between;
+      padding: 4px 0;
+      font-size: 12px;
+      border-bottom: 1px dashed #ebeef4;
+    }
+    .order-row:last-child { border-bottom: 0; }
+    .order-label { color: #4b5563; }
+    .order-val { font-weight: 700; color: #111827; }
+    .footer {
+      text-align: center;
+      color: #9ca3af;
+      font-size: 11px;
+      padding: 12px 0 4px;
+    }
+    @media (max-width: 1200px) {
+      .summary-grid { grid-template-columns: repeat(2, 1fr); }
+      .chart-grid { grid-template-columns: 1fr 1fr; }
+      .order-grid { grid-template-columns: 1fr; }
+    }
+    @media (max-width: 768px) {
+      .summary-grid, .chart-grid { grid-template-columns: 1fr; }
+      header .meta { text-align: left; }
+      .container { padding: 14px; }
+      header h1 { font-size: 19px; }
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const DATA = {
+      period: '2026년 4월',
+      baseDate: '2026-03-30',
+      pohang: [
+        { name:'PM22',  availH:375.00, avgH:15.00, days:25, targetProd:45.70, planProd:39.72, machineH:264.38, idleH:110.63, utilRate:70.5, rcFull:5,  rcSize:5, planQty:10500 },
+        { name:'SM11',  availH:37.50,  avgH:7.50,  days:5,  targetProd:12.20, planProd:0.00,  machineH:25.24,  idleH:12.26,  utilRate:67.3, rcFull:1,  rcSize:0, planQty:320   },
+        { name:'PM38',  availH:375.00, avgH:15.00, days:25, targetProd:17.50, planProd:10.77, machineH:278.62, idleH:96.38,  utilRate:74.3, rcFull:5,  rcSize:0, planQty:3000  },
+        { name:'PM51',  availH:375.00, avgH:15.00, days:25, targetProd:51.20, planProd:45.77, machineH:251.25, idleH:123.75, utilRate:67.0, rcFull:8,  rcSize:2, planQty:11500 },
+        { name:'PM53',  availH:375.00, avgH:15.00, days:25, targetProd:73.80, planProd:71.50, machineH:258.75, idleH:116.25, utilRate:69.0, rcFull:7,  rcSize:0, planQty:18500 },
+        { name:'PM116', availH:418.00, avgH:16.08, days:26, targetProd:24.00, planProd:28.00, machineH:367.84, idleH:50.16,  utilRate:88.0, rcFull:0,  rcSize:0, planQty:10300 }
+      ],
+      gunsan: [
+        { name:'PM202', availH:157.50, avgH:7.50,  days:21, targetProd:6.73,  planProd:5.28,  machineH:132.46, idleH:25.04, utilRate:84.1, rcFull:2, rcSize:1, planQty:700  },
+        { name:'PM201', availH:255.00, avgH:15.00, days:17, targetProd:12.30, planProd:11.14, machineH:215.47, idleH:39.53, utilRate:84.5, rcFull:4, rcSize:1, planQty:2400 },
+        { name:'PM204', availH:157.50, avgH:7.50,  days:21, targetProd:30.78, planProd:31.09, machineH:128.68, idleH:28.82, utilRate:81.7, rcFull:4, rcSize:0, planQty:4000 },
+        { name:'PM203', availH:255.00, avgH:15.00, days:17, targetProd:15.14, planProd:13.92, machineH:215.47, idleH:39.53, utilRate:84.5, rcFull:5, rcSize:0, planQty:3000 }
+      ],
+      suncheon: [
+        { name:'PM461', availH:220.00, avgH:10.00, days:22, targetProd:13.50, planProd:10.49, machineH:143.00, idleH:77.00, utilRate:65.0, rcFull:7, rcSize:0, planQty:1500 },
+        { name:'PM462', availH:252.00, avgH:9.69,  days:26, targetProd:15.50, planProd:12.21, machineH:163.80, idleH:88.20, utilRate:65.0, rcFull:8, rcSize:0, planQty:2000 }
+      ],
+      pohangOrders: { total:414, jokwan:{ ERW:363, JCOE:43, SRM:8 } },
+      pohangUsage:  { '구조용':141, '송유관':87, '재료관':76, '압력배관용':49, '일반배관용':20, '열교환기용':11, '유정용(케이싱)':5, '유정용(튜빙)':4, 'PILE':4, '기타구조용':3 },
+      gunsanOrders: { total:108 },
+      gunsanUsage:  { '압력배관용':44, '일반배관용':33, '구조용원형관':7, '재료관':7, '전선관':6, '연료가스배관용':5, '구조용':2 },
+      suncheonOrders: { total:18 }
+    };
+  </script>
+
+  <header>
+    <div>
+      <h1>🏭 전 공장 조관계획 통합 대시보드</h1>
+      <div class="sub">세아제강 | SMART기술팀</div>
+    </div>
+    <div class="meta" id="headerMeta"></div>
+  </header>
+
+  <div class="container">
+    <div class="summary-grid" style="margin-top: 2px;">
+      <div class="summary-card card pohang" id="sumPohang"></div>
+      <div class="summary-card card gunsan" id="sumGunsan"></div>
+      <div class="summary-card card suncheon" id="sumSuncheon"></div>
+      <div class="summary-card card total" id="sumTotal"></div>
+    </div>
+
+    <div class="chart-grid">
+      <div class="card chart-card">
+        <div class="chart-title">전 공장 설비 가동율 비교 (%)</div>
+        <canvas id="chartUtil"></canvas>
+      </div>
+      <div class="card chart-card">
+        <div class="chart-title">포항공장 물종 구성</div>
+        <canvas id="chartPohangJokwan"></canvas>
+      </div>
+      <div class="card chart-card">
+        <div class="chart-title">포항공장 용도별 오더 (상위 6)</div>
+        <canvas id="chartPohangUsage"></canvas>
+      </div>
+    </div>
+
+    <div class="factory-section">
+      <div class="section-title">🏗 포항공장 설비 KPI <span class="badge">6 LINE</span></div>
+      <div class="card kpi-wrap"><table class="kpi-table" id="tablePohang"></table></div>
+    </div>
+
+    <div class="factory-section">
+      <div class="section-title">🏗 군산공장 설비 KPI <span class="badge green">4 LINE</span></div>
+      <div class="card kpi-wrap"><table class="kpi-table" id="tableGunsan"></table></div>
+    </div>
+
+    <div class="factory-section">
+      <div class="section-title">🏗 순천공장 설비 KPI <span class="badge orange">2 LINE</span></div>
+      <div class="card kpi-wrap"><table class="kpi-table" id="tableSuncheon"></table></div>
+    </div>
+
+    <div class="section-title">📋 공장별 오더 현황</div>
+    <div class="order-grid">
+      <div class="card order-card" id="orderPohang"></div>
+      <div class="card order-card" id="orderGunsan"></div>
+      <div class="card order-card" id="orderSuncheon"></div>
+    </div>
+
+    <div class="footer">
+      생성일시: <span id="genTime"></span> | 기준일: <span id="baseDate2"></span>
+    </div>
+  </div>
+
+  <script>
+    const fmtN = (v, d = 1) => (typeof v === 'number') ? v.toFixed(d) : '—';
+    const fmtI = v => (typeof v === 'number') ? v.toLocaleString() : '—';
+
+    function utilClass(u) {
+      if (u >= 80) return 'good';
+      if (u >= 65) return 'warn';
+      return 'low';
+    }
+
+    function utilBar(u) {
+      const cls = utilClass(u);
+      return `<div class="util-bar">
+        <div class="util-bar-bg"><div class="util-bar-fill ${cls}" style="width:${Math.min(u,100)}%"></div></div>
+        <span style="min-width:38px">${u.toFixed(1)}%</span>
+      </div>`;
+    }
+
+    document.getElementById('headerMeta').innerHTML =
+      `계획 기간: <strong>${DATA.period}</strong><br>기준일: ${DATA.baseDate}<br>갱신: ${new Date().toLocaleDateString('ko-KR')}`;
+
+    document.getElementById('genTime').textContent = new Date().toLocaleString('ko-KR');
+    document.getElementById('baseDate2').textContent = DATA.baseDate;
+
+    function makeSummaryCard(id, label, equips, orders) {
+      const totalMachH = equips.reduce((s, e) => s + e.machineH, 0);
+      const avgUtil = (equips.reduce((s, e) => s + e.utilRate, 0) / equips.length).toFixed(1);
+      const totalQty = equips.reduce((s, e) => s + e.planQty, 0);
+      document.getElementById(id).innerHTML = `
+        <div class="label">${label}</div>
+        <div class="value">${fmtI(totalQty)}<span style="font-size:14px;font-weight:400"> t</span></div>
+        <div class="sub">${equips.length}Line | 총 ${totalMachH.toFixed(0)}h | 평균가동율 ${avgUtil}% | 오더 ${orders}건</div>`;
+    }
+
+    makeSummaryCard('sumPohang', '포항공장 계획량', DATA.pohang, DATA.pohangOrders.total);
+    makeSummaryCard('sumGunsan', '군산공장 계획량', DATA.gunsan, DATA.gunsanOrders.total);
+    makeSummaryCard('sumSuncheon', '순천공장 계획량', DATA.suncheon, DATA.suncheonOrders.total);
+
+    const allEquips = [...DATA.pohang, ...DATA.gunsan, ...DATA.suncheon];
+    const totalQty = allEquips.reduce((s, e) => s + e.planQty, 0);
+    const totalMachH = allEquips.reduce((s, e) => s + e.machineH, 0);
+    const totalOrders = DATA.pohangOrders.total + DATA.gunsanOrders.total + DATA.suncheonOrders.total;
+    const avgUtil = (allEquips.reduce((s, e) => s + e.utilRate, 0) / allEquips.length).toFixed(1);
+
+    document.getElementById('sumTotal').innerHTML = `
+      <div class="label">강관 전체 합계</div>
+      <div class="value">${fmtI(totalQty)}<span style="font-size:14px;font-weight:400"> t</span></div>
+      <div class="sub">12Line | 총 ${totalMachH.toFixed(0)}h | 평균가동율 ${avgUtil}% | 오더 ${totalOrders}건</div>`;
+
+    const TABLE_HEADER = `<thead><tr>
+      <th>설비</th><th>가동가능(h)</th><th>일평균(h)</th><th>가동일수</th>
+      <th>목표생산<br>(t/h)</th><th>계획생산<br>(t/h)</th><th>기계시간(h)</th>
+      <th>비가동(h)</th><th>가동율</th><th>RC FULL</th><th>RC SIZE</th><th>계획량(t)</th>
+    </tr></thead>`;
+
+    function buildTable(tableId, equips) {
+      const tbl = document.getElementById(tableId);
+      let html = TABLE_HEADER + '<tbody>';
+      equips.forEach(e => {
+        const diff = e.planProd - e.targetProd;
+        const diffColor = diff >= 0 ? '#27ae60' : '#e74c3c';
+        html += `<tr>
+          <td class="name">${e.name}</td>
+          <td>${fmtN(e.availH)}</td>
+          <td>${fmtN(e.avgH)}</td>
+          <td>${e.days}</td>
+          <td>${fmtN(e.targetProd)}</td>
+          <td style="color:${diffColor};font-weight:700">${fmtN(e.planProd)}</td>
+          <td>${fmtN(e.machineH)}</td>
+          <td>${fmtN(e.idleH)}</td>
+          <td>${utilBar(e.utilRate)}</td>
+          <td>${e.rcFull}</td>
+          <td>${e.rcSize}</td>
+          <td style="font-weight:700">${fmtI(e.planQty)}</td>
+        </tr>`;
+      });
+      const tot = {
+        availH: equips.reduce((s, e) => s + e.availH, 0),
+        machineH: equips.reduce((s, e) => s + e.machineH, 0),
+        idleH: equips.reduce((s, e) => s + e.idleH, 0),
+        rcFull: equips.reduce((s, e) => s + e.rcFull, 0),
+        rcSize: equips.reduce((s, e) => s + e.rcSize, 0),
+        planQty: equips.reduce((s, e) => s + e.planQty, 0),
+        avgUtil: equips.reduce((s, e) => s + e.utilRate, 0) / equips.length
+      };
+      html += `<tr style="background:#f0f4ff;font-weight:700">
+        <td>소계</td><td>${fmtN(tot.availH)}</td><td>—</td><td>—</td><td>—</td><td>—</td>
+        <td>${fmtN(tot.machineH)}</td><td>${fmtN(tot.idleH)}</td>
+        <td>${utilBar(tot.avgUtil)}</td>
+        <td>${tot.rcFull}</td><td>${tot.rcSize}</td><td>${fmtI(tot.planQty)}</td>
+      </tr>`;
+      html += '</tbody>';
+      tbl.innerHTML = html;
+    }
+
+    buildTable('tablePohang', DATA.pohang);
+    buildTable('tableGunsan', DATA.gunsan);
+    buildTable('tableSuncheon', DATA.suncheon);
+
+    function buildOrderCard(id, title, orders, usageObj, jokwanObj, colorHex) {
+      const usageHtml = Object.entries(usageObj)
+        .sort((a, b) => b[1] - a[1])
+        .slice(0, 6)
+        .map(([k, v]) => `<div class="order-row"><span class="order-label">${k}</span><span class="order-val">${v}건</span></div>`)
+        .join('');
+      const jokwanHtml = jokwanObj ? Object.entries(jokwanObj)
+        .map(([k, v]) => `<span style="background:#e8f0fe;color:#1a3c5e;padding:2px 6px;border-radius:4px;margin:2px;display:inline-block;font-size:11px;">${k} ${v}</span>`)
+        .join('') : '';
+      document.getElementById(id).innerHTML = `
+        <div style="color:${colorHex};font-weight:700;font-size:13px;">${title}</div>
+        <div class="order-count">${orders}</div>
+        <div style="font-size:11px;color:#6b7280;margin-bottom:8px;">총 오더 건수</div>
+        ${jokwanHtml ? `<div style="margin-bottom:8px;">${jokwanHtml}</div>` : ''}
+        <div style="font-size:12px;font-weight:700;color:#555;margin:6px 0 4px;">용도별</div>
+        ${usageHtml}`;
+    }
+
+    buildOrderCard('orderPohang', '포항공장', DATA.pohangOrders.total, DATA.pohangUsage, DATA.pohangOrders.jokwan, '#2d6a9f');
+    buildOrderCard('orderGunsan', '군산공장', DATA.gunsanOrders.total, DATA.gunsanUsage, null, '#27ae60');
+    buildOrderCard('orderSuncheon', '순천공장', DATA.suncheonOrders.total, { PILE: 16 }, null, '#e67e22');
+
+    new Chart(document.getElementById('chartUtil'), {
+      type: 'bar',
+      data: {
+        labels: allEquips.map(e => e.name),
+        datasets: [{
+          label: '가동율(%)',
+          data: allEquips.map(e => e.utilRate),
+          backgroundColor: allEquips.map(e => e.utilRate >= 80 ? 'rgba(39,174,96,.82)' : e.utilRate >= 65 ? 'rgba(243,156,18,.82)' : 'rgba(231,76,60,.82)'),
+          borderRadius: 4
+        }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { display: false },
+          tooltip: { callbacks: { label: ctx => `${ctx.parsed.y.toFixed(1)}%` } }
+        },
+        scales: {
+          y: { min: 0, max: 100, ticks: { callback: v => v + '%' } },
+          x: { ticks: { font: { size: 10 } } }
+        }
+      }
+    });
+
+    const jk = DATA.pohangOrders.jokwan;
+    new Chart(document.getElementById('chartPohangJokwan'), {
+      type: 'doughnut',
+      data: {
+        labels: Object.keys(jk),
+        datasets: [{ data: Object.values(jk), backgroundColor: ['#2d6a9f', '#e67e22', '#27ae60'], borderWidth: 2 }]
+      },
+      options: {
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: { position: 'bottom', labels: { font: { size: 11 } } },
+          tooltip: { callbacks: { label: ctx => `${ctx.label}: ${ctx.parsed}건 (${(ctx.parsed / DATA.pohangOrders.total * 100).toFixed(1)}%)` } }
+        }
+      }
+    });
+
+    const usageTop6 = Object.entries(DATA.pohangUsage).sort((a, b) => b[1] - a[1]).slice(0, 6);
+    new Chart(document.getElementById('chartPohangUsage'), {
+      type: 'bar',
+      data: {
+        labels: usageTop6.map(x => x[0]),
+        datasets: [{ label: '오더수', data: usageTop6.map(x => x[1]), backgroundColor: 'rgba(45,106,159,.75)', borderRadius: 4 }]
+      },
+      options: {
+        indexAxis: 'y',
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { ticks: { stepSize: 20 } },
+          y: { ticks: { font: { size: 10 } } }
+        }
+      }
+    });
+  </script>
+</body>
+</html>
