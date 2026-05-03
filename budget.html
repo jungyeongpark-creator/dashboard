@@ -32,8 +32,8 @@
     --shadow-md: 0 4px 12px rgba(0,0,0,.08);
   }
   * { box-sizing: border-box; margin: 0; padding: 0; }
-  html { height: 100%; max-width: 100%; overflow-x: hidden; }
-  body { font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100%; max-width: 100%; overflow-x: hidden; }
+  html { height: 100%; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100%; }
 
   /* ── HEADER ── */
   .header { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
@@ -98,6 +98,29 @@
   .rate-low  .rate-pct { color: var(--green); }
   .rate-mid  .rate-pct { color: #d97706; }
   .rate-high .rate-pct { color: var(--red); }
+
+
+  /* ── MOBILE CARDS (≤540px) ── */
+  .cards-wrap { display: none; }
+  .card-item { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 14px 16px; margin-bottom: 10px; box-shadow: var(--shadow); }
+  .card-name { font-size: 14px; font-weight: 600; color: var(--text-primary); }
+  .card-code { font-size: 11px; color: var(--text-muted); margin-left: 4px; }
+  .card-vals { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 8px; margin-top: 10px; }
+  .card-val-item { display: flex; flex-direction: column; gap: 2px; }
+  .card-val-label { font-size: 10px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .4px; }
+  .card-val-num { font-size: 13px; font-weight: 700; font-variant-numeric: tabular-nums; }
+  .card-val-item.plan .card-val-num { color: var(--text-primary); }
+  .card-val-item.act  .card-val-num { color: var(--orange); }
+  .card-val-item.bud  .card-val-num { color: var(--green); }
+  .card-val-item.bud.over .card-val-num { color: var(--red); }
+  .card-rate-row { display: flex; align-items: center; gap: 8px; margin-top: 10px; }
+  .card-rate-bar-wrap { flex: 1; background: #e4e7ec; border-radius: 4px; height: 6px; overflow: hidden; }
+  .card-rate-bar { height: 6px; border-radius: 4px; }
+  .card-rate-pct { font-size: 12px; font-weight: 700; min-width: 44px; text-align: right; }
+  @media (max-width: 540px) {
+    .table-wrap { display: none; }
+    .cards-wrap { display: block; }
+  }
 
   /* ── FOOTER ── */
   .footer { text-align: center; font-size: 11px; color: var(--text-muted); padding: 20px; }
@@ -181,6 +204,9 @@
     </table>
   </div>
 
+  <!-- MOBILE CARDS -->
+  <div class="cards-wrap" id="cards-wrap"></div>
+
 </div>
 
 <div class="footer">Smart기술팀(제조) 예산관리 · E-Accounting 데이터 기반</div>
@@ -261,6 +287,47 @@ function render() {
       </td>`;
     tbody.appendChild(tr);
   });
+
+
+  // MOBILE CARDS
+  const cardsWrap = document.getElementById('cards-wrap');
+  cardsWrap.innerHTML = '';
+  BUDGET_DATA.data.forEach(row => {
+    const d = getQData(row, q);
+    const ratePct = d.pln > 0 ? Math.min(d.act / d.pln * 100, 999) : 0;
+    const barW = Math.min(ratePct, 100);
+    const budOver = d.bud < 0 ? 'over' : '';
+    const rateColor = ratePct >= 90 ? '#dc2626' : ratePct >= 50 ? '#f59e0b' : '#16a34a';
+    const card = document.createElement('div');
+    card.className = 'card-item';
+    card.innerHTML = `
+      <div>
+        <span class="card-name">${row.HKONT_TXT}</span>
+        <span class="card-code">${row.HKONT}</span>
+      </div>
+      <div class="card-vals">
+        <div class="card-val-item plan">
+          <span class="card-val-label">계획</span>
+          <span class="card-val-num">${fmt(d.pln)}</span>
+        </div>
+        <div class="card-val-item act">
+          <span class="card-val-label">실적</span>
+          <span class="card-val-num">${fmt(d.act)}</span>
+        </div>
+        <div class="card-val-item bud ${budOver}">
+          <span class="card-val-label">잔여</span>
+          <span class="card-val-num">${fmt(d.bud)}</span>
+        </div>
+      </div>
+      <div class="card-rate-row">
+        <div class="card-rate-bar-wrap">
+          <div class="card-rate-bar" style="width:${barW}%;background:${rateColor}"></div>
+        </div>
+        <span class="card-rate-pct" style="color:${rateColor}">${ratePct.toFixed(1)}%</span>
+      </div>`;
+    cardsWrap.appendChild(card);
+  });
+
 }
 
 // TAB CLICKS
