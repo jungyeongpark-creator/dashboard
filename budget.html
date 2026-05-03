@@ -1,0 +1,288 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>SMART기술팀 예산조회</title>
+<link rel="manifest" href="manifest.json">
+<link rel="icon" href="favicon.png">
+<meta name="theme-color" content="#2563eb">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="default">
+<meta name="apple-mobile-web-app-title" content="예산조회">
+<link rel="apple-touch-icon" href="icon-192.png">
+<style>
+  :root {
+    --bg: #f0f2f5;
+    --card: #ffffff;
+    --border: #e4e7ec;
+    --text-primary: #101828;
+    --text-secondary: #667085;
+    --text-muted: #98a2b3;
+    --blue: #2563eb;
+    --blue-light: #eff6ff;
+    --green: #16a34a;
+    --green-light: #f0fdf4;
+    --orange: #ea580c;
+    --orange-light: #fff7ed;
+    --red: #dc2626;
+    --red-light: #fef2f2;
+    --radius: 10px;
+    --shadow: 0 1px 3px rgba(0,0,0,.08), 0 1px 2px rgba(0,0,0,.04);
+    --shadow-md: 0 4px 12px rgba(0,0,0,.08);
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: -apple-system, BlinkMacSystemFont, "Pretendard", "Segoe UI", sans-serif; background: var(--bg); color: var(--text-primary); min-height: 100vh; }
+
+  /* ── HEADER ── */
+  .header { background: var(--card); border-bottom: 1px solid var(--border); padding: 16px 24px; display: flex; align-items: center; justify-content: space-between; gap: 12px; flex-wrap: wrap; }
+  .header-left h1 { font-size: 17px; font-weight: 700; letter-spacing: -.3px; }
+  .header-left .sub { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
+  .badge { background: var(--blue-light); color: var(--blue); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
+
+  /* ── MAIN ── */
+  .main { padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
+
+  /* ── KPI CARDS ── */
+  .kpi-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 12px; margin-bottom: 20px; }
+  .kpi { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 16px 18px; box-shadow: var(--shadow); }
+  .kpi-label { font-size: 11px; font-weight: 600; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .5px; margin-bottom: 8px; }
+  .kpi-value { font-size: 22px; font-weight: 700; letter-spacing: -.5px; line-height: 1; }
+  .kpi-sub { font-size: 11px; color: var(--text-muted); margin-top: 4px; }
+  .kpi.k-budget .kpi-value { color: var(--blue); }
+  .kpi.k-actual .kpi-value { color: var(--orange); }
+  .kpi.k-remain .kpi-value { color: var(--green); }
+  .kpi.k-rate  .kpi-value { color: var(--text-primary); }
+  .rate-bar-wrap { margin-top: 8px; background: #e4e7ec; border-radius: 4px; height: 6px; overflow: hidden; }
+  .rate-bar { height: 6px; border-radius: 4px; background: var(--blue); transition: width .4s; }
+
+  /* ── QUARTER TABS ── */
+  .toolbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
+  .tabs { display: flex; gap: 4px; background: var(--card); border: 1px solid var(--border); border-radius: 8px; padding: 4px; }
+  .tab { padding: 6px 16px; font-size: 13px; font-weight: 600; border-radius: 6px; border: none; background: transparent; color: var(--text-secondary); cursor: pointer; transition: all .15s; }
+  .tab.active { background: var(--blue); color: #fff; box-shadow: 0 1px 4px rgba(37,99,235,.3); }
+  .tab:hover:not(.active) { background: var(--bg); color: var(--text-primary); }
+  .toolbar-right { font-size: 12px; color: var(--text-muted); }
+
+  /* ── TABLE ── */
+  .table-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); box-shadow: var(--shadow); overflow: hidden; }
+  table { width: 100%; border-collapse: collapse; }
+  thead { background: #f8fafc; }
+  thead th { padding: 11px 14px; font-size: 11px; font-weight: 700; color: var(--text-secondary); text-transform: uppercase; letter-spacing: .4px; white-space: nowrap; border-bottom: 1px solid var(--border); }
+  thead th:first-child { text-align: left; min-width: 160px; }
+  thead th:not(:first-child) { text-align: right; }
+  tbody tr { border-bottom: 1px solid var(--border); transition: background .1s; }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover { background: #f8fafc; }
+  td { padding: 13px 14px; font-size: 13px; vertical-align: middle; }
+  td:first-child { font-weight: 500; color: var(--text-primary); }
+  td:not(:first-child) { text-align: right; font-variant-numeric: tabular-nums; font-size: 13px; }
+  .acct-code { font-size: 11px; color: var(--text-muted); font-weight: 400; margin-left: 4px; }
+
+  /* 계획/실적/잔여 컬럼 색상 */
+  .col-plan  { color: var(--text-primary); }
+  .col-act   { color: var(--orange); font-weight: 600; }
+  .col-bud   { color: var(--green); font-weight: 600; }
+  .col-bud.over { color: var(--red); }
+
+  /* ── 집행률 바 (인라인) ── */
+  .rate-cell { min-width: 110px; }
+  .rate-row { display: flex; align-items: center; gap: 6px; justify-content: flex-end; }
+  .rate-pct { font-size: 12px; font-weight: 700; min-width: 38px; text-align: right; }
+  .mini-bar-wrap { width: 60px; background: #e4e7ec; border-radius: 3px; height: 6px; overflow: hidden; flex-shrink: 0; }
+  .mini-bar { height: 6px; border-radius: 3px; }
+  .rate-low  .mini-bar { background: var(--green); }
+  .rate-mid  .mini-bar { background: #f59e0b; }
+  .rate-high .mini-bar { background: var(--red); }
+  .rate-low  .rate-pct { color: var(--green); }
+  .rate-mid  .rate-pct { color: #d97706; }
+  .rate-high .rate-pct { color: var(--red); }
+
+  /* ── FOOTER ── */
+  .footer { text-align: center; font-size: 11px; color: var(--text-muted); padding: 20px; }
+
+  @media (max-width: 900px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .main { padding: 16px; }
+    .header { padding: 14px 16px; }
+  }
+  @media (max-width: 540px) {
+    .kpi-grid { grid-template-columns: repeat(2, 1fr); }
+    .kpi-value { font-size: 17px; }
+    td, thead th { padding: 10px 10px; font-size: 12px; }
+    .mini-bar-wrap { width: 40px; }
+    .tab { padding: 6px 10px; font-size: 12px; }
+  }
+</style>
+</head>
+<body>
+
+<div class="header">
+  <div class="header-left">
+    <h1>부서예산 대시보드: SMART 기술팀</h1>
+    <div class="sub">2026 회계연도 · 코스트센터 14000 Smart기술팀(제조) · 수집: <span id="hdr-date"></span></div>
+  </div>
+  <span class="badge">E-Accounting</span>
+</div>
+
+<div class="main">
+
+  <!-- KPI -->
+  <div class="kpi-grid">
+    <div class="kpi k-budget">
+      <div class="kpi-label">총예산 <span id="kpi-q-label"></span></div>
+      <div class="kpi-value" id="kpi-budget">—</div>
+      <div class="kpi-sub">원</div>
+    </div>
+    <div class="kpi k-actual">
+      <div class="kpi-label">집행 실적</div>
+      <div class="kpi-value" id="kpi-actual">—</div>
+      <div class="kpi-sub">원</div>
+    </div>
+    <div class="kpi k-remain">
+      <div class="kpi-label">잔여 예산</div>
+      <div class="kpi-value" id="kpi-remain">—</div>
+      <div class="kpi-sub">원</div>
+    </div>
+    <div class="kpi k-rate">
+      <div class="kpi-label">집행률</div>
+      <div class="kpi-value" id="kpi-rate">—</div>
+      <div class="kpi-sub">%</div>
+      <div class="rate-bar-wrap"><div class="rate-bar" id="kpi-bar" style="width:0%"></div></div>
+    </div>
+  </div>
+
+  <!-- TOOLBAR -->
+  <div class="toolbar">
+    <div class="tabs">
+      <button class="tab" data-q="all">전체</button>
+      <button class="tab" data-q="1">Q1</button>
+      <button class="tab" data-q="2">Q2</button>
+      <button class="tab" data-q="3">Q3</button>
+      <button class="tab" data-q="4">Q4</button>
+    </div>
+    <div class="toolbar-right" id="row-count"></div>
+  </div>
+
+  <!-- TABLE -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr>
+          <th>계정과목</th>
+          <th>계획</th>
+          <th>실적</th>
+          <th>잔여</th>
+          <th class="rate-cell">집행률</th>
+        </tr>
+      </thead>
+      <tbody id="tbody"></tbody>
+    </table>
+  </div>
+
+</div>
+
+<div class="footer">Smart기술팀(제조) 예산관리 · E-Accounting 데이터 기반</div>
+
+<script>
+// ==BUDGET_DATA_START==
+const BUDGET_DATA = {"collected_at":"2026-05-03","source":"E-Accounting 부서예산조회","company":"1000 (주) 세아제강","cost_center":"14000","cost_center_name":"Smart기술팀(제조)","fiscal_year":"2026","row_count":11,"data":[{"GJAHR":"2026","HKONT":"5300111","HKONT_TXT":"복리후생비-휴무일경비","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":672000,"Q1ACT":520000,"Q1BUD":152000,"Q2PLN":992000,"Q2ACT":160000,"Q2BUD":832000,"Q3PLN":864000,"Q3ACT":0,"Q3BUD":864000,"Q4PLN":672000,"Q4ACT":0,"Q4BUD":672000},{"GJAHR":"2026","HKONT":"5300114","HKONT_TXT":"복리후생비-업무식대","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":1680000,"Q1ACT":1433013,"Q1BUD":246987,"Q2PLN":1680000,"Q2ACT":451550,"Q2BUD":1228450,"Q3PLN":1680000,"Q3ACT":0,"Q3BUD":1680000,"Q4PLN":1680000,"Q4ACT":0,"Q4BUD":1680000},{"GJAHR":"2026","HKONT":"5300116","HKONT_TXT":"복리후생비-후생비","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":1680000,"Q1ACT":1435802,"Q1BUD":244198,"Q2PLN":1680000,"Q2ACT":464156,"Q2BUD":1215844,"Q3PLN":1680000,"Q3ACT":0,"Q3BUD":1680000,"Q4PLN":1680000,"Q4ACT":0,"Q4BUD":1680000},{"GJAHR":"2026","HKONT":"5300190","HKONT_TXT":"복리후생비-기타","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":3450000,"Q1ACT":3410680,"Q1BUD":39320,"Q2PLN":3450000,"Q2ACT":627467,"Q2BUD":2822533,"Q3PLN":3450000,"Q3ACT":0,"Q3BUD":3450000,"Q4PLN":3450000,"Q4ACT":0,"Q4BUD":3450000},{"GJAHR":"2026","HKONT":"5300201","HKONT_TXT":"여비교통비-시내교통","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":150000,"Q1ACT":9100,"Q1BUD":140900,"Q2PLN":150000,"Q2ACT":0,"Q2BUD":150000,"Q3PLN":150000,"Q3ACT":0,"Q3BUD":150000,"Q4PLN":150000,"Q4ACT":0,"Q4BUD":150000},{"GJAHR":"2026","HKONT":"5300202","HKONT_TXT":"여비교통비-국내출장","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":2100000,"Q1ACT":1833371,"Q1BUD":266629,"Q2PLN":1600000,"Q2ACT":1389340,"Q2BUD":210660,"Q3PLN":1600000,"Q3ACT":0,"Q3BUD":1600000,"Q4PLN":1600000,"Q4ACT":0,"Q4BUD":1600000},{"GJAHR":"2026","HKONT":"5300203","HKONT_TXT":"여비교통비-해외출장","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":5000000,"Q1ACT":0,"Q1BUD":5000000,"Q2PLN":5000000,"Q2ACT":0,"Q2BUD":5000000,"Q3PLN":5000000,"Q3ACT":0,"Q3BUD":5000000,"Q4PLN":5000000,"Q4ACT":0,"Q4BUD":5000000},{"GJAHR":"2026","HKONT":"5301290","HKONT_TXT":"지급수수료-기타수수료","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":600000,"Q1ACT":337482,"Q1BUD":262518,"Q2PLN":600000,"Q2ACT":311530,"Q2BUD":288470,"Q3PLN":600000,"Q3ACT":0,"Q3BUD":600000,"Q4PLN":600000,"Q4ACT":0,"Q4BUD":600000},{"GJAHR":"2026","HKONT":"5302106","HKONT_TXT":"수선비-일반","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":120000000,"Q1ACT":119965670,"Q1BUD":34330,"Q2PLN":180000000,"Q2ACT":29512600,"Q2BUD":150487400,"Q3PLN":180000000,"Q3ACT":0,"Q3BUD":180000000,"Q4PLN":180000000,"Q4ACT":0,"Q4BUD":180000000},{"GJAHR":"2026","HKONT":"5303101","HKONT_TXT":"교육훈련비-사내교육","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":500000,"Q1ACT":0,"Q1BUD":500000,"Q2PLN":500000,"Q2ACT":0,"Q2BUD":500000,"Q3PLN":500000,"Q3ACT":0,"Q3BUD":500000,"Q4PLN":500000,"Q4ACT":0,"Q4BUD":500000},{"GJAHR":"2026","HKONT":"5303201","HKONT_TXT":"도서인쇄비-도서구입","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":200000,"Q1ACT":0,"Q1BUD":200000,"Q2PLN":200000,"Q2ACT":0,"Q2BUD":200000,"Q3PLN":200000,"Q3ACT":0,"Q3BUD":200000,"Q4PLN":200000,"Q4ACT":0,"Q4BUD":200000}]};
+// ==BUDGET_DATA_END==
+
+let currentQ = 'all';
+
+const fmt = n => n.toLocaleString('ko-KR');
+const fmtShort = n => {
+  if (Math.abs(n) >= 1e8) return (n/1e8).toFixed(1) + '억';
+  if (Math.abs(n) >= 1e4) return (n/1e4).toFixed(0) + '만';
+  return n.toLocaleString('ko-KR');
+};
+
+function getQData(row, q) {
+  if (q === 'all') {
+    return {
+      pln: row.Q1PLN + row.Q2PLN + row.Q3PLN + row.Q4PLN,
+      act: row.Q1ACT + row.Q2ACT + row.Q3ACT + row.Q4ACT,
+      bud: row.Q1BUD + row.Q2BUD + row.Q3BUD + row.Q4BUD,
+    };
+  }
+  return { pln: row[`Q${q}PLN`], act: row[`Q${q}ACT`], bud: row[`Q${q}BUD`] };
+}
+
+function rateClass(pct) {
+  if (pct >= 90) return 'rate-high';
+  if (pct >= 50) return 'rate-mid';
+  return 'rate-low';
+}
+
+function render() {
+  const q = currentQ;
+
+  // KPI
+  let totPln = 0, totAct = 0;
+  BUDGET_DATA.data.forEach(r => {
+    const d = getQData(r, q);
+    totPln += d.pln; totAct += d.act;
+  });
+  const totBud = totPln - totAct;
+  const rate = totPln > 0 ? (totAct / totPln * 100) : 0;
+
+  document.getElementById('hdr-date').textContent = BUDGET_DATA.collected_at;
+  document.getElementById('kpi-q-label').textContent = q === 'all' ? '(연간)' : `(${q}분기)`;
+  document.getElementById('kpi-budget').textContent = fmtShort(totPln);
+  document.getElementById('kpi-actual').textContent = fmtShort(totAct);
+  document.getElementById('kpi-remain').textContent = fmtShort(totBud);
+  document.getElementById('kpi-rate').textContent = rate.toFixed(1);
+  document.getElementById('kpi-bar').style.width = Math.min(rate, 100) + '%';
+  document.getElementById('kpi-bar').style.background = rate >= 90 ? '#dc2626' : rate >= 50 ? '#f59e0b' : '#2563eb';
+  document.getElementById('row-count').textContent = `${BUDGET_DATA.data.length}개 계정과목`;
+
+  // TABLE
+  const tbody = document.getElementById('tbody');
+  tbody.innerHTML = '';
+  BUDGET_DATA.data.forEach(row => {
+    const d = getQData(row, q);
+    const ratePct = d.pln > 0 ? Math.min(d.act / d.pln * 100, 999) : 0;
+    const rc = rateClass(ratePct);
+    const barW = Math.min(ratePct, 100);
+    const budClass = d.bud < 0 ? 'col-bud over' : 'col-bud';
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td>${row.HKONT_TXT}<span class="acct-code">${row.HKONT}</span></td>
+      <td class="col-plan">${fmt(d.pln)}</td>
+      <td class="col-act">${fmt(d.act)}</td>
+      <td class="${budClass}">${fmt(d.bud)}</td>
+      <td class="rate-cell">
+        <div class="rate-row ${rc}">
+          <div class="mini-bar-wrap"><div class="mini-bar" style="width:${barW}%"></div></div>
+          <span class="rate-pct">${ratePct.toFixed(1)}%</span>
+        </div>
+      </td>`;
+    tbody.appendChild(tr);
+  });
+}
+
+// TAB CLICKS
+document.querySelectorAll('.tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentQ = btn.dataset.q;
+    render();
+  });
+});
+
+// INIT — default to 전체
+document.querySelector('.tab[data-q="all"]').classList.add('active');
+render();
+</script>
+
+<script>
+if ('serviceWorker' in navigator) {
+  window.addEventListener('load', () => {
+    navigator.serviceWorker.register('./sw.js').catch(() => {});
+  });
+}
+</script>
+</body>
+</html>
