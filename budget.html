@@ -40,6 +40,13 @@
   .header-left .sub { font-size: 12px; color: var(--text-secondary); margin-top: 2px; }
   .badge { background: var(--blue-light); color: var(--blue); font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
 
+
+  /* ── CC TABS ── */
+  .cc-bar { background: #1e293b; padding: 8px 24px; display: flex; gap: 6px; }
+  .cc-tab { padding: 6px 18px; font-size: 13px; font-weight: 600; border-radius: 6px; border: none; cursor: pointer; transition: all .15s; color: #94a3b8; background: transparent; }
+  .cc-tab.active { background: #2563eb; color: #fff; }
+  .cc-tab:hover:not(.active) { background: #334155; color: #fff; }
+  @media (max-width: 768px) { .cc-bar { padding: 8px 16px; } }
   /* ── MAIN ── */
   .main { padding: 20px 24px; max-width: 1280px; margin: 0 auto; }
 
@@ -143,9 +150,14 @@
 <div class="header">
   <div class="header-left">
     <h1>부서예산 대시보드: SMART 기술팀</h1>
-    <div class="sub">2026 회계연도 · 코스트센터 14000 Smart기술팀(제조) · 수집: <span id="hdr-date"></span></div>
+    <div class="sub">2026 회계연도 · <span id="hdr-cc"></span> · 수집: <span id="hdr-date"></span></div>
   </div>
   <span class="badge">E-Accounting</span>
+</div>
+
+<div class="cc-bar">
+  <button class="cc-tab active" data-cc="0">제조 (14000)</button>
+  <button class="cc-tab" data-cc="1">판관 (70003)</button>
 </div>
 
 <div class="main">
@@ -212,10 +224,11 @@
 
 <script>
 // ==BUDGET_DATA_START==
-const BUDGET_DATA = {"collected_at":"2026-05-03","source":"E-Accounting 부서예산조회","company":"1000 (주) 세아제강","cost_center":"14000","cost_center_name":"Smart기술팀(제조)","fiscal_year":"2026","row_count":11,"data":[{"GJAHR":"2026","HKONT":"5300111","HKONT_TXT":"복리후생비-휴무일경비","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":672000,"Q1ACT":520000,"Q1BUD":152000,"Q2PLN":992000,"Q2ACT":160000,"Q2BUD":832000,"Q3PLN":864000,"Q3ACT":0,"Q3BUD":864000,"Q4PLN":672000,"Q4ACT":0,"Q4BUD":672000},{"GJAHR":"2026","HKONT":"5300114","HKONT_TXT":"복리후생비-업무식대","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":1680000,"Q1ACT":1433013,"Q1BUD":246987,"Q2PLN":1680000,"Q2ACT":451550,"Q2BUD":1228450,"Q3PLN":1680000,"Q3ACT":0,"Q3BUD":1680000,"Q4PLN":1680000,"Q4ACT":0,"Q4BUD":1680000},{"GJAHR":"2026","HKONT":"5300116","HKONT_TXT":"복리후생비-후생비","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":1680000,"Q1ACT":1435802,"Q1BUD":244198,"Q2PLN":1680000,"Q2ACT":464156,"Q2BUD":1215844,"Q3PLN":1680000,"Q3ACT":0,"Q3BUD":1680000,"Q4PLN":1680000,"Q4ACT":0,"Q4BUD":1680000},{"GJAHR":"2026","HKONT":"5300190","HKONT_TXT":"복리후생비-기타","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":3450000,"Q1ACT":3410680,"Q1BUD":39320,"Q2PLN":3450000,"Q2ACT":627467,"Q2BUD":2822533,"Q3PLN":3450000,"Q3ACT":0,"Q3BUD":3450000,"Q4PLN":3450000,"Q4ACT":0,"Q4BUD":3450000},{"GJAHR":"2026","HKONT":"5300201","HKONT_TXT":"여비교통비-시내교통","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":150000,"Q1ACT":9100,"Q1BUD":140900,"Q2PLN":150000,"Q2ACT":0,"Q2BUD":150000,"Q3PLN":150000,"Q3ACT":0,"Q3BUD":150000,"Q4PLN":150000,"Q4ACT":0,"Q4BUD":150000},{"GJAHR":"2026","HKONT":"5300202","HKONT_TXT":"여비교통비-국내출장","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":2100000,"Q1ACT":1833371,"Q1BUD":266629,"Q2PLN":1600000,"Q2ACT":1389340,"Q2BUD":210660,"Q3PLN":1600000,"Q3ACT":0,"Q3BUD":1600000,"Q4PLN":1600000,"Q4ACT":0,"Q4BUD":1600000},{"GJAHR":"2026","HKONT":"5300203","HKONT_TXT":"여비교통비-해외출장","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":5000000,"Q1ACT":0,"Q1BUD":5000000,"Q2PLN":5000000,"Q2ACT":0,"Q2BUD":5000000,"Q3PLN":5000000,"Q3ACT":0,"Q3BUD":5000000,"Q4PLN":5000000,"Q4ACT":0,"Q4BUD":5000000},{"GJAHR":"2026","HKONT":"5301290","HKONT_TXT":"지급수수료-기타수수료","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":600000,"Q1ACT":337482,"Q1BUD":262518,"Q2PLN":600000,"Q2ACT":311530,"Q2BUD":288470,"Q3PLN":600000,"Q3ACT":0,"Q3BUD":600000,"Q4PLN":600000,"Q4ACT":0,"Q4BUD":600000},{"GJAHR":"2026","HKONT":"5302106","HKONT_TXT":"수선비-일반","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":120000000,"Q1ACT":119965670,"Q1BUD":34330,"Q2PLN":180000000,"Q2ACT":29512600,"Q2BUD":150487400,"Q3PLN":180000000,"Q3ACT":0,"Q3BUD":180000000,"Q4PLN":180000000,"Q4ACT":0,"Q4BUD":180000000},{"GJAHR":"2026","HKONT":"5303101","HKONT_TXT":"교육훈련비-사내교육","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":500000,"Q1ACT":0,"Q1BUD":500000,"Q2PLN":500000,"Q2ACT":0,"Q2BUD":500000,"Q3PLN":500000,"Q3ACT":0,"Q3BUD":500000,"Q4PLN":500000,"Q4ACT":0,"Q4BUD":500000},{"GJAHR":"2026","HKONT":"5303201","HKONT_TXT":"도서인쇄비-도서구입","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":200000,"Q1ACT":0,"Q1BUD":200000,"Q2PLN":200000,"Q2ACT":0,"Q2BUD":200000,"Q3PLN":200000,"Q3ACT":0,"Q3BUD":200000,"Q4PLN":200000,"Q4ACT":0,"Q4BUD":200000}]};
+const BUDGET_DATA = {"collected_at":"2026-05-03","fiscal_year":"2026","centers":[{"cost_center":"14000","cost_center_name":"Smart기술팀(제조)","row_count":11,"data":[{"GJAHR":"2026","HKONT":"5300111","HKONT_TXT":"복리후생비-휴무일경비","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":672000,"Q1ACT":520000,"Q1BUD":152000,"Q2PLN":992000,"Q2ACT":160000,"Q2BUD":832000,"Q3PLN":864000,"Q3ACT":0,"Q3BUD":864000,"Q4PLN":672000,"Q4ACT":0,"Q4BUD":672000},{"GJAHR":"2026","HKONT":"5300114","HKONT_TXT":"복리후생비-업무식대","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":1680000,"Q1ACT":1433013,"Q1BUD":246987,"Q2PLN":1680000,"Q2ACT":451550,"Q2BUD":1228450,"Q3PLN":1680000,"Q3ACT":0,"Q3BUD":1680000,"Q4PLN":1680000,"Q4ACT":0,"Q4BUD":1680000},{"GJAHR":"2026","HKONT":"5300116","HKONT_TXT":"복리후생비-후생비","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":1680000,"Q1ACT":1435802,"Q1BUD":244198,"Q2PLN":1680000,"Q2ACT":464156,"Q2BUD":1215844,"Q3PLN":1680000,"Q3ACT":0,"Q3BUD":1680000,"Q4PLN":1680000,"Q4ACT":0,"Q4BUD":1680000},{"GJAHR":"2026","HKONT":"5300190","HKONT_TXT":"복리후생비-기타","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":3450000,"Q1ACT":3410680,"Q1BUD":39320,"Q2PLN":3450000,"Q2ACT":627467,"Q2BUD":2822533,"Q3PLN":3450000,"Q3ACT":0,"Q3BUD":3450000,"Q4PLN":3450000,"Q4ACT":0,"Q4BUD":3450000},{"GJAHR":"2026","HKONT":"5300201","HKONT_TXT":"여비교통비-시내교통","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":150000,"Q1ACT":9100,"Q1BUD":140900,"Q2PLN":150000,"Q2ACT":0,"Q2BUD":150000,"Q3PLN":150000,"Q3ACT":0,"Q3BUD":150000,"Q4PLN":150000,"Q4ACT":0,"Q4BUD":150000},{"GJAHR":"2026","HKONT":"5300202","HKONT_TXT":"여비교통비-국내출장","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":2100000,"Q1ACT":1833371,"Q1BUD":266629,"Q2PLN":1600000,"Q2ACT":1389340,"Q2BUD":210660,"Q3PLN":1600000,"Q3ACT":0,"Q3BUD":1600000,"Q4PLN":1600000,"Q4ACT":0,"Q4BUD":1600000},{"GJAHR":"2026","HKONT":"5300203","HKONT_TXT":"여비교통비-해외출장","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":5000000,"Q1ACT":0,"Q1BUD":5000000,"Q2PLN":5000000,"Q2ACT":0,"Q2BUD":5000000,"Q3PLN":5000000,"Q3ACT":0,"Q3BUD":5000000,"Q4PLN":5000000,"Q4ACT":0,"Q4BUD":5000000},{"GJAHR":"2026","HKONT":"5301290","HKONT_TXT":"지급수수료-기타수수료","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":600000,"Q1ACT":337482,"Q1BUD":262518,"Q2PLN":600000,"Q2ACT":311530,"Q2BUD":288470,"Q3PLN":600000,"Q3ACT":0,"Q3BUD":600000,"Q4PLN":600000,"Q4ACT":0,"Q4BUD":600000},{"GJAHR":"2026","HKONT":"5302106","HKONT_TXT":"수선비-일반","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":120000000,"Q1ACT":119965670,"Q1BUD":34330,"Q2PLN":180000000,"Q2ACT":29512600,"Q2BUD":150487400,"Q3PLN":180000000,"Q3ACT":0,"Q3BUD":180000000,"Q4PLN":180000000,"Q4ACT":0,"Q4BUD":180000000},{"GJAHR":"2026","HKONT":"5303101","HKONT_TXT":"교육훈련비-사내교육","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":500000,"Q1ACT":0,"Q1BUD":500000,"Q2PLN":500000,"Q2ACT":0,"Q2BUD":500000,"Q3PLN":500000,"Q3ACT":0,"Q3BUD":500000,"Q4PLN":500000,"Q4ACT":0,"Q4BUD":500000},{"GJAHR":"2026","HKONT":"5303201","HKONT_TXT":"도서인쇄비-도서구입","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":200000,"Q1ACT":0,"Q1BUD":200000,"Q2PLN":200000,"Q2ACT":0,"Q2BUD":200000,"Q3PLN":200000,"Q3ACT":0,"Q3BUD":200000,"Q4PLN":200000,"Q4ACT":0,"Q4BUD":200000}]},{"cost_center":"70003","cost_center_name":"Smart기술팀(판관)","row_count":0,"data":[]}]};
 // ==BUDGET_DATA_END==
 
 let currentQ = 'all';
+let currentCC = 0; // 0=14000제조, 1=70003판관
 
 const fmt = n => n.toLocaleString('ko-KR');
 const fmtShort = n => {
@@ -246,7 +259,9 @@ function render() {
 
   // KPI
   let totPln = 0, totAct = 0;
-  BUDGET_DATA.data.forEach(r => {
+  const ccData = BUDGET_DATA.centers[currentCC];
+  const activeRows = ccData.data;
+  activeRows.forEach(r => {
     const d = getQData(r, q);
     totPln += d.pln; totAct += d.act;
   });
@@ -254,6 +269,7 @@ function render() {
   const rate = totPln > 0 ? (totAct / totPln * 100) : 0;
 
   document.getElementById('hdr-date').textContent = BUDGET_DATA.collected_at;
+  document.getElementById('hdr-cc').textContent = ccData.cost_center_name;
   document.getElementById('kpi-q-label').textContent = q === 'all' ? '(연간)' : `(${q}분기)`;
   document.getElementById('kpi-budget').textContent = fmtShort(totPln);
   document.getElementById('kpi-actual').textContent = fmtShort(totAct);
@@ -261,12 +277,17 @@ function render() {
   document.getElementById('kpi-rate').textContent = rate.toFixed(1);
   document.getElementById('kpi-bar').style.width = Math.min(rate, 100) + '%';
   document.getElementById('kpi-bar').style.background = rate >= 90 ? '#dc2626' : rate >= 50 ? '#f59e0b' : '#2563eb';
-  document.getElementById('row-count').textContent = `${BUDGET_DATA.data.length}개 계정과목`;
+  document.getElementById('row-count').textContent = `${activeRows.length}개 계정과목`;
 
   // TABLE
   const tbody = document.getElementById('tbody');
   tbody.innerHTML = '';
-  BUDGET_DATA.data.forEach(row => {
+  if (activeRows.length === 0) {
+    tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;padding:40px;color:#98a2b3;">데이터를 수집 중입니다.<br>예산 새로고침을 실행해 주세요.</td></tr>';
+    document.getElementById('cards-wrap').innerHTML = '<div style="text-align:center;padding:40px;color:#98a2b3;">데이터를 수집 중입니다.<br>예산 새로고침을 실행해 주세요.</div>';
+    return;
+  }
+  activeRows.forEach(row => {
     const d = getQData(row, q);
     const ratePct = d.pln > 0 ? Math.min(d.act / d.pln * 100, 999) : 0;
     const rc = rateClass(ratePct);
@@ -291,7 +312,7 @@ function render() {
   // MOBILE CARDS
   const cardsWrap = document.getElementById('cards-wrap');
   cardsWrap.innerHTML = '';
-  BUDGET_DATA.data.forEach(row => {
+  activeRows.forEach(row => {
     const d = getQData(row, q);
     const ratePct = d.pln > 0 ? Math.min(d.act / d.pln * 100, 999) : 0;
     const barW = Math.min(ratePct, 100);
@@ -328,6 +349,17 @@ function render() {
   });
 
 }
+
+
+// CC TAB CLICKS
+document.querySelectorAll('.cc-tab').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.cc-tab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    currentCC = parseInt(btn.dataset.cc);
+    render();
+  });
+});
 
 // TAB CLICKS
 document.querySelectorAll('.tab').forEach(btn => {
