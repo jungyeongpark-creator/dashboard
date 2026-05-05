@@ -1,181 +1,138 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
-  <meta http-equiv="Pragma" content="no-cache">
-  <meta http-equiv="Expires" content="0">
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>SMART기술팀 예산조회</title>
-<link rel="manifest" href="manifest.json">
-<link rel="icon" href="favicon.png">
-<meta name="theme-color" content="#2563eb">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="default">
-<meta name="apple-mobile-web-app-title" content="예산조회">
-<link rel="apple-touch-icon" href="icon-192.png">
-<style>
-  :root{--bg:#f0f2f5;--card:#ffffff;--border:#e4e7ec;--text-primary:#101828;--text-secondary:#667085;--text-muted:#98a2b3;--blue:#2563eb;--blue-light:#eff6ff;--green:#16a34a;--green-light:#f0fdf4;--orange:#ea580c;--orange-light:#fff7ed;--red:#dc2626;--red-light:#fef2f2;--radius:10px;--shadow:0 1px 3px rgba(0,0,0,.08),0 1px 2px rgba(0,0,0,.04);--shadow-md:0 4px 12px rgba(0,0,0,.08);}
-  *{box-sizing:border-box;margin:0;padding:0;}
-  body{font-family:-apple-system,BlinkMacSystemFont,"Pretendard","Segoe UI",sans-serif;background:var(--bg);color:var(--text-primary);}
-  .header{background:var(--card);border-bottom:1px solid var(--border);padding:16px 24px;display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;}
-  .header-left h1{font-size:17px;font-weight:700;letter-spacing:-.3px;}
-  .header-left .sub{font-size:12px;color:var(--text-secondary);margin-top:2px;}
-  .badge{background:var(--blue-light);color:var(--blue);font-size:11px;font-weight:600;padding:3px 8px;border-radius:20px;}
-  .cc-bar{background:#1e293b;padding:8px 24px;display:flex;gap:6px;}
-  .cc-tab{padding:6px 18px;font-size:13px;font-weight:600;border-radius:6px;border:none;cursor:pointer;transition:all .15s;color:#94a3b8;background:transparent;}
-  .cc-tab.active{background:#2563eb;color:#fff;}
-  .cc-tab:hover:not(.active){background:#334155;color:#fff;}
-  @media(max-width:768px){.cc-bar{padding:8px 16px;}}
-  .main{padding:20px 24px;max-width:1280px;margin:0 auto;}
-  .kpi-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin-bottom:20px;}
-  .kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;box-shadow:var(--shadow);}
-  .kpi-label{font-size:11px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.5px;margin-bottom:8px;}
-  .kpi-value{font-size:22px;font-weight:700;letter-spacing:-.5px;line-height:1;}
-  .kpi-sub{font-size:11px;color:var(--text-muted);margin-top:4px;}
-  .kpi.k-budget .kpi-value{color:var(--blue);}
-  .kpi.k-actual .kpi-value{color:var(--orange);}
-  .kpi.k-remain .kpi-value{color:var(--green);}
-  .kpi.k-rate .kpi-value{color:var(--text-primary);}
-  .rate-bar-wrap{margin-top:8px;background:#e4e7ec;border-radius:4px;height:6px;overflow:hidden;}
-  .rate-bar{height:6px;border-radius:4px;background:var(--blue);transition:width .4s;}
-  .toolbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;flex-wrap:wrap;gap:10px;}
-  .tabs{display:flex;gap:4px;background:var(--card);border:1px solid var(--border);border-radius:8px;padding:4px;}
-  .tab{padding:6px 16px;font-size:13px;font-weight:600;border-radius:6px;border:none;background:transparent;color:var(--text-secondary);cursor:pointer;transition:all .15s;}
-  .tab.active{background:var(--blue);color:#fff;box-shadow:0 1px 4px rgba(37,99,235,.3);}
-  .tab:hover:not(.active){background:var(--bg);color:var(--text-primary);}
-  .toolbar-right{font-size:12px;color:var(--text-muted);}
-  .table-wrap{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow);overflow-x:auto;-webkit-overflow-scrolling:touch;}
-  table{width:100%;border-collapse:collapse;min-width:480px;}
-  thead{background:#f8fafc;}
-  thead th{padding:11px 14px;font-size:11px;font-weight:700;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.4px;white-space:nowrap;border-bottom:1px solid var(--border);}
-  thead th:first-child{text-align:left;min-width:160px;}
-  thead th:not(:first-child){text-align:right;}
-  tbody tr{border-bottom:1px solid var(--border);transition:background .1s;}
-  tbody tr:last-child{border-bottom:none;}
-  tbody tr:hover{background:#f8fafc;}
-  td{padding:13px 14px;font-size:13px;vertical-align:middle;}
-  td:first-child{font-weight:500;color:var(--text-primary);}
-  td:not(:first-child){text-align:right;font-variant-numeric:tabular-nums;font-size:13px;}
-  .acct-code{font-size:11px;color:var(--text-muted);font-weight:400;margin-left:4px;}
-  .col-plan{color:var(--text-primary);}
-  .col-act{color:var(--orange);font-weight:600;}
-  .col-bud{color:var(--green);font-weight:600;}
-  .col-bud.over{color:var(--red);}
-  .rate-cell{min-width:110px;}
-  .rate-row{display:flex;align-items:center;gap:6px;justify-content:flex-end;}
-  .rate-pct{font-size:12px;font-weight:700;min-width:38px;text-align:right;}
-  .mini-bar-wrap{width:60px;background:#e4e7ec;border-radius:3px;height:6px;overflow:hidden;flex-shrink:0;}
-  .mini-bar{height:6px;border-radius:3px;}
-  .rate-low .mini-bar{background:var(--green);}
-  .rate-mid .mini-bar{background:#f59e0b;}
-  .rate-high .mini-bar{background:var(--red);}
-  .rate-low .rate-pct{color:var(--green);}
-  .rate-mid .rate-pct{color:#d97706;}
-  .rate-high .rate-pct{color:var(--red);}
-  .cards-wrap{display:none;}
-  .card-item{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:14px 16px;margin-bottom:10px;box-shadow:var(--shadow);}
-  .card-name{font-size:14px;font-weight:600;color:var(--text-primary);}
-  .card-code{font-size:11px;color:var(--text-muted);margin-left:4px;}
-  .card-vals{display:grid;grid-template-columns:1fr 1fr 1fr;gap:8px;margin-top:10px;}
-  .card-val-item{display:flex;flex-direction:column;gap:2px;}
-  .card-val-label{font-size:10px;font-weight:600;color:var(--text-secondary);text-transform:uppercase;letter-spacing:.4px;}
-  .card-val-num{font-size:13px;font-weight:700;font-variant-numeric:tabular-nums;}
-  .card-val-item.plan .card-val-num{color:var(--text-primary);}
-  .card-val-item.act .card-val-num{color:var(--orange);}
-  .card-val-item.bud .card-val-num{color:var(--green);}
-  .card-val-item.bud.over .card-val-num{color:var(--red);}
-  .card-rate-row{display:flex;align-items:center;gap:8px;margin-top:10px;}
-  .card-rate-bar-wrap{flex:1;background:#e4e7ec;border-radius:4px;height:6px;overflow:hidden;}
-  .card-rate-bar{height:6px;border-radius:4px;}
-  .card-rate-pct{font-size:12px;font-weight:700;min-width:44px;text-align:right;}
-  @media(max-width:768px){.table-wrap{display:none;}.cards-wrap{display:block;}}
-  .footer{text-align:center;font-size:11px;color:var(--text-muted);padding:20px;}
-  @media(max-width:900px){.kpi-grid{grid-template-columns:repeat(2,1fr);}.main{padding:16px;}.header{padding:14px 16px;}}
-  @media(max-width:768px){.kpi-grid{grid-template-columns:repeat(2,1fr);}.kpi-value{font-size:17px;}td,thead th{padding:10px 10px;font-size:12px;}.mini-bar-wrap{width:40px;}.tab{padding:6px 10px;font-size:12px;}}
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Budget Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+            background-color: #f5f5f5;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background-color: white;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            border-bottom: 3px solid #4CAF50;
+            padding-bottom: 10px;
+        }
+        .info {
+            font-size: 14px;
+            color: #666;
+            margin-bottom: 20px;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 30px;
+        }
+        th, td {
+            border: 1px solid #ddd;
+            padding: 12px;
+            text-align: right;
+        }
+        th {
+            background-color: #4CAF50;
+            color: white;
+            font-weight: bold;
+        }
+        .center-name {
+            text-align: left;
+            font-weight: bold;
+            background-color: #f9f9f9;
+        }
+        .budget-name {
+            text-align: left;
+        }
+        tr:hover {
+            background-color: #f5f5f5;
+        }
+        .section-header {
+            font-size: 16px;
+            font-weight: bold;
+            background-color: #e8f5e9;
+            padding: 10px;
+            margin-top: 20px;
+            margin-bottom: 10px;
+            border-left: 4px solid #4CAF50;
+        }
+    </style>
 </head>
 <body>
-<div class="header">
-  <div class="header-left">
-    <h1>부서예산 대시보드: SMART 기술팀</h1>
-    <div class="sub">2026 회계연도 · <span id="hdr-cc"></span> · 수집: <span id="hdr-date"></span></div>
-  </div>
-  <span class="badge">E-Accounting</span>
-</div>
-<div class="cc-bar">
-  <button class="cc-tab active" data-cc="0">제조 (14000)</button>
-  <button class="cc-tab" data-cc="1">판관 (70003)</button>
-</div>
-<div class="main">
-  <div class="kpi-grid">
-    <div class="kpi k-budget"><div class="kpi-label">총예산 <span id="kpi-q-label"></span></div><div class="kpi-value" id="kpi-budget">—</div><div class="kpi-sub">원</div></div>
-    <div class="kpi k-actual"><div class="kpi-label">집행 실적</div><div class="kpi-value" id="kpi-actual">—</div><div class="kpi-sub">원</div></div>
-    <div class="kpi k-remain"><div class="kpi-label">잔여 예산</div><div class="kpi-value" id="kpi-remain">—</div><div class="kpi-sub">원</div></div>
-    <div class="kpi k-rate"><div class="kpi-label">집행률</div><div class="kpi-value" id="kpi-rate">—</div><div class="kpi-sub">%</div><div class="rate-bar-wrap"><div class="rate-bar" id="kpi-bar" style="width:0%"></div></div></div>
-  </div>
-  <div class="toolbar">
-    <div class="tabs">
-      <button class="tab" data-q="all">전체</button>
-      <button class="tab" data-q="1">Q1</button>
-      <button class="tab" data-q="2">Q2</button>
-      <button class="tab" data-q="3">Q3</button>
-      <button class="tab" data-q="4">Q4</button>
+    <div class="container">
+        <h1>스마트 기술팀 예산 대시보드</h1>
+        <div class="info">
+            <p><strong>갱신 일시:</strong> <span id="collectedAt"></span></p>
+            <p><strong>회계 연도:</strong> <span id="fiscalYear"></span></p>
+        </div>
+        <div id="content"></div>
     </div>
-    <div class="toolbar-right" id="row-count"></div>
-  </div>
-  <div class="table-wrap">
-    <table>
-      <thead><tr><th>계정과목</th><th>계획</th><th>실적</th><th>잔여</th><th class="rate-cell">집행률</th></tr></thead>
-      <tbody id="tbody"></tbody>
-    </table>
-  </div>
-  <div class="cards-wrap" id="cards-wrap"></div>
-</div>
-<div class="footer">Smart기술팀 예산관리 · E-Accounting 데이터 기반</div>
-<script>
+
+    <script>
 // ==BUDGET_DATA_START==
-const BUDGET_DATA = {"collected_at":"2026-05-04","fiscal_year":"2026","centers":[{"cost_center":"14000","cost_center_name":"Smart기술팀(제조)","row_count":11,"data":[{"GJAHR":"2026","HKONT":"5300111","HKONT_TXT":"복리후생비-휴무일경비","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":672000,"Q1ACT":520000,"Q1BUD":152000,"Q2PLN":992000,"Q2ACT":200000,"Q2BUD":792000,"Q3PLN":864000,"Q3ACT":0,"Q3BUD":864000,"Q4PLN":672000,"Q4ACT":0,"Q4BUD":672000},{"GJAHR":"2026","HKONT":"5300114","HKONT_TXT":"복리후생비-업무식대","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":1680000,"Q1ACT":1433013,"Q1BUD":246987,"Q2PLN":1680000,"Q2ACT":451550,"Q2BUD":1228450,"Q3PLN":1680000,"Q3ACT":0,"Q3BUD":1680000,"Q4PLN":1680000,"Q4ACT":0,"Q4BUD":1680000},{"GJAHR":"2026","HKONT":"5300116","HKONT_TXT":"복리후생비-후생비","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":1680000,"Q1ACT":1435802,"Q1BUD":244198,"Q2PLN":1680000,"Q2ACT":471429,"Q2BUD":1208571,"Q3PLN":1680000,"Q3ACT":0,"Q3BUD":1680000,"Q4PLN":1680000,"Q4ACT":0,"Q4BUD":1680000},{"GJAHR":"2026","HKONT":"5300190","HKONT_TXT":"복리후생비-기타","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":3450000,"Q1ACT":3410680,"Q1BUD":39320,"Q2PLN":3450000,"Q2ACT":643195,"Q2BUD":2806805,"Q3PLN":3450000,"Q3ACT":0,"Q3BUD":3450000,"Q4PLN":3450000,"Q4ACT":0,"Q4BUD":3450000},{"GJAHR":"2026","HKONT":"5300201","HKONT_TXT":"여비교통비-시내교통","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":150000,"Q1ACT":9100,"Q1BUD":140900,"Q2PLN":150000,"Q2ACT":0,"Q2BUD":150000,"Q3PLN":150000,"Q3ACT":0,"Q3BUD":150000,"Q4PLN":150000,"Q4ACT":0,"Q4BUD":150000},{"GJAHR":"2026","HKONT":"5300202","HKONT_TXT":"여비교통비-국내출장","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":2100000,"Q1ACT":1833371,"Q1BUD":266629,"Q2PLN":1600000,"Q2ACT":1394340,"Q2BUD":205660,"Q3PLN":1600000,"Q3ACT":0,"Q3BUD":1600000,"Q4PLN":1600000,"Q4ACT":0,"Q4BUD":1600000},{"GJAHR":"2026","HKONT":"5300203","HKONT_TXT":"여비교통비-해외출장","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":5000000,"Q1ACT":0,"Q1BUD":5000000,"Q2PLN":5000000,"Q2ACT":0,"Q2BUD":5000000,"Q3PLN":5000000,"Q3ACT":0,"Q3BUD":5000000,"Q4PLN":5000000,"Q4ACT":0,"Q4BUD":5000000},{"GJAHR":"2026","HKONT":"5301290","HKONT_TXT":"지급수수료-기타수수료","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":600000,"Q1ACT":337482,"Q1BUD":262518,"Q2PLN":600000,"Q2ACT":311530,"Q2BUD":288470,"Q3PLN":600000,"Q3ACT":0,"Q3BUD":600000,"Q4PLN":600000,"Q4ACT":0,"Q4BUD":600000},{"GJAHR":"2026","HKONT":"5302106","HKONT_TXT":"수선비-일반","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":120000000,"Q1ACT":119965670,"Q1BUD":34330,"Q2PLN":180000000,"Q2ACT":29641600,"Q2BUD":150358400,"Q3PLN":210000000,"Q3ACT":0,"Q3BUD":210000000,"Q4PLN":120000000,"Q4ACT":0,"Q4BUD":120000000},{"GJAHR":"2026","HKONT":"5302108","HKONT_TXT":"수선비-안전보건개선비","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":18500000,"Q1ACT":18500000,"Q1BUD":0,"Q2PLN":35000000,"Q2ACT":0,"Q2BUD":35000000,"Q3PLN":15000000,"Q3ACT":0,"Q3BUD":15000000,"Q4PLN":6500000,"Q4ACT":0,"Q4BUD":6500000},{"GJAHR":"2026","HKONT":"5302790","HKONT_TXT":"회의비-기타","KOSTL":"14000","KOSTL_TXT":"Smart기술팀(제조)","WAERS":"KRW","Q1PLN":500000,"Q1ACT":56546,"Q1BUD":443454,"Q2PLN":500000,"Q2ACT":434548,"Q2BUD":65452,"Q3PLN":500000,"Q3ACT":0,"Q3BUD":500000,"Q4PLN":500000,"Q4ACT":0,"Q4BUD":500000}]},{"cost_center":"70003","cost_center_name":"Smart기술팀(판관)","row_count":1,"data":[{"GJAHR":"2026","HKONT":"5302907","HKONT_TXT":"경상기술개발비-연구비","KOSTL":"70003","KOSTL_TXT":"Smart기술팀(판관)","WAERS":"KRW","Q1PLN":30000000,"Q1ACT":14088810,"Q1BUD":15911190,"Q2PLN":30000000,"Q2ACT":5594800,"Q2BUD":24405200,"Q3PLN":30000000,"Q3ACT":0,"Q3BUD":30000000,"Q4PLN":30000000,"Q4ACT":0,"Q4BUD":30000000}]}]};
+const BUDGET_DATA = {"collected_at": "2026-05-05", "fiscal_year": "2026", "centers": [{"cost_center": "14000", "cost_center_name": "Smart기술팀(제조)", "row_count": 11, "data": [{"GJAHR": "2026", "HKONT": "5300111", "HKONT_TXT": "복리후생비-휴무일경비", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 672000, "Q1ACT": 520000, "Q1BUD": 152000, "Q2PLN": 992000, "Q2ACT": 200000, "Q2BUD": 792000, "Q3PLN": 864000, "Q3ACT": 0, "Q3BUD": 864000, "Q4PLN": 672000, "Q4ACT": 0, "Q4BUD": 672000}, {"GJAHR": "2026", "HKONT": "5300114", "HKONT_TXT": "복리후생비-업무식대", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 1680000, "Q1ACT": 1433013, "Q1BUD": 246987, "Q2PLN": 1680000, "Q2ACT": 451550, "Q2BUD": 1228450, "Q3PLN": 1680000, "Q3ACT": 0, "Q3BUD": 1680000, "Q4PLN": 1680000, "Q4ACT": 0, "Q4BUD": 1680000}, {"GJAHR": "2026", "HKONT": "5300116", "HKONT_TXT": "복리후생비-후생비", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 1680000, "Q1ACT": 1435802, "Q1BUD": 244198, "Q2PLN": 1680000, "Q2ACT": 503248, "Q2BUD": 1176752, "Q3PLN": 1680000, "Q3ACT": 0, "Q3BUD": 1680000, "Q4PLN": 1680000, "Q4ACT": 0, "Q4BUD": 1680000}, {"GJAHR": "2026", "HKONT": "5300190", "HKONT_TXT": "복리후생비-기타", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 3450000, "Q1ACT": 3410680, "Q1BUD": 39320, "Q2PLN": 3450000, "Q2ACT": 643195, "Q2BUD": 2806805, "Q3PLN": 3450000, "Q3ACT": 0, "Q3BUD": 3450000, "Q4PLN": 3450000, "Q4ACT": 0, "Q4BUD": 3450000}, {"GJAHR": "2026", "HKONT": "5300201", "HKONT_TXT": "여비교통비-시내교통", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 150000, "Q1ACT": 9100, "Q1BUD": 140900, "Q2PLN": 150000, "Q2ACT": 0, "Q2BUD": 150000, "Q3PLN": 150000, "Q3ACT": 0, "Q3BUD": 150000, "Q4PLN": 150000, "Q4ACT": 0, "Q4BUD": 150000}, {"GJAHR": "2026", "HKONT": "5300202", "HKONT_TXT": "여비교통비-국내출장", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 2100000, "Q1ACT": 1833371, "Q1BUD": 266629, "Q2PLN": 1600000, "Q2ACT": 1408494, "Q2BUD": 191506, "Q3PLN": 1600000, "Q3ACT": 0, "Q3BUD": 1600000, "Q4PLN": 1600000, "Q4ACT": 0, "Q4BUD": 1600000}, {"GJAHR": "2026", "HKONT": "5300203", "HKONT_TXT": "여비교통비-해외출장", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 5000000, "Q1ACT": 0, "Q1BUD": 5000000, "Q2PLN": 5000000, "Q2ACT": 0, "Q2BUD": 5000000, "Q3PLN": 5000000, "Q3ACT": 0, "Q3BUD": 5000000, "Q4PLN": 5000000, "Q4ACT": 0, "Q4BUD": 5000000}, {"GJAHR": "2026", "HKONT": "5301290", "HKONT_TXT": "지급수수료-기타수수료", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 600000, "Q1ACT": 337482, "Q1BUD": 262518, "Q2PLN": 600000, "Q2ACT": 311530, "Q2BUD": 288470, "Q3PLN": 600000, "Q3ACT": 0, "Q3BUD": 600000, "Q4PLN": 600000, "Q4ACT": 0, "Q4BUD": 600000}, {"GJAHR": "2026", "HKONT": "5302106", "HKONT_TXT": "수선비-일반", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 120000000, "Q1ACT": 119965670, "Q1BUD": 34330, "Q2PLN": 180000000, "Q2ACT": 35041600, "Q2BUD": 144958400, "Q3PLN": 210000000, "Q3ACT": 0, "Q3BUD": 210000000, "Q4PLN": 120000000, "Q4ACT": 0, "Q4BUD": 120000000}, {"GJAHR": "2026", "HKONT": "5302108", "HKONT_TXT": "수선비-안전보건개선비", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 18500000, "Q1ACT": 18500000, "Q1BUD": 0, "Q2PLN": 35000000, "Q2ACT": 0, "Q2BUD": 35000000, "Q3PLN": 15000000, "Q3ACT": 0, "Q3BUD": 15000000, "Q4PLN": 6500000, "Q4ACT": 0, "Q4BUD": 6500000}, {"GJAHR": "2026", "HKONT": "5302790", "HKONT_TXT": "회의비-기타", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 500000, "Q1ACT": 56546, "Q1BUD": 443454, "Q2PLN": 500000, "Q2ACT": 434548, "Q2BUD": 65452, "Q3PLN": 500000, "Q3ACT": 0, "Q3BUD": 500000, "Q4PLN": 500000, "Q4ACT": 0, "Q4BUD": 500000}]}, {"cost_center": "70003", "cost_center_name": "Smart기술팀(판관)", "row_count": 1, "data": [{"GJAHR": "2026", "HKONT": "5302907", "HKONT_TXT": "경상기술개발비-연구비", "KOSTL": "70003", "KOSTL_TXT": "Smart기술팀(판관)", "WAERS": "KRW", "Q1PLN": 30000000, "Q1ACT": 14088810, "Q1BUD": 15911190, "Q2PLN": 30000000, "Q2ACT": 5594800, "Q2BUD": 24405200, "Q3PLN": 30000000, "Q3ACT": 0, "Q3BUD": 30000000, "Q4PLN": 30000000, "Q4ACT": 0, "Q4BUD": 30000000}]}]};
 // ==BUDGET_DATA_END==
-let currentQ='all',currentCC=0;
-const fmt=n=>n.toLocaleString('ko-KR');
-const fmtShort=n=>{if(Math.abs(n)>=1e8)return(n/1e8).toFixed(1)+'억';if(Math.abs(n)>=1e4)return(n/1e4).toFixed(0)+'만';return n.toLocaleString('ko-KR');};
-function getQData(r,q){if(q==='all')return{pln:r.Q1PLN+r.Q2PLN+r.Q3PLN+r.Q4PLN,act:r.Q1ACT+r.Q2ACT+r.Q3ACT+r.Q4ACT,bud:r.Q1BUD+r.Q2BUD+r.Q3BUD+r.Q4BUD};return{pln:r['Q'+q+'PLN'],act:r['Q'+q+'ACT'],bud:r['Q'+q+'BUD']};}
-function rateClass(p){return p>=90?'rate-high':p>=50?'rate-mid':'rate-low';}
-function render(){
-  const q=currentQ,ccData=BUDGET_DATA.centers[currentCC],rows=ccData.data;
-  let tp=0,ta=0;rows.forEach(r=>{const d=getQData(r,q);tp+=d.pln;ta+=d.act;});
-  const tb=tp-ta,rate=tp>0?ta/tp*100:0;
-  document.getElementById('hdr-date').textContent=BUDGET_DATA.collected_at;
-  document.getElementById('hdr-cc').textContent=ccData.cost_center_name;
-  document.getElementById('kpi-q-label').textContent=q==='all'?'(연간)':'('+q+'분기)';
-  document.getElementById('kpi-budget').textContent=fmtShort(tp);
-  document.getElementById('kpi-actual').textContent=fmtShort(ta);
-  document.getElementById('kpi-remain').textContent=fmtShort(tb);
-  document.getElementById('kpi-rate').textContent=rate.toFixed(1);
-  document.getElementById('kpi-bar').style.width=Math.min(rate,100)+'%';
-  document.getElementById('kpi-bar').style.background=rate>=90?'#dc2626':rate>=50?'#f59e0b':'#2563eb';
-  document.getElementById('row-count').textContent=rows.length+'개 계정과목';
-  const tbody=document.getElementById('tbody');tbody.innerHTML='';
-  if(!rows.length){tbody.innerHTML='<tr><td colspan="5" style="text-align:center;padding:40px;color:#98a2b3;">데이터 없음</td></tr>';return;}
-  rows.forEach(row=>{
-    const d=getQData(row,q),rp=d.pln>0?Math.min(d.act/d.pln*100,999):0,bw=Math.min(rp,100),bc=d.bud<0?'col-bud over':'col-bud',tr=document.createElement('tr');
-    tr.innerHTML='<td>'+row.HKONT_TXT+'<span class="acct-code">'+row.HKONT+'</span></td><td class="col-plan">'+fmt(d.pln)+'</td><td class="col-act">'+fmt(d.act)+'</td><td class="'+bc+'">'+fmt(d.bud)+'</td><td class="rate-cell"><div class="rate-row '+rateClass(rp)+'"><div class="mini-bar-wrap"><div class="mini-bar" style="width:'+bw+'%"></div></div><span class="rate-pct">'+rp.toFixed(1)+'%</span></div></td>';
-    tbody.appendChild(tr);
-  });
-  const cw=document.getElementById('cards-wrap');cw.innerHTML='';
-  rows.forEach(row=>{
-    const d=getQData(row,q),rp=d.pln>0?Math.min(d.act/d.pln*100,999):0,bw=Math.min(rp,100),bo=d.bud<0?'over':'',rc=rp>=90?'#dc2626':rp>=50?'#f59e0b':'#16a34a',card=document.createElement('div');
-    card.className='card-item';
-    card.innerHTML='<div><span class="card-name">'+row.HKONT_TXT+'</span><span class="card-code">'+row.HKONT+'</span></div><div class="card-vals"><div class="card-val-item plan"><span class="card-val-label">계획</span><span class="card-val-num">'+fmt(d.pln)+'</span></div><div class="card-val-item act"><span class="card-val-label">실적</span><span class="card-val-num">'+fmt(d.act)+'</span></div><div class="card-val-item bud '+bo+'"><span class="card-val-label">잔여</span><span class="card-val-num">'+fmt(d.bud)+'</span></div></div><div class="card-rate-row"><div class="card-rate-bar-wrap"><div class="card-rate-bar" style="width:'+bw+'%;background:'+rc+'"></div></div><span class="card-rate-pct" style="color:'+rc+'">'+rp.toFixed(1)+'%</span></div>';
-    cw.appendChild(card);
-  });
-}
-document.querySelectorAll('.cc-tab').forEach(b=>{b.addEventListener('click',()=>{document.querySelectorAll('.cc-tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentCC=parseInt(b.dataset.cc);render();});});
-document.querySelectorAll('.tab').forEach(b=>{b.addEventListener('click',()=>{document.querySelectorAll('.tab').forEach(x=>x.classList.remove('active'));b.classList.add('active');currentQ=b.dataset.q;render();});});
-document.querySelector('.tab[data-q="all"]').classList.add('active');
-render();
-</script>
-<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>{navigator.serviceWorker.register('./sw.js').catch(()=>{});});}</script>
+
+        // 데이터 렌더링
+        function renderDashboard() {
+            document.getElementById('collectedAt').textContent = BUDGET_DATA.collected_at;
+            document.getElementById('fiscalYear').textContent = BUDGET_DATA.fiscal_year;
+            
+            let html = '';
+            
+            BUDGET_DATA.centers.forEach(center => {
+                html += `<div class="section-header">${center.cost_center} - ${center.cost_center_name}</div>`;
+                html += '<table>';
+                html += '<thead><tr>';
+                html += '<th>계정과목</th>';
+                html += '<th>Q1 계획</th>';
+                html += '<th>Q1 실적</th>';
+                html += '<th>Q1 잔액</th>';
+                html += '<th>Q2 계획</th>';
+                html += '<th>Q2 실적</th>';
+                html += '<th>Q2 잔액</th>';
+                html += '<th>Q3 계획</th>';
+                html += '<th>Q3 실적</th>';
+                html += '<th>Q3 잔액</th>';
+                html += '<th>Q4 계획</th>';
+                html += '<th>Q4 실적</th>';
+                html += '<th>Q4 잔액</th>';
+                html += '</tr></thead>';
+                html += '<tbody>';
+                
+                center.data.forEach(row => {
+                    html += '<tr>';
+                    html += `<td class="budget-name">${row.HKONT} - ${row.HKONT_TXT}</td>`;
+                    html += `<td>${row.Q1PLN.toLocaleString()}</td>`;
+                    html += `<td>${row.Q1ACT.toLocaleString()}</td>`;
+                    html += `<td>${row.Q1BUD.toLocaleString()}</td>`;
+                    html += `<td>${row.Q2PLN.toLocaleString()}</td>`;
+                    html += `<td>${row.Q2ACT.toLocaleString()}</td>`;
+                    html += `<td>${row.Q2BUD.toLocaleString()}</td>`;
+                    html += `<td>${row.Q3PLN.toLocaleString()}</td>`;
+                    html += `<td>${row.Q3ACT.toLocaleString()}</td>`;
+                    html += `<td>${row.Q3BUD.toLocaleString()}</td>`;
+                    html += `<td>${row.Q4PLN.toLocaleString()}</td>`;
+                    html += `<td>${row.Q4ACT.toLocaleString()}</td>`;
+                    html += `<td>${row.Q4BUD.toLocaleString()}</td>`;
+                    html += '</tr>';
+                });
+                
+                html += '</tbody></table>';
+            });
+            
+            document.getElementById('content').innerHTML = html;
+        }
+        
+        // 페이지 로드 시 렌더링
+        document.addEventListener('DOMContentLoaded', renderDashboard);
+    </script>
 </body>
 </html>
