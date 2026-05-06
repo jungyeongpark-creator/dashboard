@@ -324,13 +324,12 @@ function render() {
 
   /* 서브타이틀 */
   document.getElementById('subtitle').textContent =
-    `${DATA.fiscal_year} 회계연도 · ${center.cost_center_name} · 수집: ${DATA.collected_at}`;
+    DATA.fiscal_year + ' 회계연도 · ' + center.cost_center_name + ' · 수집: ' + DATA.collected_at;
 
   /* 탭 */
   document.getElementById('tab-nav').innerHTML = DATA.centers.map(c => {
     const label = c.cost_center === '14000' ? '제조' : '판관';
-    return `<button class="tab-btn ${c.cost_center === currentCenter ? 'active' : ''}"
-      onclick="switchTab('${c.cost_center}')">${label} (${c.cost_center})</button>`;
+    return '<button class="tab-btn ' + (c.cost_center === currentCenter ? 'active' : '') + '" onclick="switchTab(\'' + c.cost_center + '\')">' + label + ' (' + c.cost_center + ')</button>';
   }).join('');
 
   /* KPI */
@@ -339,34 +338,14 @@ function render() {
   const ratePct = rate.toFixed(1);
   const barW = Math.min(rate, 100).toFixed(1);
 
-  document.getElementById('kpi-row').innerHTML = `
-    <div class="kpi-card">
-      <div class="kpi-label">총예산(연간)</div>
-      <div class="kpi-value kpi-blue">${fmtCompact(plan)}</div>
-      <div class="kpi-unit">원</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">집행 실적</div>
-      <div class="kpi-value kpi-orange">${fmtCompact(actual)}</div>
-      <div class="kpi-unit">원</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">잔여 예산</div>
-      <div class="kpi-value kpi-green">${fmtCompact(remain)}</div>
-      <div class="kpi-unit">원</div>
-    </div>
-    <div class="kpi-card">
-      <div class="kpi-label">집행률</div>
-      <div class="kpi-value kpi-dark">${ratePct}</div>
-      <div class="kpi-unit">%</div>
-      <div class="kpi-progress">
-        <div class="kpi-progress-fill" style="width:${barW}%"></div>
-      </div>
-    </div>
-  `;
+  document.getElementById('kpi-row').innerHTML =
+    '<div class="kpi-card"><div class="kpi-label">총예산(연간)</div><div class="kpi-value kpi-blue">' + fmtCompact(plan) + '</div><div class="kpi-unit">원</div></div>' +
+    '<div class="kpi-card"><div class="kpi-label">집행 실적</div><div class="kpi-value kpi-orange">' + fmtCompact(actual) + '</div><div class="kpi-unit">원</div></div>' +
+    '<div class="kpi-card"><div class="kpi-label">잔여 예산</div><div class="kpi-value kpi-green">' + fmtCompact(remain) + '</div><div class="kpi-unit">원</div></div>' +
+    '<div class="kpi-card"><div class="kpi-label">집행률</div><div class="kpi-value kpi-dark">' + ratePct + '</div><div class="kpi-unit">%</div><div class="kpi-progress"><div class="kpi-progress-fill" style="width:' + barW + '%"></div></div></div>';
 
   /* 계정수 */
-  document.getElementById('account-count').textContent = `${center.data.length}개 계정과목`;
+  document.getElementById('account-count').textContent = center.data.length + '개 계정과목';
 
   /* 테이블 */
   renderTable(center.data);
@@ -388,23 +367,7 @@ function renderTable(rows) {
     const fillClass = ratePct >= 90 ? 'fill-red' : ratePct >= 50 ? 'fill-yellow' : 'fill-green';
     const barW = Math.min(ratePct, 100);
 
-    return `<tr>
-      <td>
-        <div class="acct-name">${row.HKONT_TXT}</div>
-        <div class="acct-code">${row.HKONT}</div>
-      </td>
-      <td class="td-right val-plan">${fmt(plan)}</td>
-      <td class="td-right val-actual">${fmt(actual)}</td>
-      <td class="td-right val-remain">${fmt(remain)}</td>
-      <td class="td-right">
-        <div class="rate-cell">
-          <div class="rate-bar">
-            <div class="rate-fill ${fillClass}" style="width:${barW}%"></div>
-          </div>
-          <span class="rate-text">${ratePct}%</span>
-        </div>
-      </td>
-    </tr>`;
+    return '<tr><td><div class="acct-name">' + row.HKONT_TXT + '</div><div class="acct-code">' + row.HKONT + '</div></td><td class="td-right val-plan">' + fmt(plan) + '</td><td class="td-right val-actual">' + fmt(actual) + '</td><td class="td-right val-remain">' + fmt(remain) + '</td><td class="td-right"><div class="rate-cell"><div class="rate-bar"><div class="rate-fill ' + fillClass + '" style="width:' + barW + '%"></div></div><span class="rate-text">' + ratePct + '%</span></div></td></tr>';
   }).join('');
 }
 
