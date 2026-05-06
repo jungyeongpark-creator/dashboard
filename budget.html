@@ -1,293 +1,429 @@
 <!DOCTYPE html>
 <html lang="ko">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Smart기술팀 예산 대시보드</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            min-height: 100vh;
-            padding: 20px;
-        }
-        .container {
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-        header {
-            background: white;
-            padding: 30px;
-            border-radius: 10px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-            margin-bottom: 20px;
-        }
-        header h1 {
-            color: #333;
-            font-size: 28px;
-            margin-bottom: 10px;
-        }
-        header p {
-            color: #666;
-            font-size: 14px;
-        }
-        .grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
-            margin-bottom: 20px;
-        }
-        .card {
-            background: white;
-            border-radius: 10px;
-            padding: 20px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        .card h2 {
-            color: #333;
-            font-size: 16px;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #667eea;
-            padding-bottom: 10px;
-        }
-        .stat {
-            margin-bottom: 12px;
-        }
-        .stat-label {
-            color: #666;
-            font-size: 13px;
-            margin-bottom: 3px;
-        }
-        .stat-value {
-            color: #333;
-            font-size: 18px;
-            font-weight: bold;
-        }
-        .stat-currency {
-            color: #666;
-            font-size: 12px;
-            margin-left: 5px;
-        }
-        .progress-bar {
-            background: #eee;
-            height: 8px;
-            border-radius: 4px;
-            overflow: hidden;
-            margin-top: 5px;
-        }
-        .progress-fill {
-            height: 100%;
-            background: linear-gradient(90deg, #667eea 0%, #764ba2 100%);
-            transition: width 0.3s ease;
-        }
-        .percent {
-            color: #999;
-            font-size: 12px;
-            margin-top: 3px;
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            background: white;
-            border-radius: 10px;
-            overflow: hidden;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-        }
-        th {
-            background: #667eea;
-            color: white;
-            padding: 12px;
-            text-align: left;
-            font-weight: 600;
-            font-size: 13px;
-        }
-        td {
-            padding: 12px;
-            border-bottom: 1px solid #eee;
-            font-size: 13px;
-        }
-        tr:hover {
-            background: #f9f9f9;
-        }
-        .text-right {
-            text-align: right;
-        }
-        .badge {
-            display: inline-block;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-size: 12px;
-            font-weight: bold;
-        }
-        .badge-manufacturing {
-            background: #e3f2fd;
-            color: #1976d2;
-        }
-        .badge-admin {
-            background: #f3e5f5;
-            color: #7b1fa2;
-        }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache">
+  <title>부서예산 대시보드: SMART 기술팀</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      background: #f0f2f5;
+      color: #1a1a2e;
+    }
+
+    /* ── 페이지 헤더 ── */
+    .page-header {
+      background: #fff;
+      padding: 18px 24px 14px;
+      border-bottom: 1px solid #e8eaed;
+    }
+    .page-title {
+      font-size: 20px;
+      font-weight: 700;
+      color: #1a1a2e;
+      letter-spacing: -0.3px;
+    }
+    .page-subtitle {
+      font-size: 12px;
+      color: #9aa0ab;
+      margin-top: 5px;
+    }
+
+    /* ── 탭 내비게이션 ── */
+    .tab-nav {
+      background: #1e2233;
+      display: flex;
+      padding: 0 20px;
+      gap: 4px;
+    }
+    .tab-btn {
+      padding: 13px 18px;
+      font-size: 13px;
+      font-weight: 600;
+      color: #9aa0ab;
+      background: none;
+      border: none;
+      cursor: pointer;
+      border-radius: 6px 6px 0 0;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
+    .tab-btn:hover { color: #fff; }
+    .tab-btn.active {
+      background: #2563eb;
+      color: #fff;
+    }
+
+    /* ── KPI 카드 ── */
+    .kpi-row {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 14px;
+      padding: 18px 24px;
+    }
+    .kpi-card {
+      background: #fff;
+      border-radius: 10px;
+      padding: 18px 20px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    .kpi-label {
+      font-size: 11px;
+      color: #9aa0ab;
+      font-weight: 500;
+      margin-bottom: 8px;
+      text-transform: uppercase;
+      letter-spacing: 0.3px;
+    }
+    .kpi-value {
+      font-size: 30px;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .kpi-unit {
+      font-size: 11px;
+      color: #9aa0ab;
+      margin-top: 5px;
+    }
+    .kpi-blue   { color: #2563eb; }
+    .kpi-orange { color: #f59e0b; }
+    .kpi-green  { color: #10b981; }
+    .kpi-dark   { color: #1a1a2e; }
+
+    .kpi-progress {
+      background: #e5e7eb;
+      height: 6px;
+      border-radius: 3px;
+      margin-top: 10px;
+      overflow: hidden;
+    }
+    .kpi-progress-fill {
+      height: 100%;
+      background: #2563eb;
+      border-radius: 3px;
+      transition: width 0.4s ease;
+    }
+
+    /* ── 테이블 섹션 ── */
+    .table-section {
+      padding: 0 24px 28px;
+    }
+    .table-toolbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 10px;
+    }
+    .filter-btns { display: flex; gap: 6px; }
+    .filter-btn {
+      padding: 6px 16px;
+      border-radius: 20px;
+      border: 1px solid #dde1e7;
+      background: #fff;
+      font-size: 12px;
+      font-weight: 600;
+      color: #6b7280;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .filter-btn:hover { border-color: #2563eb; color: #2563eb; }
+    .filter-btn.active {
+      background: #2563eb;
+      color: #fff;
+      border-color: #2563eb;
+    }
+    .account-count {
+      font-size: 12px;
+      color: #9aa0ab;
+    }
+
+    /* ── 테이블 ── */
+    .table-wrap {
+      background: #fff;
+      border-radius: 10px;
+      overflow: auto;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      min-width: 600px;
+    }
+    thead th {
+      background: #f8f9fb;
+      padding: 11px 16px;
+      text-align: left;
+      font-size: 11px;
+      font-weight: 700;
+      color: #6b7280;
+      border-bottom: 1px solid #eaecef;
+      letter-spacing: 0.3px;
+      text-transform: uppercase;
+      white-space: nowrap;
+    }
+    thead th.text-right { text-align: right; }
+    tbody tr {
+      border-bottom: 1px solid #f3f4f6;
+      transition: background 0.1s;
+    }
+    tbody tr:last-child { border-bottom: none; }
+    tbody tr:hover { background: #fafbfc; }
+    tbody td {
+      padding: 13px 16px;
+      font-size: 13px;
+      vertical-align: middle;
+    }
+    .td-right { text-align: right; }
+
+    .acct-name { font-weight: 600; color: #1a1a2e; font-size: 13px; }
+    .acct-code { font-size: 11px; color: #b0b8c4; margin-top: 2px; }
+
+    .val-plan   { color: #6b7280; font-size: 13px; }
+    .val-actual { color: #f59e0b; font-size: 13px; font-weight: 600; }
+    .val-remain { color: #10b981; font-size: 13px; font-weight: 600; }
+
+    .rate-bar {
+      background: #e5e7eb;
+      height: 4px;
+      border-radius: 2px;
+      margin-bottom: 4px;
+      overflow: hidden;
+      width: 80px;
+      display: inline-block;
+      vertical-align: middle;
+    }
+    .rate-fill { height: 100%; border-radius: 2px; }
+    .fill-green  { background: #10b981; }
+    .fill-yellow { background: #f59e0b; }
+    .fill-red    { background: #ef4444; }
+    .rate-text { font-size: 12px; color: #6b7280; font-weight: 600; }
+    .rate-cell { display: flex; align-items: center; gap: 8px; justify-content: flex-end; }
+
+    /* ── 로딩 / 에러 ── */
+    .loading-msg {
+      text-align: center;
+      padding: 40px;
+      color: #9aa0ab;
+      font-size: 14px;
+    }
+
+    /* ── 반응형 ── */
+    @media (max-width: 900px) {
+      .kpi-row { grid-template-columns: repeat(2, 1fr); }
+    }
+    @media (max-width: 600px) {
+      .kpi-row { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 14px 14px; }
+      .table-section { padding: 0 14px 20px; }
+      .page-header { padding: 14px 14px 10px; }
+      .tab-nav { padding: 0 10px; }
+      .tab-btn { padding: 11px 12px; font-size: 12px; }
+      .kpi-value { font-size: 24px; }
+    }
+  </style>
 </head>
 <body>
-    <div class="container">
-        <header>
-            <h1>Smart기술팀 예산 대시보드</h1>
-            <p>수집일시: <span id="collected-at"></span></p>
-        </header>
 
-        <div class="grid" id="summary-cards">
-            <!-- Summary cards will be generated here -->
-        </div>
+  <div class="page-header">
+    <div class="page-title">부서예산 대시보드: SMART 기술팀</div>
+    <div class="page-subtitle" id="subtitle">데이터 로딩 중...</div>
+  </div>
 
-        <div class="card">
-            <h2>비용 센터별 상세 현황</h2>
-            <table id="budget-table">
-                <thead>
-                    <tr>
-                        <th>비용센터</th>
-                        <th>계정과목</th>
-                        <th>Q1 실적 / 예산</th>
-                        <th>Q2 실적 / 예산</th>
-                        <th>Q3 실적 / 예산</th>
-                        <th>Q4 실적 / 예산</th>
-                        <th>전체 실적률</th>
-                    </tr>
-                </thead>
-                <tbody id="table-body">
-                    <!-- Table rows will be generated here -->
-                </tbody>
-            </table>
-        </div>
+  <div class="tab-nav" id="tab-nav">
+    <div class="loading-msg" style="padding:12px;color:#9aa0ab;font-size:13px;">로딩 중...</div>
+  </div>
+
+  <div class="kpi-row" id="kpi-row">
+    <div class="kpi-card"><div class="loading-msg">로딩 중...</div></div>
+    <div class="kpi-card"><div class="loading-msg"></div></div>
+    <div class="kpi-card"><div class="loading-msg"></div></div>
+    <div class="kpi-card"><div class="loading-msg"></div></div>
+  </div>
+
+  <div class="table-section">
+    <div class="table-toolbar">
+      <div class="filter-btns" id="filter-btns">
+        <button class="filter-btn active" data-q="all">전체</button>
+        <button class="filter-btn" data-q="Q1">Q1</button>
+        <button class="filter-btn" data-q="Q2">Q2</button>
+        <button class="filter-btn" data-q="Q3">Q3</button>
+        <button class="filter-btn" data-q="Q4">Q4</button>
+      </div>
+      <div class="account-count" id="account-count"></div>
     </div>
+    <div class="table-wrap">
+      <table id="budget-table">
+        <thead>
+          <tr>
+            <th>계정과목</th>
+            <th class="text-right">계획</th>
+            <th class="text-right">실적</th>
+            <th class="text-right">잔여</th>
+            <th class="text-right">집행률</th>
+          </tr>
+        </thead>
+        <tbody id="table-body">
+          <tr><td colspan="5" class="loading-msg">데이터 로딩 중...</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 
-    <script>
-// ==BUDGET_DATA_START==
-const BUDGET_DATA = {"collected_at": "2026-05-06", "fiscal_year": "2026", "centers": [{"cost_center": "14000", "cost_center_name": "Smart기술팀(제조)", "row_count": 11, "data": [{"GJAHR": "2026", "HKONT": "5300111", "HKONT_TXT": "복리후생비-휴무일경비", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 672000, "Q1ACT": 520000, "Q1BUD": 152000, "Q2PLN": 992000, "Q2ACT": 200000, "Q2BUD": 792000, "Q3PLN": 864000, "Q3ACT": 0, "Q3BUD": 864000, "Q4PLN": 672000, "Q4ACT": 0, "Q4BUD": 672000}, {"GJAHR": "2026", "HKONT": "5300114", "HKONT_TXT": "복리후생비-업무식대", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 1680000, "Q1ACT": 1433013, "Q1BUD": 246987, "Q2PLN": 1680000, "Q2ACT": 451550, "Q2BUD": 1228450, "Q3PLN": 1680000, "Q3ACT": 0, "Q3BUD": 1680000, "Q4PLN": 1680000, "Q4ACT": 0, "Q4BUD": 1680000}, {"GJAHR": "2026", "HKONT": "5300116", "HKONT_TXT": "복리후생비-후생비", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 1680000, "Q1ACT": 1435802, "Q1BUD": 244198, "Q2PLN": 1680000, "Q2ACT": 503248, "Q2BUD": 1176752, "Q3PLN": 1680000, "Q3ACT": 0, "Q3BUD": 1680000, "Q4PLN": 1680000, "Q4ACT": 0, "Q4BUD": 1680000}, {"GJAHR": "2026", "HKONT": "5300190", "HKONT_TXT": "복리후생비-기타", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 3450000, "Q1ACT": 3410680, "Q1BUD": 39320, "Q2PLN": 3450000, "Q2ACT": 643195, "Q2BUD": 2806805, "Q3PLN": 3450000, "Q3ACT": 0, "Q3BUD": 3450000, "Q4PLN": 3450000, "Q4ACT": 0, "Q4BUD": 3450000}, {"GJAHR": "2026", "HKONT": "5300201", "HKONT_TXT": "여비교통비-시내교통", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 150000, "Q1ACT": 9100, "Q1BUD": 140900, "Q2PLN": 150000, "Q2ACT": 0, "Q2BUD": 150000, "Q3PLN": 150000, "Q3ACT": 0, "Q3BUD": 150000, "Q4PLN": 150000, "Q4ACT": 0, "Q4BUD": 150000}, {"GJAHR": "2026", "HKONT": "5300202", "HKONT_TXT": "여비교통비-국내출장", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 2100000, "Q1ACT": 1833371, "Q1BUD": 266629, "Q2PLN": 1600000, "Q2ACT": 1408494, "Q2BUD": 191506, "Q3PLN": 1600000, "Q3ACT": 0, "Q3BUD": 1600000, "Q4PLN": 1600000, "Q4ACT": 0, "Q4BUD": 1600000}, {"GJAHR": "2026", "HKONT": "5300203", "HKONT_TXT": "여비교통비-해외출장", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 5000000, "Q1ACT": 0, "Q1BUD": 5000000, "Q2PLN": 5000000, "Q2ACT": 0, "Q2BUD": 5000000, "Q3PLN": 5000000, "Q3ACT": 0, "Q3BUD": 5000000, "Q4PLN": 5000000, "Q4ACT": 0, "Q4BUD": 5000000}, {"GJAHR": "2026", "HKONT": "5301290", "HKONT_TXT": "지급수수료-기타수수료", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 600000, "Q1ACT": 337482, "Q1BUD": 262518, "Q2PLN": 600000, "Q2ACT": 311530, "Q2BUD": 288470, "Q3PLN": 600000, "Q3ACT": 0, "Q3BUD": 600000, "Q4PLN": 600000, "Q4ACT": 0, "Q4BUD": 600000}, {"GJAHR": "2026", "HKONT": "5302106", "HKONT_TXT": "수선비-일반", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 120000000, "Q1ACT": 119965670, "Q1BUD": 34330, "Q2PLN": 180000000, "Q2ACT": 59041600, "Q2BUD": 120958400, "Q3PLN": 210000000, "Q3ACT": 0, "Q3BUD": 210000000, "Q4PLN": 120000000, "Q4ACT": 0, "Q4BUD": 120000000}, {"GJAHR": "2026", "HKONT": "5302108", "HKONT_TXT": "수선비-안전보건개선비", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 18500000, "Q1ACT": 18500000, "Q1BUD": 0, "Q2PLN": 35000000, "Q2ACT": 0, "Q2BUD": 35000000, "Q3PLN": 15000000, "Q3ACT": 0, "Q3BUD": 15000000, "Q4PLN": 6500000, "Q4ACT": 0, "Q4BUD": 6500000}, {"GJAHR": "2026", "HKONT": "5302790", "HKONT_TXT": "회의비-기타", "KOSTL": "14000", "KOSTL_TXT": "Smart기술팀(제조)", "WAERS": "KRW", "Q1PLN": 500000, "Q1ACT": 56546, "Q1BUD": 443454, "Q2PLN": 500000, "Q2ACT": 434548, "Q2BUD": 65452, "Q3PLN": 500000, "Q3ACT": 0, "Q3BUD": 500000, "Q4PLN": 500000, "Q4ACT": 0, "Q4BUD": 500000}]}, {"cost_center": "70003", "cost_center_name": "Smart기술팀(판관)", "row_count": 1, "data": [{"GJAHR": "2026", "HKONT": "5302907", "HKONT_TXT": "경상기술개발비-연구비", "KOSTL": "70003", "KOSTL_TXT": "Smart기술팀(판관)", "WAERS": "KRW", "Q1PLN": 30000000, "Q1ACT": 14088810, "Q1BUD": 15911190, "Q2PLN": 30000000, "Q2ACT": 5594800, "Q2BUD": 24405200, "Q3PLN": 30000000, "Q3ACT": 0, "Q3BUD": 30000000, "Q4PLN": 30000000, "Q4ACT": 0, "Q4BUD": 30000000}]}]};
-// ==BUDGET_DATA_END==
+<script>
+/* ===== 상태 ===== */
+let DATA = null;
+let currentCenter = null;
+let currentFilter = 'all';
 
-        function formatNumber(num) {
-            if (num === undefined || num === null) return '0';
-            return num.toLocaleString('ko-KR');
-        }
+/* ===== 데이터 로드 (타임스탬프 쿼리로 캐시 무효화) ===== */
+fetch('budget_data.json?v=' + Date.now())
+  .then(r => {
+    if (!r.ok) throw new Error('HTTP ' + r.status);
+    return r.json();
+  })
+  .then(data => {
+    DATA = data;
+    currentCenter = data.centers[0].cost_center;
+    render();
+  })
+  .catch(err => {
+    document.getElementById('subtitle').textContent = '⚠ 데이터 로드 실패: ' + err.message;
+    document.getElementById('table-body').innerHTML =
+      '<tr><td colspan="5" class="loading-msg">budget_data.json 파일을 찾을 수 없습니다.</td></tr>';
+  });
 
-        function renderDashboard() {
-            // Header
-            document.getElementById('collected-at').textContent = BUDGET_DATA.collected_at;
+/* ===== 숫자 포맷 ===== */
+function fmt(n) { return (n || 0).toLocaleString('ko-KR'); }
+function fmtCompact(n) {
+  if (!n && n !== 0) return '0';
+  const abs = Math.abs(n);
+  if (abs >= 1e8) return (n / 1e8).toFixed(1) + '억';
+  if (abs >= 1e4) return Math.round(n / 1e4) + '만';
+  return n.toLocaleString('ko-KR');
+}
 
-            // Calculate totals
-            let totalBudget = 0;
-            let totalActual = 0;
-            const centerSummaries = {};
+/* ===== 분기 합산 ===== */
+function sumRows(rows, filter) {
+  const qs = filter === 'all' ? ['Q1','Q2','Q3','Q4'] : [filter];
+  let plan = 0, actual = 0, remain = 0;
+  rows.forEach(r => qs.forEach(q => {
+    plan   += r[q + 'PLN'] || 0;
+    actual += r[q + 'ACT'] || 0;
+    remain += r[q + 'BUD'] || 0;
+  }));
+  return { plan, actual, remain };
+}
 
-            BUDGET_DATA.centers.forEach(center => {
-                const centerName = center.cost_center;
-                let centerBudget = 0;
-                let centerActual = 0;
+/* ===== 전체 렌더 ===== */
+function render() {
+  if (!DATA) return;
+  const center = DATA.centers.find(c => c.cost_center === currentCenter);
+  if (!center) return;
 
-                center.data.forEach(row => {
-                    const budget = (row.Q1BUD || 0) + (row.Q2BUD || 0) + (row.Q3BUD || 0) + (row.Q4BUD || 0);
-                    const actual = (row.Q1ACT || 0) + (row.Q2ACT || 0) + (row.Q3ACT || 0) + (row.Q4ACT || 0);
-                    centerBudget += budget;
-                    centerActual += actual;
-                });
+  /* 서브타이틀 */
+  document.getElementById('subtitle').textContent =
+    `${DATA.fiscal_year} 회계연도 · ${center.cost_center_name} · 수집: ${DATA.collected_at}`;
 
-                centerSummaries[centerName] = {
-                    name: center.cost_center_name,
-                    budget: centerBudget,
-                    actual: centerActual
-                };
-                totalBudget += centerBudget;
-                totalActual += centerActual;
-            });
+  /* 탭 */
+  document.getElementById('tab-nav').innerHTML = DATA.centers.map(c => {
+    const label = c.cost_center === '14000' ? '제조' : '판관';
+    return `<button class="tab-btn ${c.cost_center === currentCenter ? 'active' : ''}"
+      onclick="switchTab('${c.cost_center}')">${label} (${c.cost_center})</button>`;
+  }).join('');
 
-            // Render summary cards
-            const summaryContainer = document.getElementById('summary-cards');
-            summaryContainer.innerHTML = '';
+  /* KPI */
+  const { plan, actual, remain } = sumRows(center.data, currentFilter);
+  const rate = plan > 0 ? (actual / plan * 100) : 0;
+  const ratePct = rate.toFixed(1);
+  const barW = Math.min(rate, 100).toFixed(1);
 
-            // Total card
-            const totalCard = document.createElement('div');
-            totalCard.className = 'card';
-            const totalPercent = totalBudget > 0 ? Math.round((totalActual / totalBudget) * 100) : 0;
-            totalCard.innerHTML = `
-                <h2>전체 합산</h2>
-                <div class="stat">
-                    <div class="stat-label">총 예산</div>
-                    <div class="stat-value">${formatNumber(totalBudget)}<span class="stat-currency">원</span></div>
-                </div>
-                <div class="stat">
-                    <div class="stat-label">현황 실적</div>
-                    <div class="stat-value">${formatNumber(totalActual)}<span class="stat-currency">원</span></div>
-                </div>
-                <div class="stat">
-                    <div class="stat-label">집행률</div>
-                    <div class="progress-bar">
-                        <div class="progress-fill" style="width: ${totalPercent}%"></div>
-                    </div>
-                    <div class="percent">${totalPercent}%</div>
-                </div>
-            `;
-            summaryContainer.appendChild(totalCard);
+  document.getElementById('kpi-row').innerHTML = `
+    <div class="kpi-card">
+      <div class="kpi-label">총예산(연간)</div>
+      <div class="kpi-value kpi-blue">${fmtCompact(plan)}</div>
+      <div class="kpi-unit">원</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">집행 실적</div>
+      <div class="kpi-value kpi-orange">${fmtCompact(actual)}</div>
+      <div class="kpi-unit">원</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">잔여 예산</div>
+      <div class="kpi-value kpi-green">${fmtCompact(remain)}</div>
+      <div class="kpi-unit">원</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">집행률</div>
+      <div class="kpi-value kpi-dark">${ratePct}</div>
+      <div class="kpi-unit">%</div>
+      <div class="kpi-progress">
+        <div class="kpi-progress-fill" style="width:${barW}%"></div>
+      </div>
+    </div>
+  `;
 
-            // Center cards
-            Object.entries(centerSummaries).forEach(([centerId, center]) => {
-                const card = document.createElement('div');
-                card.className = 'card';
-                const percent = center.budget > 0 ? Math.round((center.actual / center.budget) * 100) : 0;
-                const badge = centerId === '14000' ? 'badge-manufacturing' : 'badge-admin';
-                card.innerHTML = `
-                    <h2><span class="badge ${badge}">${centerId}</span> ${center.name}</h2>
-                    <div class="stat">
-                        <div class="stat-label">총 예산</div>
-                        <div class="stat-value">${formatNumber(center.budget)}<span class="stat-currency">원</span></div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">현황 실적</div>
-                        <div class="stat-value">${formatNumber(center.actual)}<span class="stat-currency">원</span></div>
-                    </div>
-                    <div class="stat">
-                        <div class="stat-label">집행률</div>
-                        <div class="progress-bar">
-                            <div class="progress-fill" style="width: ${percent}%"></div>
-                        </div>
-                        <div class="percent">${percent}%</div>
-                    </div>
-                `;
-                summaryContainer.appendChild(card);
-            });
+  /* 계정수 */
+  document.getElementById('account-count').textContent = `${center.data.length}개 계정과목`;
 
-            // Render table
-            const tbody = document.getElementById('table-body');
-            tbody.innerHTML = '';
+  /* 테이블 */
+  renderTable(center.data);
+}
 
-            BUDGET_DATA.centers.forEach(center => {
-                center.data.forEach(row => {
-                    const budget = (row.Q1BUD || 0) + (row.Q2BUD || 0) + (row.Q3BUD || 0) + (row.Q4BUD || 0);
-                    const actual = (row.Q1ACT || 0) + (row.Q2ACT || 0) + (row.Q3ACT || 0) + (row.Q4ACT || 0);
-                    const percent = budget > 0 ? Math.round((actual / budget) * 100) : 0;
+/* ===== 테이블 렌더 ===== */
+function renderTable(rows) {
+  const qs = currentFilter === 'all' ? ['Q1','Q2','Q3','Q4'] : [currentFilter];
+  const tbody = document.getElementById('table-body');
 
-                    const tr = document.createElement('tr');
-                    tr.innerHTML = `
-                        <td><strong>${row.KOSTL}</strong></td>
-                        <td>${row.HKONT_TXT}</td>
-                        <td class="text-right">${formatNumber(row.Q1ACT || 0)} / ${formatNumber(row.Q1BUD || 0)}</td>
-                        <td class="text-right">${formatNumber(row.Q2ACT || 0)} / ${formatNumber(row.Q2BUD || 0)}</td>
-                        <td class="text-right">${formatNumber(row.Q3ACT || 0)} / ${formatNumber(row.Q3BUD || 0)}</td>
-                        <td class="text-right">${formatNumber(row.Q4ACT || 0)} / ${formatNumber(row.Q4BUD || 0)}</td>
-                        <td class="text-right"><strong>${percent}%</strong></td>
-                    `;
-                    tbody.appendChild(tr);
-                });
-            });
-        }
+  tbody.innerHTML = rows.map(row => {
+    let plan = 0, actual = 0, remain = 0;
+    qs.forEach(q => {
+      plan   += row[q + 'PLN'] || 0;
+      actual += row[q + 'ACT'] || 0;
+      remain += row[q + 'BUD'] || 0;
+    });
+    const ratePct = plan > 0 ? Math.round(actual / plan * 100) : 0;
+    const fillClass = ratePct >= 90 ? 'fill-red' : ratePct >= 50 ? 'fill-yellow' : 'fill-green';
+    const barW = Math.min(ratePct, 100);
 
-        // Initialize dashboard on page load
-        document.addEventListener('DOMContentLoaded', renderDashboard);
-    </script>
+    return `<tr>
+      <td>
+        <div class="acct-name">${row.HKONT_TXT}</div>
+        <div class="acct-code">${row.HKONT}</div>
+      </td>
+      <td class="td-right val-plan">${fmt(plan)}</td>
+      <td class="td-right val-actual">${fmt(actual)}</td>
+      <td class="td-right val-remain">${fmt(remain)}</td>
+      <td class="td-right">
+        <div class="rate-cell">
+          <div class="rate-bar">
+            <div class="rate-fill ${fillClass}" style="width:${barW}%"></div>
+          </div>
+          <span class="rate-text">${ratePct}%</span>
+        </div>
+      </td>
+    </tr>`;
+  }).join('');
+}
+
+/* ===== 탭 전환 ===== */
+function switchTab(centerId) {
+  currentCenter = centerId;
+  render();
+}
+
+/* ===== 분기 필터 ===== */
+document.getElementById('filter-btns').addEventListener('click', e => {
+  const btn = e.target.closest('.filter-btn');
+  if (!btn) return;
+  document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  currentFilter = btn.dataset.q;
+  if (DATA) render();
+});
+</script>
+
 </body>
 </html>
