@@ -10,29 +10,74 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="default">
-  <meta name="apple-mobile-web-app-title" content="예산조회">
-  <title>부서예산 대시보드: SMART 기술팀</title>
+  <meta name="apple-mobile-web-app-title" content="ìì°ì¡°í">
+  <title>ë¶ììì° ëìë³´ë: SMART ê¸°ì í</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #1a1a2e; }
-    .page-header { background: #fff; padding: 14px 20px 12px; border-bottom: 1px solid #e8eaed; display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+
+    /* ââ íì´ì§ í¤ë ââ */
+    .page-header {
+      background: #fff;
+      padding: 14px 20px 12px;
+      border-bottom: 1px solid #e8eaed;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+    }
     .header-left { flex: 1; min-width: 0; }
     .page-title { font-size: 18px; font-weight: 700; color: #1a1a2e; letter-spacing: -0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
     .page-subtitle { font-size: 11px; color: #9aa0ab; margin-top: 4px; }
+
+    /* ââ í¤ë ì°ì¸¡ ë²í¼ ìì­ ââ */
     .header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
-    .ea-link { font-size: 11px; font-weight: 600; color: #2563eb; text-decoration: none; padding: 5px 10px; border: 1px solid #dbeafe; border-radius: 6px; background: #eff6ff; white-space: nowrap; transition: all 0.15s; }
+
+    /* ââ E-Accounting ë§í¬ ââ */
+    .ea-link {
+      font-size: 11px;
+      font-weight: 600;
+      color: #2563eb;
+      text-decoration: none;
+      padding: 5px 10px;
+      border: 1px solid #dbeafe;
+      border-radius: 6px;
+      background: #eff6ff;
+      white-space: nowrap;
+      transition: all 0.15s;
+    }
     .ea-link:hover { background: #dbeafe; }
-    .refresh-btn { display: flex; align-items: center; gap: 5px; padding: 6px 12px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+
+    /* ââ ìë¡ê³ ì¹¨ ë²í¼ ââ */
+    .refresh-btn {
+      display: flex;
+      align-items: center;
+      gap: 5px;
+      padding: 6px 12px;
+      background: #2563eb;
+      color: #fff;
+      border: none;
+      border-radius: 8px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.15s;
+      white-space: nowrap;
+    }
     .refresh-btn:hover { background: #1d4ed8; }
     .refresh-btn:active { transform: scale(0.97); }
     .refresh-btn:disabled { background: #93c5fd; cursor: not-allowed; }
     .refresh-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
     @keyframes spin { to { transform: rotate(360deg); } }
     .refresh-btn.loading svg { animation: spin 0.8s linear infinite; }
+
+    /* ââ í­ ë´ë¹ê²ì´ì ââ */
     .tab-nav { background: #1e2233; display: flex; padding: 0 20px; gap: 4px; }
     .tab-btn { padding: 12px 18px; font-size: 13px; font-weight: 600; color: #9aa0ab; background: none; border: none; cursor: pointer; border-radius: 6px 6px 0 0; transition: all 0.15s; white-space: nowrap; }
     .tab-btn:hover { color: #fff; }
     .tab-btn.active { background: #2563eb; color: #fff; }
+
+    /* ââ KPI ì¹´ë ââ */
     .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 18px 24px; }
     .kpi-card { background: #fff; border-radius: 10px; padding: 18px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
     .kpi-label { font-size: 11px; color: #9aa0ab; font-weight: 500; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.3px; }
@@ -41,6 +86,8 @@
     .kpi-blue { color: #2563eb; } .kpi-orange { color: #f59e0b; } .kpi-green { color: #10b981; } .kpi-dark { color: #1a1a2e; }
     .kpi-progress { background: #e5e7eb; height: 6px; border-radius: 3px; margin-top: 10px; overflow: hidden; }
     .kpi-progress-fill { height: 100%; background: #2563eb; border-radius: 3px; transition: width 0.4s ease; }
+
+    /* ââ ì¹´ë ëª©ë¡ ââ */
     .cards-section { padding: 0 16px 28px; }
     .cards-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .filter-btns { display: flex; gap: 6px; flex-wrap: wrap; }
@@ -64,14 +111,18 @@
     .acct-progress { background: #e5e7eb; height: 5px; border-radius: 3px; overflow: hidden; }
     .acct-progress-fill { height: 100%; border-radius: 3px; }
     .fill-green { background: #10b981; } .fill-yellow { background: #f59e0b; } .fill-red { background: #ef4444; }
+
+    /* ââ ë¡ë© / ìë¬ ââ */
     .loading-msg { text-align: center; padding: 40px; color: #9aa0ab; font-size: 14px; }
     .error-msg { text-align: center; padding: 30px 20px; color: #ef4444; font-size: 13px; line-height: 1.6; }
     .retry-btn { margin-top: 12px; display: inline-block; padding: 8px 20px; background: #2563eb; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+    /* ââ ë°ìí ââ */
     @media (max-width: 900px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 600px) {
       .page-header { padding: 12px 14px 10px; }
       .page-title { font-size: 15px; }
-      .ea-link { display: none; }
+      .ea-link { font-size: 10px; padding: 4px 8px; }
       .refresh-btn { padding: 6px 10px; font-size: 11px; }
       .kpi-row { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 14px 14px; }
       .cards-section { padding: 0 14px 20px; }
@@ -82,28 +133,37 @@
   </style>
 </head>
 <body>
+
 <div class="page-header">
   <div class="header-left">
-    <div class="page-title">부서예산 대시보드: SMART 기술팀</div>
-    <div class="page-subtitle" id="subtitle">데이터 불러오는 중...</div>
+    <div class="page-title">ë¶ììì° ëìë³´ë: SMART ê¸°ì í</div>
+    <div class="page-subtitle" id="subtitle">ë°ì´í° ë¶ë¬ì¤ë ì¤...</div>
   </div>
   <div class="header-actions">
     <a class="ea-link" href="https://ea.seahsteel.co.kr/unidocu/view.do#UD_0601_070" target="_blank">E-Accounting</a>
     <button class="refresh-btn" id="refresh-btn" onclick="refreshData()">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="23 4 23 10 17 10"></polyline><path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path></svg>
-      최신화
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="23 4 23 10 17 10"></polyline>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+      </svg>
+      ìµì í
     </button>
   </div>
 </div>
-<div class="tab-nav" id="tab-nav"><div class="loading-msg" style="padding:12px;color:#9aa0ab;font-size:13px;">로딩 중...</div></div>
+
+<div class="tab-nav" id="tab-nav">
+  <div class="loading-msg" style="padding:12px;color:#9aa0ab;font-size:13px;">ë¡ë© ì¤...</div>
+</div>
+
 <div class="kpi-row" id="kpi-row">
-  <div class="kpi-card"><div class="loading-msg">로딩 중...</div></div>
+  <div class="kpi-card"><div class="loading-msg">ë¡ë© ì¤...</div></div>
   <div class="kpi-card"></div><div class="kpi-card"></div><div class="kpi-card"></div>
 </div>
+
 <div class="cards-section">
   <div class="cards-toolbar">
     <div class="filter-btns" id="filter-btns">
-      <button class="filter-btn active" data-q="all">전체</button>
+      <button class="filter-btn active" data-q="all">ì ì²´</button>
       <button class="filter-btn" data-q="Q1">Q1</button>
       <button class="filter-btn" data-q="Q2">Q2</button>
       <button class="filter-btn" data-q="Q3">Q3</button>
@@ -111,26 +171,145 @@
     </div>
     <div class="account-count" id="account-count"></div>
   </div>
-  <div class="cards-list" id="cards-list"><div class="loading-msg">데이터 불러오는 중...</div></div>
+  <div class="cards-list" id="cards-list">
+    <div class="loading-msg">ë°ì´í° ë¶ë¬ì¤ë ì¤...</div>
+  </div>
 </div>
+
 <script>
-  var DATA = null; var currentCenter = null; var currentFilter = 'all';
-  function fmt(n) { return (n||0).toLocaleString('ko-KR'); }
-  function fmtCompact(n) { if(!n&&n!==0)return'0'; var a=Math.abs(n); if(a>=1e8)return(n/1e8).toFixed(1)+'억'; if(a>=1e4)return Math.round(n/1e4)+'만'; return n.toLocaleString('ko-KR'); }
-  function loadData(isRefresh) {
-    var btn=document.getElementById('refresh-btn'); btn.disabled=true; btn.classList.add('loading');
-    if(!isRefresh) document.getElementById('subtitle').textContent='데이터 불러오는 중...';
-    fetch('budget_data.json?v='+Date.now())
-      .then(function(r){if(!r.ok)throw new Error('HTTP '+r.status);return r.json();})
-      .then(function(data){DATA=data;if(!currentCenter)currentCenter=data.centers[0].cost_center;render();btn.disabled=false;btn.classList.remove('loading');})
-      .catch(function(err){btn.disabled=false;btn.classList.remove('loading');document.getElementById('subtitle').textContent='⚠ 데이터 로드 실패';document.getElementById('cards-list').innerHTML='<div class="error-msg">budget_data.json을 불러올 수 없습니다.<br><small style="color:#9aa0ab">('+err.message+')</small><br><button class="retry-btn" onclick="refreshData()">다시 시도</button></div>';document.getElementById('tab-nav').innerHTML='';});
+  var DATA = null;
+  var currentCenter = null;
+  var currentFilter = 'all';
+
+  /* ââ ì«ì í¬ë§· ââ */
+  function fmt(n) { return (n || 0).toLocaleString('ko-KR'); }
+  function fmtCompact(n) {
+    if (!n && n !== 0) return '0';
+    var abs = Math.abs(n);
+    if (abs >= 1e8) return (n / 1e8).toFixed(1) + 'ìµ';
+    if (abs >= 1e4) return Math.round(n / 1e4) + 'ë§';
+    return n.toLocaleString('ko-KR');
   }
-  function refreshData(){loadData(true);}
-  function sumRows(rows,filter){var qs=filter==='all'?['Q1','Q2','Q3','Q4']:[filter];var p=0,a=0,r=0;rows.forEach(function(row){qs.forEach(function(q){p+=row[q+'PLN']||0;a+=row[q+'ACT']||0;r+=row[q+'BUD']||0;});});return{plan:p,actual:a,remain:r};}
-  function render(){if(!DATA)return;var center=DATA.centers.find(function(c){return c.cost_center===currentCenter;});if(!center)return;document.getElementById('subtitle').textContent=DATA.fiscal_year+' 회계연도 · '+center.cost_center_name+' · 수집: '+DATA.collected_at;document.getElementById('tab-nav').innerHTML=DATA.centers.map(function(c){var label=c.cost_center==='14000'?'제조':'판관';return'<button class="tab-btn '+(c.cost_center===currentCenter?'active':'')+'" onclick="switchTab(''+c.cost_center+'')">'+label+' ('+c.cost_center+')</button>';}).join('');var s=sumRows(center.data,currentFilter);var rate=s.plan>0?(s.actual/s.plan*100):0;document.getElementById('kpi-row').innerHTML='<div class="kpi-card"><div class="kpi-label">총예산(연간)</div><div class="kpi-value kpi-blue">'+fmtCompact(s.plan)+'</div><div class="kpi-unit">원</div></div><div class="kpi-card"><div class="kpi-label">집행 실적</div><div class="kpi-value kpi-orange">'+fmtCompact(s.actual)+'</div><div class="kpi-unit">원</div></div><div class="kpi-card"><div class="kpi-label">잔여 예산</div><div class="kpi-value kpi-green">'+fmtCompact(s.remain)+'</div><div class="kpi-unit">원</div></div><div class="kpi-card"><div class="kpi-label">집행률</div><div class="kpi-value kpi-dark">'+rate.toFixed(1)+'</div><div class="kpi-unit">%</div><div class="kpi-progress"><div class="kpi-progress-fill" style="width:'+Math.min(rate,100).toFixed(1)+'%"></div></div></div>';document.getElementById('account-count').textContent=center.data.length+'개 계정과목';renderCards(center.data);}
-  function renderCards(rows){var qs=currentFilter==='all'?['Q1','Q2','Q3','Q4']:[currentFilter];document.getElementById('cards-list').innerHTML=rows.map(function(row){var p=0,a=0,r=0;qs.forEach(function(q){p+=row[q+'PLN']||0;a+=row[q+'ACT']||0;r+=row[q+'BUD']||0;});var pct=p>0?Math.round(a/p*100):0;var fc=pct>=90?'fill-red':pct>=50?'fill-yellow':'fill-green';var bc=pct>=90?'badge-red':pct>=50?'badge-yellow':'badge-green';return'<div class="acct-card"><div class="acct-card-header"><div><div class="acct-name">'+row.HKONT_TXT+'</div><div class="acct-code">'+row.HKONT+'</div></div><span class="acct-rate-badge '+bc+'">'+pct+'%</span></div><div class="acct-amounts"><div><div class="amount-label">계획</div><div class="amount-value av-plan">'+fmt(p)+'</div></div><div><div class="amount-label">실적</div><div class="amount-value av-actual">'+fmt(a)+'</div></div><div><div class="amount-label">잔여</div><div class="amount-value av-remain">'+fmt(r)+'</div></div></div><div class="acct-progress"><div class="acct-progress-fill '+fc+'" style="width:'+Math.min(pct,100)+'%"></div></div></div>';}).join('');}
-  function switchTab(id){currentCenter=id;render();}
-  document.getElementById('filter-btns').addEventListener('click',function(e){var b=e.target.closest('.filter-btn');if(!b)return;document.querySelectorAll('.filter-btn').forEach(function(x){x.classList.remove('active');});b.classList.add('active');currentFilter=b.dataset.q;if(DATA)render();});
+
+  /* ââ ë°ì´í° ë¡ë ââ */
+  function loadData(isRefresh) {
+    var btn = document.getElementById('refresh-btn');
+    btn.disabled = true;
+    btn.classList.add('loading');
+    if (!isRefresh) {
+      document.getElementById('subtitle').textContent = 'ë°ì´í° ë¶ë¬ì¤ë ì¤...';
+    }
+
+    fetch('budget_data.json?v=' + Date.now())
+      .then(function(r) {
+        if (!r.ok) throw new Error('HTTP ' + r.status);
+        return r.json();
+      })
+      .then(function(data) {
+        DATA = data;
+        if (!currentCenter) currentCenter = data.centers[0].cost_center;
+        render();
+        btn.disabled = false;
+        btn.classList.remove('loading');
+      })
+      .catch(function(err) {
+        btn.disabled = false;
+        btn.classList.remove('loading');
+        document.getElementById('subtitle').textContent = 'â  ë°ì´í° ë¡ë ì¤í¨';
+        document.getElementById('cards-list').innerHTML =
+          '<div class="error-msg">' +
+          'budget_data.jsonì ë¶ë¬ì¬ ì ììµëë¤.<br>' +
+          '<small style="color:#9aa0ab">(' + err.message + ')</small><br>' +
+          '<button class="retry-btn" onclick="refreshData()">ë¤ì ìë</button>' +
+          '</div>';
+        document.getElementById('tab-nav').innerHTML = '';
+        document.getElementById('kpi-row').innerHTML =
+          '<div class="kpi-card"><div class="kpi-card"><div class="kpi-card"><div class="kpi-card">';
+      });
+  }
+
+  /* ââ ìë¡ê³ ì¹¨ ë²í¼ ì¡ì ââ */
+  function refreshData() { loadData(true); }
+
+  /* ââ ë¶ê¸° í©ì° ââ */
+  function sumRows(rows, filter) {
+    var qs = filter === 'all' ? ['Q1','Q2','Q3','Q4'] : [filter];
+    var plan = 0, actual = 0, remain = 0;
+    rows.forEach(function(r) {
+      qs.forEach(function(q) { plan += r[q+'PLN']||0; actual += r[q+'ACT']||0; remain += r[q+'BUD']||0; });
+    });
+    return { plan: plan, actual: actual, remain: remain };
+  }
+
+  /* ââ ì ì²´ ë ë ââ */
+  function render() {
+    if (!DATA) return;
+    var center = DATA.centers.find(function(c) { return c.cost_center === currentCenter; });
+    if (!center) return;
+
+    document.getElementById('subtitle').textContent =
+      DATA.fiscal_year + ' íê³ì°ë Â· ' + center.cost_center_name + ' Â· ìì§: ' + DATA.collected_at;
+
+    document.getElementById('tab-nav').innerHTML = DATA.centers.map(function(c) {
+      var label = c.cost_center === '14000' ? 'ì ì¡°' : 'íê´';
+      return '<button class="tab-btn ' + (c.cost_center === currentCenter ? 'active' : '') +
+        '" onclick="switchTab(\'' + c.cost_center + '\')">' + label + ' (' + c.cost_center + ')</button>';
+    }).join('');
+
+    var sums = sumRows(center.data, currentFilter);
+    var plan = sums.plan, actual = sums.actual, remain = sums.remain;
+    var rate = plan > 0 ? (actual / plan * 100) : 0;
+    var ratePct = rate.toFixed(1);
+    var barW = Math.min(rate, 100).toFixed(1);
+
+    document.getElementById('kpi-row').innerHTML =
+      '<div class="kpi-card"><div class="kpi-label">ì´ìì°(ì°ê°)</div><div class="kpi-value kpi-blue">' + fmtCompact(plan) + '</div><div class="kpi-unit">ì</div></div>' +
+      '<div class="kpi-card"><div class="kpi-label">ì§í ì¤ì </div><div class="kpi-value kpi-orange">' + fmtCompact(actual) + '</div><div class="kpi-unit">ì</div></div>' +
+      '<div class="kpi-card"><div class="kpi-label">ìì¬ ìì°</div><div class="kpi-value kpi-green">' + fmtCompact(remain) + '</div><div class="kpi-unit">ì</div></div>' +
+      '<div class="kpi-card"><div class="kpi-label">ì§íë¥ </div><div class="kpi-value kpi-dark">' + ratePct + '</div><div class="kpi-unit">%</div>' +
+      '<div class="kpi-progress"><div class="kpi-progress-fill" style="width:' + barW + '%"></div></div></div>';
+
+    document.getElementById('account-count').textContent = center.data.length + 'ê° ê³ì ê³¼ëª©';
+    renderCards(center.data);
+  }
+
+  /* ââ ì¹´ë ë ë ââ */
+  function renderCards(rows) {
+    var qs = currentFilter === 'all' ? ['Q1','Q2','Q3','Q4'] : [currentFilter];
+    document.getElementById('cards-list').innerHTML = rows.map(function(row) {
+      var plan = 0, actual = 0, remain = 0;
+      qs.forEach(function(q) { plan += row[q+'PLN']||0; actual += row[q+'ACT']||0; remain += row[q+'BUD']||0; });
+      var ratePct = plan > 0 ? Math.round(actual / plan * 100) : 0;
+      var fillClass = ratePct >= 90 ? 'fill-red' : ratePct >= 50 ? 'fill-yellow' : 'fill-green';
+      var badgeClass = ratePct >= 90 ? 'badge-red' : ratePct >= 50 ? 'badge-yellow' : 'badge-green';
+      return '<div class="acct-card">' +
+        '<div class="acct-card-header">' +
+        '<div><div class="acct-name">' + row.HKONT_TXT + '</div><div class="acct-code">' + row.HKONT + '</div></div>' +
+        '<span class="acct-rate-badge ' + badgeClass + '">' + ratePct + '%</span></div>' +
+        '<div class="acct-amounts">' +
+        '<div><div class="amount-label">ê³í</div><div class="amount-value av-plan">' + fmt(plan) + '</div></div>' +
+        '<div><div class="amount-label">ì¤ì </div><div class="amount-value av-actual">' + fmt(actual) + '</div></div>' +
+        '<div><div class="amount-label">ìì¬</div><div class="amount-value av-remain">' + fmt(remain) + '</div></div>' +
+        '</div>' +
+        '<div class="acct-progress"><div class="acct-progress-fill ' + fillClass + '" style="width:' + Math.min(ratePct,100) + '%"></div></div>' +
+        '</div>';
+    }).join('');
+  }
+
+  /* ââ í­ ì í ââ */
+  function switchTab(centerId) { currentCenter = centerId; render(); }
+
+  /* ââ ë¶ê¸° íí° ââ */
+  document.getElementById('filter-btns').addEventListener('click', function(e) {
+    var btn = e.target.closest('.filter-btn');
+    if (!btn) return;
+    document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+    btn.classList.add('active');
+    currentFilter = btn.dataset.q;
+    if (DATA) render();
+  });
+
+  /* ââ ìµì´ ë¡ë ââ */
   loadData(false);
 </script>
 </body>
