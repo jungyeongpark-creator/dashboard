@@ -14,229 +14,54 @@
   <title>부서예산 대시보드: SMART 기술팀</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
-
-    body {
-      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
-      background: #f0f2f5;
-      color: #1a1a2e;
-    }
-
-    /* ── 페이지 헤더 ── */
-    .page-header {
-      background: #fff;
-      padding: 18px 24px 14px;
-      border-bottom: 1px solid #e8eaed;
-    }
-    .page-title {
-      font-size: 20px;
-      font-weight: 700;
-      color: #1a1a2e;
-      letter-spacing: -0.3px;
-    }
-    .page-subtitle {
-      font-size: 12px;
-      color: #9aa0ab;
-      margin-top: 5px;
-    }
-
-    /* ── 생태 내비게이션 ── */
-    .tab-nav {
-      background: #1e2233;
-      display: flex;
-      padding: 0 20px;
-      gap: 4px;
-    }
-    .tab-btn {
-      padding: 13px 18px;
-      font-size: 13px;
-      font-weight: 600;
-      color: #9aa0ab;
-      background: none;
-      border: none;
-      cursor: pointer;
-      border-radius: 6px 6px 0 0;
-      transition: all 0.15s;
-      white-space: nowrap;
-    }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #1a1a2e; }
+    .page-header { background: #fff; padding: 18px 24px 14px; border-bottom: 1px solid #e8eaed; }
+    .page-title { font-size: 20px; font-weight: 700; color: #1a1a2e; letter-spacing: -0.3px; }
+    .page-subtitle { font-size: 12px; color: #9aa0ab; margin-top: 5px; }
+    .tab-nav { background: #1e2233; display: flex; padding: 0 20px; gap: 4px; }
+    .tab-btn { padding: 13px 18px; font-size: 13px; font-weight: 600; color: #9aa0ab; background: none; border: none; cursor: pointer; border-radius: 6px 6px 0 0; transition: all 0.15s; white-space: nowrap; }
     .tab-btn:hover { color: #fff; }
-    .tab-btn.active {
-      background: #2563eb;
-      color: #fff;
-    }
-
-    /* ── KPI 카드 ── */
-    .kpi-row {
-      display: grid;
-      grid-template-columns: repeat(4, 1fr);
-      gap: 14px;
-      padding: 18px 24px;
-    }
-    .kpi-card {
-      background: #fff;
-      border-radius: 10px;
-      padding: 18px 20px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-    }
-    .kpi-label {
-      font-size: 11px;
-      color: #9aa0ab;
-      font-weight: 500;
-      margin-bottom: 8px;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-    }
-    .kpi-value {
-      font-size: 30px;
-      font-weight: 800;
-      line-height: 1;
-    }
-    .kpi-unit {
-      font-size: 11px;
-      color: #9aa0ab;
-      margin-top: 5px;
-    }
-    .kpi-blue   { color: #2563eb; }
+    .tab-btn.active { background: #2563eb; color: #fff; }
+    .kpi-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; padding: 18px 24px; }
+    .kpi-card { background: #fff; border-radius: 10px; padding: 18px 20px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .kpi-label { font-size: 11px; color: #9aa0ab; font-weight: 500; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.3px; }
+    .kpi-value { font-size: 30px; font-weight: 800; line-height: 1; }
+    .kpi-unit { font-size: 11px; color: #9aa0ab; margin-top: 5px; }
+    .kpi-blue { color: #2563eb; }
     .kpi-orange { color: #f59e0b; }
-    .kpi-green  { color: #10b981; }
-    .kpi-dark   { color: #1a1a2e; }
-
-    .kpi-progress {
-      background: #e5e7eb;
-      height: 6px;
-      border-radius: 3px;
-      margin-top: 10px;
-      overflow: hidden;
-    }
-    .kpi-progress-fill {
-      height: 100%;
-      background: #2563eb;
-      border-radius: 3px;
-      transition: width 0.4s ease;
-    }
-
-    /* ── 카드 목록 섹션 ── */
-    .cards-section {
-      padding: 0 16px 28px;
-    }
-    .cards-toolbar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 12px;
-    }
+    .kpi-green { color: #10b981; }
+    .kpi-dark { color: #1a1a2e; }
+    .kpi-progress { background: #e5e7eb; height: 6px; border-radius: 3px; margin-top: 10px; overflow: hidden; }
+    .kpi-progress-fill { height: 100%; background: #2563eb; border-radius: 3px; transition: width 0.4s ease; }
+    .cards-section { padding: 0 16px 28px; }
+    .cards-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; }
     .filter-btns { display: flex; gap: 6px; flex-wrap: wrap; }
-    .filter-btn {
-      padding: 6px 16px;
-      border-radius: 20px;
-      border: 1px solid #dde1e7;
-      background: #fff;
-      font-size: 12px;
-      font-weight: 600;
-      color: #6b7280;
-      cursor: pointer;
-      transition: all 0.15s;
-    }
+    .filter-btn { padding: 6px 16px; border-radius: 20px; border: 1px solid #dde1e7; background: #fff; font-size: 12px; font-weight: 600; color: #6b7280; cursor: pointer; transition: all 0.15s; }
     .filter-btn:hover { border-color: #2563eb; color: #2563eb; }
-    .filter-btn.active {
-      background: #2563eb;
-      color: #fff;
-      border-color: #2563eb;
-    }
-    .account-count {
-      font-size: 12px;
-      color: #9aa0ab;
-      white-space: nowrap;
-    }
-
-    /* ── 계정 카드 ── */
-    .cards-list {
-      display: flex;
-      flex-direction: column;
-      gap: 10px;
-    }
-    .acct-card {
-      background: #fff;
-      border-radius: 12px;
-      padding: 16px 18px;
-      box-shadow: 0 1px 4px rgba(0,0,0,0.07);
-    }
-    .acct-card-header {
-      display: flex;
-      justify-content: space-between;
-      align-items: flex-start;
-      margin-bottom: 14px;
-    }
-    .acct-name {
-      font-size: 14px;
-      font-weight: 700;
-      color: #1a1a2e;
-      line-height: 1.3;
-    }
-    .acct-code {
-      font-size: 11px;
-      color: #b0b8c4;
-      margin-top: 3px;
-    }
-    .acct-rate-badge {
-      font-size: 13px;
-      font-weight: 700;
-      padding: 4px 10px;
-      border-radius: 20px;
-      flex-shrink: 0;
-      margin-left: 10px;
-    }
-    .badge-green  { background: #ecfdf5; color: #10b981; }
+    .filter-btn.active { background: #2563eb; color: #fff; border-color: #2563eb; }
+    .account-count { font-size: 12px; color: #9aa0ab; white-space: nowrap; }
+    .cards-list { display: flex; flex-direction: column; gap: 10px; }
+    .acct-card { background: #fff; border-radius: 12px; padding: 16px 18px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .acct-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 14px; }
+    .acct-name { font-size: 14px; font-weight: 700; color: #1a1a2e; line-height: 1.3; }
+    .acct-code { font-size: 11px; color: #b0b8c4; margin-top: 3px; }
+    .acct-rate-badge { font-size: 13px; font-weight: 700; padding: 4px 10px; border-radius: 20px; flex-shrink: 0; margin-left: 10px; }
+    .badge-green { background: #ecfdf5; color: #10b981; }
     .badge-yellow { background: #fffbeb; color: #d97706; }
-    .badge-red    { background: #fef2f2; color: #ef4444; }
-
-    .acct-amounts {
-      display: grid;
-      grid-template-columns: 1fr 1fr 1fr;
-      gap: 10px;
-      margin-bottom: 12px;
-    }
-    .amount-label {
-      font-size: 10px;
-      color: #9aa0ab;
-      font-weight: 500;
-      text-transform: uppercase;
-      letter-spacing: 0.3px;
-      margin-bottom: 3px;
-    }
-    .amount-value {
-      font-size: 13px;
-      font-weight: 600;
-    }
-    .av-plan   { color: #6b7280; }
+    .badge-red { background: #fef2f2; color: #ef4444; }
+    .acct-amounts { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 10px; margin-bottom: 12px; }
+    .amount-label { font-size: 10px; color: #9aa0ab; font-weight: 500; text-transform: uppercase; letter-spacing: 0.3px; margin-bottom: 3px; }
+    .amount-value { font-size: 13px; font-weight: 600; }
+    .av-plan { color: #6b7280; }
     .av-actual { color: #f59e0b; }
     .av-remain { color: #10b981; }
-
-    .acct-progress {
-      background: #e5e7eb;
-      height: 5px;
-      border-radius: 3px;
-      overflow: hidden;
-    }
-    .acct-progress-fill {
-      height: 100%;
-      border-radius: 3px;
-    }
-    .fill-green  { background: #10b981; }
+    .acct-progress { background: #e5e7eb; height: 5px; border-radius: 3px; overflow: hidden; }
+    .acct-progress-fill { height: 100%; border-radius: 3px; }
+    .fill-green { background: #10b981; }
     .fill-yellow { background: #f59e0b; }
-    .fill-red    { background: #ef4444; }
-
-    /* ── 로딩 / 에러 ── */
-    .loading-msg {
-      text-align: center;
-      padding: 40px;
-      color: #9aa0ab;
-      font-size: 14px;
-    }
-
-    /* ── 반응형 ── */
-    @media (max-width: 900px) {
-      .kpi-row { grid-template-columns: repeat(2, 1fr); }
-    }
+    .fill-red { background: #ef4444; }
+    .loading-msg { text-align: center; padding: 40px; color: #9aa0ab; font-size: 14px; }
+    @media (max-width: 900px) { .kpi-row { grid-template-columns: repeat(2, 1fr); } }
     @media (max-width: 600px) {
       .kpi-row { grid-template-columns: repeat(2, 1fr); gap: 10px; padding: 14px 14px; }
       .cards-section { padding: 0 14px 20px; }
@@ -248,23 +73,19 @@
   </style>
 </head>
 <body>
-
   <div class="page-header">
     <div class="page-title">부서예산 대시보드: SMART 기술팀</div>
     <div class="page-subtitle" id="subtitle">데이터 로딩 중...</div>
   </div>
-
   <div class="tab-nav" id="tab-nav">
     <div class="loading-msg" style="padding:12px;color:#9aa0ab;font-size:13px;">로딩 중...</div>
   </div>
-
   <div class="kpi-row" id="kpi-row">
     <div class="kpi-card"><div class="loading-msg">로딩 중...</div></div>
     <div class="kpi-card"><div class="loading-msg"></div></div>
     <div class="kpi-card"><div class="loading-msg"></div></div>
     <div class="kpi-card"><div class="loading-msg"></div></div>
   </div>
-
   <div class="cards-section">
     <div class="cards-toolbar">
       <div class="filter-btns" id="filter-btns">
@@ -280,140 +101,76 @@
       <div class="loading-msg">데이터 로딩 중...</div>
     </div>
   </div>
-
-<script>
-/* ===== 상태 ===== */
-var DATA = null;
-var currentCenter = null;
-var currentFilter = 'all';
-
-/* ===== 서비스워커 등록 (PWA) ===== */
-if ('serviceWorker' in navigator) {
-  navigator.serviceWorker.register('sw.js').catch(function() {});
-}
-
-/* ===== 데이터 로드 (타임스탬프 쿼리로 캐시 무효화) ===== */
-fetch('budget_data.json?v=' + Date.now())
-  .then(function(r) {
-    if (!r.ok) throw new Error('HTTP ' + r.status);
-    return r.json();
-  })
-  .then(function(data) {
-    DATA = data;
-    currentCenter = data.centers[0].cost_center;
-    render();
-  })
-  .catch(function(err) {
-    document.getElementById('subtitle').textContent = '\u26a0 데이터 로드 실패: ' + err.message;
-    document.getElementById('cards-list').innerHTML =
-      '<div class="loading-msg">budget_data.json 파일을 찾을 수 없습니다.</div>';
-  });
-
-/* ===== 숫자 포맷 ===== */
-function fmt(n) { return (n || 0).toLocaleString('ko-KR'); }
-function fmtCompact(n) {
-  if (!n && n !== 0) return '0';
-  var abs = Math.abs(n);
-  if (abs >= 1e8) return (n / 1e8).toFixed(1) + '\uc5b5';
-  if (abs >= 1e4) return Math.round(n / 1e4) + '\ub9cc';
-  return n.toLocaleString('ko-KR');
-}
-
-/* ===== 분기 합산 ===== */
-function sumRows(rows, filter) {
-  var qs = filter === 'all' ? ['Q1','Q2','Q3','Q4'] : [filter];
-  var plan = 0, actual = 0, remain = 0;
-  rows.forEach(function(r) {
-    qs.forEach(function(q) {
-      plan   += r[q + 'PLN'] || 0;
-      actual += r[q + 'ACT'] || 0;
-      remain += r[q + 'BUD'] || 0;
+  <script>
+    var DATA = null;
+    var currentCenter = null;
+    var currentFilter = 'all';
+    if ('serviceWorker' in navigator) {
+      navigator.serviceWorker.register('sw.js').catch(function() {});
+    }
+    fetch('budget_data.json?v=' + Date.now())
+      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function(data) { DATA = data; currentCenter = data.centers[0].cost_center; render(); })
+      .catch(function(err) {
+        document.getElementById('subtitle').textContent = '⚠ 데이터 로드 실패: ' + err.message;
+        document.getElementById('cards-list').innerHTML = '<div class="loading-msg">budget_data.json 파일을 찾을 수 없습니다.</div>';
+      });
+    function fmt(n) { return (n || 0).toLocaleString('ko-KR'); }
+    function fmtCompact(n) {
+      if (!n && n !== 0) return '0';
+      var abs = Math.abs(n);
+      if (abs >= 1e8) return (n / 1e8).toFixed(1) + '억';
+      if (abs >= 1e4) return Math.round(n / 1e4) + '만';
+      return n.toLocaleString('ko-KR');
+    }
+    function sumRows(rows, filter) {
+      var qs = filter === 'all' ? ['Q1','Q2','Q3','Q4'] : [filter];
+      var plan = 0, actual = 0, remain = 0;
+      rows.forEach(function(r) {
+        qs.forEach(function(q) { plan += r[q+'PLN']||0; actual += r[q+'ACT']||0; remain += r[q+'BUD']||0; });
+      });
+      return { plan: plan, actual: actual, remain: remain };
+    }
+    function render() {
+      if (!DATA) return;
+      var center = DATA.centers.find(function(c) { return c.cost_center === currentCenter; });
+      if (!center) return;
+      document.getElementById('subtitle').textContent = DATA.fiscal_year + ' 회계연도 · ' + center.cost_center_name + ' · 수집: ' + DATA.collected_at;
+      document.getElementById('tab-nav').innerHTML = DATA.centers.map(function(c) {
+        var label = c.cost_center === '14000' ? '제조' : '판관';
+        return '<button class="tab-btn ' + (c.cost_center === currentCenter ? 'active' : '') + '" onclick="switchTab('' + c.cost_center + '')">' + label + ' (' + c.cost_center + ')</button>';
+      }).join('');
+      var sums = sumRows(center.data, currentFilter);
+      var plan = sums.plan, actual = sums.actual, remain = sums.remain;
+      var rate = plan > 0 ? (actual / plan * 100) : 0;
+      var ratePct = rate.toFixed(1);
+      var barW = Math.min(rate, 100).toFixed(1);
+      document.getElementById('kpi-row').innerHTML = '<div class="kpi-card"><div class="kpi-label">총예산(연간)</div><div class="kpi-value kpi-blue">' + fmtCompact(plan) + '</div><div class="kpi-unit">원</div></div><div class="kpi-card"><div class="kpi-label">집행 실적</div><div class="kpi-value kpi-orange">' + fmtCompact(actual) + '</div><div class="kpi-unit">원</div></div><div class="kpi-card"><div class="kpi-label">잔여 예산</div><div class="kpi-value kpi-green">' + fmtCompact(remain) + '</div><div class="kpi-unit">원</div></div><div class="kpi-card"><div class="kpi-label">집행률</div><div class="kpi-value kpi-dark">' + ratePct + '</div><div class="kpi-unit">%</div><div class="kpi-progress"><div class="kpi-progress-fill" style="width:' + barW + '%"></div></div></div>';
+      document.getElementById('account-count').textContent = center.data.length + '개 계정과목';
+      renderCards(center.data);
+    }
+    function renderCards(rows) {
+      var qs = currentFilter === 'all' ? ['Q1','Q2','Q3','Q4'] : [currentFilter];
+      var list = document.getElementById('cards-list');
+      list.innerHTML = rows.map(function(row) {
+        var plan = 0, actual = 0, remain = 0;
+        qs.forEach(function(q) { plan += row[q+'PLN']||0; actual += row[q+'ACT']||0; remain += row[q+'BUD']||0; });
+        var ratePct = plan > 0 ? Math.round(actual / plan * 100) : 0;
+        var fillClass = ratePct >= 90 ? 'fill-red' : ratePct >= 50 ? 'fill-yellow' : 'fill-green';
+        var badgeClass = ratePct >= 90 ? 'badge-red' : ratePct >= 50 ? 'badge-yellow' : 'badge-green';
+        var barW = Math.min(ratePct, 100);
+        return '<div class="acct-card"><div class="acct-card-header"><div><div class="acct-name">' + row.HKONT_TXT + '</div><div class="acct-code">' + row.HKONT + '</div></div><span class="acct-rate-badge ' + badgeClass + '">' + ratePct + '%</span></div><div class="acct-amounts"><div><div class="amount-label">계획</div><div class="amount-value av-plan">' + fmt(plan) + '</div></div><div><div class="amount-label">실적</div><div class="amount-value av-actual">' + fmt(actual) + '</div></div><div><div class="amount-label">잔여</div><div class="amount-value av-remain">' + fmt(remain) + '</div></div></div><div class="acct-progress"><div class="acct-progress-fill ' + fillClass + '" style="width:' + barW + '%"></div></div></div>';
+      }).join('');
+    }
+    function switchTab(centerId) { currentCenter = centerId; render(); }
+    document.getElementById('filter-btns').addEventListener('click', function(e) {
+      var btn = e.target.closest('.filter-btn');
+      if (!btn) return;
+      document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
+      btn.classList.add('active');
+      currentFilter = btn.dataset.q;
+      if (DATA) render();
     });
-  });
-  return { plan: plan, actual: actual, remain: remain };
-}
-
-/* ===== 전체 렌더 ===== */
-function render() {
-  if (!DATA) return;
-  var center = DATA.centers.find(function(c) { return c.cost_center === currentCenter; });
-  if (!center) return;
-
-  document.getElementById('subtitle').textContent =
-    DATA.fiscal_year + ' \ud68c\uacc4\uc5f0\ub3c4 \u00b7 ' + center.cost_center_name + ' \u00b7 \uc218\uc9d1: ' + DATA.collected_at;
-
-  document.getElementById('tab-nav').innerHTML = DATA.centers.map(function(c) {
-    var label = c.cost_center === '14000' ? '\uc81c\uc870' : '\ud310\uad00';
-    return '<button class="tab-btn ' + (c.cost_center === currentCenter ? 'active' : '') +
-      '" onclick="switchTab(\'' + c.cost_center + '\')">' + label + ' (' + c.cost_center + ')</button>';
-  }).join('');
-
-  var sums = sumRows(center.data, currentFilter);
-  var plan = sums.plan, actual = sums.actual, remain = sums.remain;
-  var rate = plan > 0 ? (actual / plan * 100) : 0;
-  var ratePct = rate.toFixed(1);
-  var barW = Math.min(rate, 100).toFixed(1);
-
-  document.getElementById('kpi-row').innerHTML =
-    '<div class="kpi-card"><div class="kpi-label">\uc601\uc5c5\uc608\uc0b0(\uc5f0\uac04)</div><div class="kpi-value kpi-blue">' + fmtCompact(plan) + '</div><div class="kpi-unit">\uc6d0</div></div>' +
-    '<div class="kpi-card"><div class="kpi-label">\uc9d1\ud589 \uc2e4\uc801</div><div class="kpi-value kpi-orange">' + fmtCompact(actual) + '</div><div class="kpi-unit">\uc6d0</div></div>' +
-    '<div class="kpi-card"><div class="kpi-label">\uc794\uc5ec \uc608\uc0b0</div><div class="kpi-value kpi-green">' + fmtCompact(remain) + '</div><div class="kpi-unit">\uc6d0</div></div>' +
-    '<div class="kpi-card"><div class="kpi-label">\uc9d1\ud589\ub960</div><div class="kpi-value kpi-dark">' + ratePct + '</div><div class="kpi-unit">%</div>' +
-    '<div class="kpi-progress"><div class="kpi-progress-fill" style="width:' + barW + '%"></div></div></div>';
-
-  document.getElementById('account-count').textContent = center.data.length + '\uac1c \uacc4\uc815\uacfc\ubaa9';
-
-  renderCards(center.data);
-}
-
-/* ===== 카드 렌더 ===== */
-function renderCards(rows) {
-  var qs = currentFilter === 'all' ? ['Q1','Q2','Q3','Q4'] : [currentFilter];
-  var list = document.getElementById('cards-list');
-
-  list.innerHTML = rows.map(function(row) {
-    var plan = 0, actual = 0, remain = 0;
-    qs.forEach(function(q) {
-      plan   += row[q + 'PLN'] || 0;
-      actual += row[q + 'ACT'] || 0;
-      remain += row[q + 'BUD'] || 0;
-    });
-    var ratePct = plan > 0 ? Math.round(actual / plan * 100) : 0;
-    var fillClass = ratePct >= 90 ? 'fill-red' : ratePct >= 50 ? 'fill-yellow' : 'fill-green';
-    var badgeClass = ratePct >= 90 ? 'badge-red' : ratePct >= 50 ? 'badge-yellow' : 'badge-green';
-    var barW = Math.min(ratePct, 100);
-
-    return '<div class="acct-card">' +
-      '<div class="acct-card-header">' +
-        '<div><div class="acct-name">' + row.HKONT_TXT + '</div><div class="acct-code">' + row.HKONT + '</div></div>' +
-        '<span class="acct-rate-badge ' + badgeClass + '">' + ratePct + '%</span>' +
-      '</div>' +
-      '<div class="acct-amounts">' +
-        '<div><div class="amount-label">\uacc4\ud68d</div><div class="amount-value av-plan">' + fmt(plan) + '</div></div>' +
-        '<div><div class="amount-label">\uc2e4\uc801</div><div class="amount-value av-actual">' + fmt(actual) + '</div></div>' +
-        '<div><div class="amount-label">\uc794\uc5ec</div><div class="amount-value av-remain">' + fmt(remain) + '</div></div>' +
-      '</div>' +
-      '<div class="acct-progress"><div class="acct-progress-fill ' + fillClass + '" style="width:' + barW + '%"></div></div>' +
-    '</div>';
-  }).join('');
-}
-
-/* ===== 탭 전환 ===== */
-function switchTab(centerId) {
-  currentCenter = centerId;
-  render();
-}
-
-/* ===== 분기 필터 ===== */
-document.getElementById('filter-btns').addEventListener('click', function(e) {
-  var btn = e.target.closest('.filter-btn');
-  if (!btn) return;
-  document.querySelectorAll('.filter-btn').forEach(function(b) { b.classList.remove('active'); });
-  btn.classList.add('active');
-  currentFilter = btn.dataset.q;
-  if (DATA) render();
-});
-</script>
-
+  </script>
 </body>
 </html>
