@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
+<meta name="theme-color" content="#d44000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="SeAH 식단">
+<link rel="manifest" href="menu-manifest.json">
+<link rel="apple-touch-icon" href="menu-icon-192.png">
+<title>SeAH 포항공장 주간 식단</title>
+<style>
+:root{--p:#d44000;--pl:#fff0eb;--a:#ff6b35;--tb:#fff3e0;--tc:#ff9800;--b:#fff;--bg:#f5f5f5;--t:#1a1a1a;--m:#666;--bd:#e0e0e0;--gc:#2e7d32;--gb:#e8f5e9;--fc:#1565c0;--fb:#e3f2fd;--sc:#e65100;--sb:#fff8e1}
+*{box-sizing:border-box;margin:0;padding:0}
+body{font-family:'Malgun Gothic','Apple SD Gothic Neo',-apple-system,sans-serif;background:var(--bg);color:var(--t);min-height:100vh;max-width:480px;margin:0 auto}
+.hd{background:linear-gradient(135deg,var(--p),var(--a));color:#fff;padding:16px 20px 20px;position:sticky;top:0;z-index:100;box-shadow:0 2px 12px rgba(212,64,0,.3)}
+.ht{display:flex;align-items:center;justify-content:space-between;margin-bottom:4px}
+.hd h1{font-size:18px;font-weight:700}
+.bx{background:rgba(255,255,255,.25);border-radius:20px;padding:3px 10px;font-size:11px;font-weight:600}
+.wk{font-size:12px;opacity:.85;margin-top:2px}
+.ud{font-size:10px;opacity:.65;margin-top:1px}
+.tabs{display:flex;background:#fff;border-bottom:1px solid var(--bd);position:sticky;top:80px;z-index:99;box-shadow:0 1px 4px rgba(0,0,0,.06)}
+.tab{flex:1;padding:10px 4px;text-align:center;cursor:pointer;color:var(--m);border-bottom:3px solid transparent;transition:all .2s;user-select:none}
+.tab b{display:block;font-size:14px;font-weight:700}
+.tab s{display:block;font-size:10px;margin-top:1px;text-decoration:none}
+.tab.on{color:var(--p);border-bottom-color:var(--p);background:var(--pl)}
+.tab.td b::after{content:'';display:block;width:5px;height:5px;background:var(--tc);border-radius:50%;margin:2px auto 0}
+.co{padding:16px 16px 32px}
+.pn{display:none}.pn.on{display:block}
+.no{background:var(--tb);border:1px solid var(--tc);border-radius:8px;padding:7px 12px;font-size:12px;color:var(--sc);font-weight:600;text-align:center;margin-bottom:12px}
+.sp{background:var(--sb);color:var(--sc);border:1px solid #ffcc80;border-radius:8px;padding:8px 14px;font-size:13px;font-weight:700;text-align:center;margin-bottom:12px}
+.cd{background:#fff;border-radius:12px;box-shadow:0 2px 8px rgba(0,0,0,.08);overflow:hidden;margin-bottom:12px}
+.ch{padding:9px 16px;font-size:13px;font-weight:700;display:flex;align-items:center;gap:6px;color:#fff;background:var(--p)}
+.gch{background:var(--gc)}.fch{background:var(--fc)}
+.cb{padding:12px 16px}
+.mn{font-size:16px;font-weight:700;color:var(--p);margin-bottom:10px;line-height:1.3;padding-bottom:10px;border-bottom:1px dashed var(--bd)}
+.it{font-size:14px;padding:4px 0;border-bottom:1px solid #fafafa;display:flex;align-items:center;gap:6px}
+.it::before{content:'';width:4px;height:4px;border-radius:50%;background:var(--bd);flex-shrink:0}
+.it:last-child{border-bottom:none}
+.tg{display:flex;gap:8px;flex-wrap:wrap}
+.tgi{background:var(--gb);color:var(--gc);border-radius:20px;padding:5px 12px;font-size:13px;font-weight:600;border:1px solid #c8e6c9}
+.fr{font-size:14px;font-weight:600;color:var(--fc);padding:4px 0}
+.ld{text-align:center;padding:60px 20px;color:var(--m);font-size:14px}
+.sp2{width:32px;height:32px;border:3px solid var(--bd);border-top-color:var(--p);border-radius:50%;animation:sp2 .8s linear infinite;margin:0 auto 16px}
+@keyframes sp2{to{transform:rotate(360deg)}}
+footer{text-align:center;padding:20px 16px;font-size:11px;color:var(--m);border-top:1px solid var(--bd)}
+.ib{display:none;background:#1a237e;color:#fff;padding:10px 16px;font-size:12px;align-items:center;justify-content:space-between;gap:8px}
+.ib.on{display:flex}
+.ibtn{background:#fff;color:#1a237e;border:none;border-radius:20px;padding:5px 14px;font-size:12px;font-weight:700;cursor:pointer}
+</style>
+</head>
+<body>
+<div id="ib" class="ib"><span>📱 홈 화면에 추가하면 앱처럼 사용 가능</span><button class="ibtn" id="ibtn">설치</button></div>
+<div class="hd">
+  <div class="ht"><h1>🍱 포항공장 식단</h1><span class="bx">이번 주</span></div>
+  <div class="wk" id="wk">불러오는 중...</div>
+  <div class="ud" id="ud"></div>
+</div>
+<div class="tabs" id="tabs"></div>
+<div class="co" id="co"><div class="ld"><div class="sp2"></div>메뉴를 불러오는 중...</div></div>
+<footer>SeAH 포항공장 · 자동 업데이트 (매주 월요일)</footer>
+<script>
+const URL0='https://raw.githubusercontent.com/jungyeongpark-creator/dashboard/main/menu_data.json';
+let D=null,AI=0;
+async function load(){
+  try{const r=await fetch(URL0+'?v='+Date.now());if(!r.ok)throw 0;D=await r.json();}
+  catch(e){try{const r=await fetch('menu_data.json?v='+Date.now());D=await r.json();}
+  catch(e2){co('<div class="ld">⚠️ 데이터를 불러올 수 없습니다.</div>');return;}}
+  render();
+}
+function co(h){document.getElementById('co').innerHTML=h;}
+function ti(){const d=new Date().getDay();return d>=1&&d<=5?d-1:0;}
+function ts(){const d=new Date();return(d.getMonth()+1)+'/'+d.getDate();}
+function render(){
+  document.getElementById('wk').textContent=D.week||'';
+  document.getElementById('ud').textContent=D.updated_at?'갱신: '+D.updated_at:'';
+  const td=ts();
+  document.getElementById('tabs').innerHTML=D.days.map((d,i)=>
+    '<div class="tab'+(i===AI?' on':'')+(d.date===td?' td':'')+'" onclick="sw('+i+')">'
+    +'<b>'+d.day+'</b><s>'+d.date+'</s></div>'
+  ).join('');
+  co(D.days.map((d,i)=>{
+    const rest=d.lunch.slice(1);
+    return '<div class="pn'+(i===AI?' on':'')+'" id="p'+i+'">'
+      +(d.date===td?'<div class="no">🌟 오늘의 식단</div>':'')
+      +(d.special?'<div class="sp">'+d.special+'</div>':'')
+      +'<div class="cd"><div class="ch">🍚 중식</div><div class="cb">'
+      +'<div class="mn">'+d.lunch[0]+'</div>'
+      +'<div>'+rest.map(x=>'<div class="it">'+x+'</div>').join('')+'</div>'
+      +'</div></div>'
+      +'<div class="cd"><div class="ch gch">🥤 PLUS</div><div class="cb">'
+      +'<div class="tg">'+d.plus.map(p=>'<span class="tgi">'+p+'</span>').join('')+'</div>'
+      +'</div></div>'
+      +'<div class="cd"><div class="ch fch">🥗 프레시박스</div><div class="cb">'
+      +'<div class="fr">'+(d.fresh_box||'-')+'</div>'
+      +'</div></div></div>';
+  }).join(''));
+}
+function sw(i){AI=i;
+  document.querySelectorAll('.tab').forEach((t,j)=>t.classList.toggle('on',j===i));
+  document.querySelectorAll('.pn').forEach((p,j)=>p.classList.toggle('on',j===i));
+  document.getElementById('co').scrollIntoView({behavior:'smooth',block:'start'});
+}
+let dp=null;
+window.addEventListener('beforeinstallprompt',e=>{e.preventDefault();dp=e;document.getElementById('ib').classList.add('on');});
+document.getElementById('ibtn').addEventListener('click',async()=>{if(!dp)return;dp.prompt();await dp.userChoice;dp=null;document.getElementById('ib').classList.remove('on');});
+AI=ti();load();
+if('serviceWorker'in navigator)navigator.serviceWorker.register('menu-sw.js').catch(()=>{});
+</script>
+</body>
+</html>
