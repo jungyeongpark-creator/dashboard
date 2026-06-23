@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-06-22",
+  "collected_at": "2026-06-23",
   "fiscal_year": "2026",
   "centers": [
     {
@@ -78,8 +78,8 @@
           "Q1ACT": 3410680,
           "Q1BUD": 39320,
           "Q2PLN": 3450000,
-          "Q2ACT": 2736753,
-          "Q2BUD": 713247,
+          "Q2ACT": 2761299,
+          "Q2BUD": 688701,
           "Q3PLN": 3450000,
           "Q3ACT": 0,
           "Q3BUD": 3450000,
@@ -90,7 +90,7 @@
         {
           "GJAHR": "2026",
           "HKONT": "5300201",
-          "HKONT_TXT": "여비교통비-사내교통",
+          "HKONT_TXT": "여비교통비-시내교통",
           "KOSTL": "14000",
           "KOSTL_TXT": "Smart기술팀(제조)",
           "WAERS": "KRW",
@@ -190,7 +190,7 @@
         {
           "GJAHR": "2026",
           "HKONT": "5302108",
-          "HKONT_TXT": "수선비-안전보건계선비",
+          "HKONT_TXT": "수선비-안전보건개선비",
           "KOSTL": "14000",
           "KOSTL_TXT": "Smart기술팀(제조)",
           "WAERS": "KRW",
