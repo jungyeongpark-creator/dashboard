@@ -1,0 +1,242 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <meta name="theme-color" content="#1F4E79">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="default">
+  <meta name="apple-mobile-web-app-title" content="SAP구매현황">
+  <link rel="manifest" href="sap-manifest.json">
+  <link rel="apple-touch-icon" href="icon-192.png">
+  <title>SAP 구매요청 대시보드: SMART 기술팀</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; background: #f0f2f5; color: #1a1a2e; }
+
+    .page-header { background: #fff; padding: 14px 20px 12px; border-bottom: 1px solid #e8eaed;
+      display: flex; align-items: center; justify-content: space-between; gap: 12px; }
+    .header-left { flex: 1; min-width: 0; }
+    .page-title { font-size: 18px; font-weight: 700; color: #1a1a2e; letter-spacing: -0.3px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
+    .page-subtitle { font-size: 11px; color: #9aa0ab; margin-top: 4px; }
+    .header-actions { display: flex; align-items: center; gap: 8px; flex-shrink: 0; }
+
+    .refresh-btn { display: flex; align-items: center; gap: 5px; padding: 6px 12px; background: #1F4E79; color: #fff;
+      border: none; border-radius: 8px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.15s; white-space: nowrap; }
+    .refresh-btn:hover { background: #163d61; }
+    .refresh-btn:active { transform: scale(0.97); }
+    .refresh-btn:disabled { background: #93b3d1; cursor: not-allowed; }
+    .refresh-btn svg { width: 14px; height: 14px; flex-shrink: 0; }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .refresh-btn.loading svg { animation: spin 0.8s linear infinite; }
+
+    .tab-nav { background: #1e2233; display: flex; padding: 0 20px; gap: 4px; overflow-x: auto; }
+    .tab-btn { padding: 12px 16px; font-size: 12px; font-weight: 600; color: #9aa0ab; background: none; border: none;
+      cursor: pointer; border-radius: 6px 6px 0 0; transition: all 0.15s; white-space: nowrap; }
+    .tab-btn:hover { color: #fff; }
+    .tab-btn.active { background: #1F4E79; color: #fff; }
+
+    .kpi-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(130px, 1fr)); gap: 12px; padding: 16px 20px; }
+    .kpi-card { background: #fff; border-radius: 10px; padding: 16px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .kpi-label { font-size: 10.5px; color: #9aa0ab; font-weight: 500; margin-bottom: 8px; text-transform: uppercase; letter-spacing: 0.3px; }
+    .kpi-value { font-size: 24px; font-weight: 800; line-height: 1; }
+    .kpi-unit { font-size: 11px; color: #9aa0ab; margin-top: 5px; }
+    .kpi-blue { color: #1F4E79; } .kpi-orange { color: #e67e22; } .kpi-green { color: #27ae60; } .kpi-red { color: #e74c3c; } .kpi-teal { color: #16a085; }
+
+    .cards-section { padding: 0 14px 28px; }
+    .cards-toolbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 12px; flex-wrap: wrap; gap: 8px; }
+    .search-box { flex: 1; min-width: 140px; }
+    .search-box input { width: 100%; padding: 8px 12px; border: 1px solid #dde1e7; border-radius: 8px; font-size: 13px; }
+    .item-count { font-size: 12px; color: #9aa0ab; white-space: nowrap; }
+    .cards-list { display: flex; flex-direction: column; gap: 10px; }
+
+    .pr-card { background: #fff; border-radius: 12px; padding: 14px 16px; box-shadow: 0 1px 4px rgba(0,0,0,0.07); }
+    .pr-card-header { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 10px; gap: 8px; }
+    .pr-name { font-size: 13.5px; font-weight: 700; color: #1a1a2e; line-height: 1.35; }
+    .pr-code { font-size: 10.5px; color: #b0b8c4; margin-top: 3px; }
+    .pr-badge { font-size: 11px; font-weight: 700; padding: 4px 10px; border-radius: 20px; flex-shrink: 0; white-space: nowrap; }
+    .badge-green { background: #ecfdf5; color: #10b981; }
+    .badge-yellow { background: #fffbeb; color: #d97706; }
+    .badge-red { background: #fef2f2; color: #ef4444; }
+    .badge-gray { background: #f3f4f6; color: #6b7280; }
+    .pr-info { display: grid; grid-template-columns: 1fr 1fr; gap: 8px 12px; font-size: 12px; }
+    .pr-info-item { display: flex; flex-direction: column; }
+    .pr-info-label { font-size: 10px; color: #9aa0ab; margin-bottom: 2px; }
+    .pr-info-value { font-weight: 600; color: #374151; }
+
+    .loading-msg { text-align: center; padding: 40px; color: #9aa0ab; font-size: 14px; }
+    .error-msg { text-align: center; padding: 30px 20px; color: #ef4444; font-size: 13px; line-height: 1.6; }
+    .retry-btn { margin-top: 12px; display: inline-block; padding: 8px 20px; background: #1F4E79; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
+
+    @media (max-width: 600px) {
+      .page-header { padding: 12px 14px 10px; }
+      .page-title { font-size: 15px; }
+      .refresh-btn { padding: 6px 10px; font-size: 11px; }
+      .kpi-row { gap: 8px; padding: 12px 12px; }
+      .kpi-value { font-size: 20px; }
+      .cards-section { padding: 0 12px 20px; }
+      .tab-nav { padding: 0 10px; }
+      .tab-btn { padding: 10px 12px; font-size: 11.5px; }
+    }
+  </style>
+</head>
+<body>
+
+<div class="page-header">
+  <div class="header-left">
+    <div class="page-title">SAP 구매요청 대시보드</div>
+    <div class="page-subtitle" id="subtitle">데이터 불러오는 중...</div>
+  </div>
+  <div class="header-actions">
+    <button class="refresh-btn" id="refresh-btn" onclick="refreshData()">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="23 4 23 10 17 10"></polyline>
+        <path d="M20.49 15a9 9 0 1 1-2.12-9.36L23 10"></path>
+      </svg>
+      최신화
+    </button>
+  </div>
+</div>
+
+<div class="tab-nav" id="tab-nav">
+  <button class="tab-btn active" data-status="all">전체</button>
+</div>
+
+<div class="kpi-row" id="kpi-row">
+  <div class="kpi-card"><div class="loading-msg">로딩 중...</div></div>
+</div>
+
+<div class="cards-section">
+  <div class="cards-toolbar">
+    <div class="search-box"><input type="text" id="search-input" placeholder="🔍 자재내역, 구매요청번호 검색"></div>
+    <div class="item-count" id="item-count"></div>
+  </div>
+  <div class="cards-list" id="cards-list">
+    <div class="loading-msg">데이터 불러오는 중...</div>
+  </div>
+</div>
+
+<script>
+  var DATA = null;
+  var currentStatus = 'all';
+  var searchTerm = '';
+
+  function fmt(n) { return (n || 0).toLocaleString('ko-KR'); }
+  function fmtCompact(n) {
+    if (!n && n !== 0) return '0';
+    var abs = Math.abs(n);
+    if (abs >= 1e8) return (n / 1e8).toFixed(2) + '억';
+    if (abs >= 1e4) return Math.round(n / 1e4) + '만';
+    return n.toLocaleString('ko-KR');
+  }
+
+  function loadData(isRefresh) {
+    var btn = document.getElementById('refresh-btn');
+    btn.disabled = true;
+    btn.classList.add('loading');
+    if (!isRefresh) document.getElementById('subtitle').textContent = '데이터 불러오는 중...';
+
+    fetch('sap_data.json?v=' + Date.now())
+      .then(function(r) { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+      .then(function(data) {
+        DATA = data;
+        render();
+        btn.disabled = false;
+        btn.classList.remove('loading');
+      })
+      .catch(function(err) {
+        btn.disabled = false;
+        btn.classList.remove('loading');
+        document.getElementById('subtitle').textContent = '⚠ 데이터 로드 실패';
+        document.getElementById('cards-list').innerHTML =
+          '<div class="error-msg">sap_data.json을 불러올 수 없습니다.<br>' +
+          '<small style="color:#9aa0ab">(' + err.message + ')</small><br>' +
+          '<button class="retry-btn" onclick="refreshData()">다시 시도</button></div>';
+      });
+  }
+  function refreshData() { loadData(true); }
+
+  function statusBadgeClass(status) {
+    if (status === '결재완료') return 'badge-green';
+    if (status && status.indexOf('요청') >= 0) return 'badge-gray';
+    return 'badge-yellow';
+  }
+  function deliveryBadge(item) {
+    if (item.delivery_status === '정시입고') return { cls: 'badge-green', label: '정시입고' };
+    if (item.delivery_status === '지연입고') return { cls: 'badge-red', label: '지연입고 ' + (item.delay_days||'') + '일' };
+    if (item.delivery_status === '미입고') return { cls: 'badge-yellow', label: '미입고' };
+    return null;
+  }
+
+  function render() {
+    if (!DATA) return;
+    document.getElementById('subtitle').textContent = '수집: ' + DATA.collected_at + ' · 총 ' + DATA.kpi.total + '건';
+
+    var statuses = ['all'].concat(Object.keys(DATA.status_counts || {}));
+    document.getElementById('tab-nav').innerHTML = statuses.map(function(s) {
+      var label = s === 'all' ? '전체' : s + ' (' + DATA.status_counts[s] + ')';
+      return '<button class="tab-btn ' + (s === currentStatus ? 'active' : '') +
+        '" onclick="switchTab(\'' + s + '\')">' + label + '</button>';
+    }).join('');
+
+    var k = DATA.kpi;
+    document.getElementById('kpi-row').innerHTML =
+      '<div class="kpi-card"><div class="kpi-label">총 구매요청</div><div class="kpi-value kpi-blue">' + fmt(k.total) + '</div><div class="kpi-unit">건</div></div>' +
+      '<div class="kpi-card"><div class="kpi-label">결재완료율</div><div class="kpi-value kpi-green">' + k.approval_rate + '</div><div class="kpi-unit">%</div></div>' +
+      '<div class="kpi-card"><div class="kpi-label">총 발주금액</div><div class="kpi-value kpi-orange">' + fmtCompact(k.total_amount) + '</div><div class="kpi-unit">원</div></div>' +
+      '<div class="kpi-card"><div class="kpi-label">미입고 건수</div><div class="kpi-value kpi-red">' + fmt(k.pending_receipt) + '</div><div class="kpi-unit">건</div></div>' +
+      '<div class="kpi-card"><div class="kpi-label">정시입고율</div><div class="kpi-value kpi-teal">' + k.ontime_rate + '</div><div class="kpi-unit">%</div></div>';
+
+    renderCards();
+  }
+
+  function renderCards() {
+    var items = (DATA.items || []).filter(function(it) {
+      if (currentStatus !== 'all' && it.status !== currentStatus) return false;
+      if (searchTerm) {
+        var t = searchTerm.toLowerCase();
+        if ((it.material||'').toLowerCase().indexOf(t) < 0 && (it.pr_no||'').indexOf(t) < 0) return false;
+      }
+      return true;
+    });
+
+    document.getElementById('item-count').textContent = items.length + '건 표시';
+
+    if (items.length === 0) {
+      document.getElementById('cards-list').innerHTML = '<div class="loading-msg">조건에 맞는 항목이 없습니다.</div>';
+      return;
+    }
+
+    document.getElementById('cards-list').innerHTML = items.map(function(it) {
+      var dbadge = deliveryBadge(it);
+      return '<div class="pr-card">' +
+        '<div class="pr-card-header">' +
+        '<div><div class="pr-name">' + it.material + '</div><div class="pr-code">' + it.pr_no + '</div></div>' +
+        '<div style="display:flex;flex-direction:column;gap:4px;align-items:flex-end;">' +
+        '<span class="pr-badge ' + statusBadgeClass(it.status) + '">' + it.status + '</span>' +
+        (dbadge ? '<span class="pr-badge ' + dbadge.cls + '">' + dbadge.label + '</span>' : '') +
+        '</div></div>' +
+        '<div class="pr-info">' +
+        '<div class="pr-info-item"><span class="pr-info-label">수량</span><span class="pr-info-value">' + fmt(it.qty) + ' ' + (it.unit||'') + '</span></div>' +
+        '<div class="pr-info-item"><span class="pr-info-label">납품요청일</span><span class="pr-info-value">' + (it.delivery_date||'-') + '</span></div>' +
+        '<div class="pr-info-item"><span class="pr-info-label">공급업체</span><span class="pr-info-value">' + (it.vendor||'-') + '</span></div>' +
+        '<div class="pr-info-item"><span class="pr-info-label">구매오더</span><span class="pr-info-value">' + (it.po_no||'-') + '</span></div>' +
+        '</div></div>';
+    }).join('');
+  }
+
+  function switchTab(status) { currentStatus = status; renderCards(); document.querySelectorAll('.tab-btn').forEach(function(b){b.classList.remove('active');}); event.target.classList.add('active'); }
+
+  document.getElementById('search-input').addEventListener('input', function(e) {
+    searchTerm = e.target.value;
+    renderCards();
+  });
+
+  loadData(false);
+</script>
+</body>
+</html>
