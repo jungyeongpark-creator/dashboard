@@ -1,8 +1,10 @@
 {
+  "id": "/dashboard/sap.html",
   "name": "SAP 구매요청 대시보드",
   "short_name": "SAP구매현황",
   "description": "SMART 기술팀 SAP 구매요청 현황 모바일 대시보드",
   "start_url": "./sap.html",
+  "scope": "./sap.html",
   "display": "standalone",
   "background_color": "#f0f2f5",
   "theme_color": "#1F4E79",
