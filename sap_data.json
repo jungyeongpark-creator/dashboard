@@ -1,5 +1,5 @@
 {
-  "collected_at": "2026-09-17 11:45",
+  "collected_at": "2026-09-17 15:01",
   "kpi": {
     "total": 74,
     "approved": 72,
@@ -21,8 +21,8 @@
       "unit": "EA",
       "delivery_date": "2026-10-15",
       "receipt_date": null,
-      "vendor": "nan",
-      "po_no": "nan",
+      "vendor": "",
+      "po_no": null,
       "amount": 0.0,
       "delivery_status": "미입고",
       "delay_days": null
@@ -77,8 +77,8 @@
       "unit": "EA",
       "delivery_date": "2026-09-29",
       "receipt_date": null,
-      "vendor": "nan",
-      "po_no": "nan",
+      "vendor": "",
+      "po_no": null,
       "amount": 0.0,
       "delivery_status": "미입고",
       "delay_days": null
@@ -91,8 +91,8 @@
       "unit": "EA",
       "delivery_date": "2026-09-29",
       "receipt_date": null,
-      "vendor": "nan",
-      "po_no": "nan",
+      "vendor": "",
+      "po_no": null,
       "amount": 0.0,
       "delivery_status": "미입고",
       "delay_days": null
@@ -105,8 +105,8 @@
       "unit": "EA",
       "delivery_date": "2026-09-29",
       "receipt_date": null,
-      "vendor": "nan",
-      "po_no": "nan",
+      "vendor": "",
+      "po_no": null,
       "amount": 0.0,
       "delivery_status": "미입고",
       "delay_days": null
@@ -119,8 +119,8 @@
       "unit": "EA",
       "delivery_date": "2026-09-29",
       "receipt_date": null,
-      "vendor": "nan",
-      "po_no": "nan",
+      "vendor": "",
+      "po_no": null,
       "amount": 0.0,
       "delivery_status": "미입고",
       "delay_days": null
@@ -133,8 +133,8 @@
       "unit": "EA",
       "delivery_date": "2026-09-29",
       "receipt_date": null,
-      "vendor": "nan",
-      "po_no": "nan",
+      "vendor": "",
+      "po_no": null,
       "amount": 0.0,
       "delivery_status": "미입고",
       "delay_days": null
@@ -147,8 +147,8 @@
       "unit": "EA",
       "delivery_date": "2026-09-29",
       "receipt_date": null,
-      "vendor": "nan",
-      "po_no": "nan",
+      "vendor": "",
+      "po_no": null,
       "amount": 0.0,
       "delivery_status": "미입고",
       "delay_days": null
@@ -161,8 +161,8 @@
       "unit": "EA",
       "delivery_date": "2026-09-29",
       "receipt_date": null,
-      "vendor": "nan",
-      "po_no": "nan",
+      "vendor": "",
+      "po_no": null,
       "amount": 0.0,
       "delivery_status": "미입고",
       "delay_days": null
@@ -175,8 +175,8 @@
       "unit": "EA",
       "delivery_date": "2026-09-29",
       "receipt_date": null,
-      "vendor": "nan",
-      "po_no": "nan",
+      "vendor": "",
+      "po_no": null,
       "amount": 0.0,
       "delivery_status": "미입고",
       "delay_days": null
@@ -217,8 +217,8 @@
       "unit": "식 ",
       "delivery_date": "2026-09-11",
       "receipt_date": null,
-      "vendor": "nan",
-      "po_no": "nan",
+      "vendor": "",
+      "po_no": null,
       "amount": 0.0,
       "delivery_status": "미입고",
       "delay_days": null
@@ -315,8 +315,8 @@
       "unit": "식 ",
       "delivery_date": "2026-09-11",
       "receipt_date": null,
-      "vendor": "nan",
-      "po_no": "nan",
+      "vendor": "",
+      "po_no": null,
       "amount": 0.0,
       "delivery_status": "미입고",
       "delay_days": null
@@ -623,8 +623,8 @@
       "unit": "EA",
       "delivery_date": "2026-03-06",
       "receipt_date": null,
-      "vendor": "nan",
-      "po_no": "nan",
+      "vendor": "",
+      "po_no": null,
       "amount": 0.0,
       "delivery_status": "미입고",
       "delay_days": null
