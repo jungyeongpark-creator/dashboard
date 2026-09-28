@@ -68,6 +68,9 @@
     .pr-info-label { font-size: 10px; color: #9aa0ab; margin-bottom: 2px; }
     .pr-info-value { font-weight: 600; color: #374151; }
 
+    .stale-banner { background: #fef2f2; color: #b91c1c; border-bottom: 1px solid #fecaca;
+      padding: 10px 20px; font-size: 12.5px; font-weight: 600; line-height: 1.5; }
+
     .loading-msg { text-align: center; padding: 40px; color: #9aa0ab; font-size: 14px; }
     .error-msg { text-align: center; padding: 30px 20px; color: #ef4444; font-size: 13px; line-height: 1.6; }
     .retry-btn { margin-top: 12px; display: inline-block; padding: 8px 20px; background: #1F4E79; color: #fff; border: none; border-radius: 8px; font-size: 13px; font-weight: 600; cursor: pointer; }
@@ -101,6 +104,8 @@
     </button>
   </div>
 </div>
+
+<div class="stale-banner" id="stale-banner" style="display:none;"></div>
 
 <div class="tab-nav" id="tab-nav">
   <button class="tab-btn active" data-status="all">전체</button>
@@ -174,7 +179,18 @@
 
   function render() {
     if (!DATA) return;
-    document.getElementById('subtitle').textContent = '수집: ' + DATA.collected_at + ' · 총 ' + DATA.kpi.total + '건';
+    var sub = document.getElementById('subtitle');
+    var ageH = DATA.data_age_hours;
+    sub.textContent = 'SAP 추출: ' + DATA.collected_at + ' · 총 ' + DATA.kpi.total + '건';
+    var banner = document.getElementById('stale-banner');
+    if (typeof ageH === 'number' && ageH > 24) {
+      var days = Math.floor(ageH / 24);
+      banner.style.display = 'block';
+      banner.textContent = '⚠ 이 데이터는 ' + days + '일 전(' + DATA.collected_at +
+        ') SAP에서 추출한 것입니다. 최신 현황과 다를 수 있으니 PC에서 추출기를 다시 실행해주세요.';
+    } else {
+      banner.style.display = 'none';
+    }
 
     var statuses = ['all'].concat(Object.keys(DATA.status_counts || {}));
     document.getElementById('tab-nav').innerHTML = statuses.map(function(s) {
