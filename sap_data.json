@@ -1,12 +1,14 @@
 {
-  "collected_at": "2026-09-28 09:00",
+  "collected_at": "2026-09-29 09:15",
+  "deployed_at": "2026-09-29 09:15",
+  "data_age_hours": 0.0,
   "kpi": {
     "total": 74,
     "approved": 72,
     "approval_rate": 97.3,
-    "total_amount": 161646110,
-    "pending_receipt": 7,
-    "ontime_rate": 80.0
+    "total_amount": 167107110,
+    "pending_receipt": 4,
+    "ontime_rate": 83.6
   },
   "status_counts": {
     "결재완료": 72,
@@ -34,11 +36,11 @@
       "qty": 5.0,
       "unit": "EA",
       "delivery_date": "2026-09-29",
-      "receipt_date": null,
+      "receipt_date": "2026-09-23",
       "vendor": "(유)현대테크",
       "po_no": "PO26090414",
       "amount": 440000.0,
-      "delivery_status": "미입고",
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -76,11 +78,11 @@
       "qty": 100.0,
       "unit": "EA",
       "delivery_date": "2026-09-29",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "receipt_date": "2026-09-22",
+      "vendor": "일도종합상사",
+      "po_no": "PO26090758",
+      "amount": 55000.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -90,11 +92,11 @@
       "qty": 100.0,
       "unit": "EA",
       "delivery_date": "2026-09-29",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "receipt_date": "2026-09-22",
+      "vendor": "일도종합상사",
+      "po_no": "PO26090758",
+      "amount": 52000.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -104,11 +106,11 @@
       "qty": 100.0,
       "unit": "EA",
       "delivery_date": "2026-09-29",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "receipt_date": "2026-09-22",
+      "vendor": "일도종합상사",
+      "po_no": "PO26090758",
+      "amount": 44000.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -118,11 +120,11 @@
       "qty": 100.0,
       "unit": "EA",
       "delivery_date": "2026-09-29",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "receipt_date": "2026-09-22",
+      "vendor": "일도종합상사",
+      "po_no": "PO26090758",
+      "amount": 48000.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -132,11 +134,11 @@
       "qty": 100.0,
       "unit": "EA",
       "delivery_date": "2026-09-29",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "receipt_date": "2026-09-22",
+      "vendor": "일도종합상사",
+      "po_no": "PO26090758",
+      "amount": 362000.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -146,11 +148,11 @@
       "qty": 100.0,
       "unit": "EA",
       "delivery_date": "2026-09-29",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "receipt_date": "2026-09-22",
+      "vendor": "일도종합상사",
+      "po_no": "PO26090758",
+      "amount": 294000.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -160,11 +162,11 @@
       "qty": 100.0,
       "unit": "EA",
       "delivery_date": "2026-09-29",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "receipt_date": "2026-09-22",
+      "vendor": "일도종합상사",
+      "po_no": "PO26090758",
+      "amount": 225000.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -174,11 +176,11 @@
       "qty": 100.0,
       "unit": "EA",
       "delivery_date": "2026-09-29",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "receipt_date": "2026-09-22",
+      "vendor": "일도종합상사",
+      "po_no": "PO26090758",
+      "amount": 241000.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -188,11 +190,11 @@
       "qty": 3.0,
       "unit": "EA",
       "delivery_date": "2026-09-29",
-      "receipt_date": null,
+      "receipt_date": "2026-09-21",
       "vendor": "만능엠앤티",
       "po_no": "PO26090422",
       "amount": 16500.0,
-      "delivery_status": "미입고",
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -202,11 +204,11 @@
       "qty": 3.0,
       "unit": "EA",
       "delivery_date": "2026-09-29",
-      "receipt_date": null,
+      "receipt_date": "2026-09-21",
       "vendor": "만능엠앤티",
       "po_no": "PO26090422",
       "amount": 294690.0,
-      "delivery_status": "미입고",
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -217,9 +219,9 @@
       "unit": "식 ",
       "delivery_date": "2026-09-11",
       "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
+      "vendor": "엔디티엔지니어링(주)남산점",
+      "po_no": "PO26090853",
+      "amount": 4140000.0,
       "delivery_status": "미입고",
       "delay_days": null
     },
@@ -258,11 +260,11 @@
       "qty": 1.0,
       "unit": "식 ",
       "delivery_date": "2026-09-11",
-      "receipt_date": null,
+      "receipt_date": "2026-09-21",
       "vendor": "일도종합상사",
       "po_no": "PO26090334",
       "amount": 2290000.0,
-      "delivery_status": "미입고",
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
