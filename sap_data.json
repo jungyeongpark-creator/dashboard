@@ -1,14 +1,14 @@
 {
-  "collected_at": "2026-09-30 10:37",
-  "deployed_at": "2026-09-30 10:37",
+  "collected_at": "2026-10-02 09:00",
+  "deployed_at": "2026-10-02 09:00",
   "data_age_hours": 0.0,
   "kpi": {
     "total": 74,
     "approved": 72,
     "approval_rate": 97.3,
     "total_amount": 167107110,
-    "pending_receipt": 4,
-    "ontime_rate": 83.6
+    "pending_receipt": 2,
+    "ontime_rate": 81.2
   },
   "status_counts": {
     "결재완료": 72,
@@ -232,12 +232,12 @@
       "qty": 5.0,
       "unit": "EA",
       "delivery_date": "2026-09-11",
-      "receipt_date": null,
+      "receipt_date": "2026-09-30",
       "vendor": "만능엠앤티",
       "po_no": "PO26080747",
       "amount": 440000.0,
-      "delivery_status": "미입고",
-      "delay_days": null
+      "delivery_status": "지연입고",
+      "delay_days": 14
     },
     {
       "pr_no": "10197114",
@@ -246,12 +246,12 @@
       "qty": 5.0,
       "unit": "EA",
       "delivery_date": "2026-09-11",
-      "receipt_date": null,
+      "receipt_date": "2026-09-30",
       "vendor": "만능엠앤티",
       "po_no": "PO26080747",
       "amount": 440000.0,
-      "delivery_status": "미입고",
-      "delay_days": null
+      "delivery_status": "지연입고",
+      "delay_days": 14
     },
     {
       "pr_no": "10197114",
