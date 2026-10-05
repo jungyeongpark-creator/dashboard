@@ -1,20 +1,48 @@
 {
-  "collected_at": "2026-10-02 09:00",
-  "deployed_at": "2026-10-02 09:00",
+  "collected_at": "2026-10-06 08:37",
+  "deployed_at": "2026-10-06 08:37",
   "data_age_hours": 0.0,
   "kpi": {
-    "total": 74,
-    "approved": 72,
+    "total": 75,
+    "approved": 73,
     "approval_rate": 97.3,
-    "total_amount": 167107110,
-    "pending_receipt": 2,
+    "total_amount": 246107110,
+    "pending_receipt": 3,
     "ontime_rate": 81.2
   },
   "status_counts": {
-    "결재완료": 72,
+    "결재완료": 73,
     "결재요청전 ": 2
   },
   "items": [
+    {
+      "pr_no": "10203324",
+      "material": "ECT 관통형 써치코일(125mm) 점검 및 수리",
+      "status": "결재완료",
+      "qty": 1.0,
+      "unit": "EA",
+      "delivery_date": "2026-10-30",
+      "receipt_date": null,
+      "vendor": "",
+      "po_no": null,
+      "amount": 0.0,
+      "delivery_status": "미입고",
+      "delay_days": null
+    },
+    {
+      "pr_no": "10196062",
+      "material": "PM53 Coil 자동 투입 보고 시스템 구축",
+      "status": "결재완료",
+      "qty": 1.0,
+      "unit": "식 ",
+      "delivery_date": "2026-09-11",
+      "receipt_date": null,
+      "vendor": "주식회사 파이비스",
+      "po_no": "PO26100063",
+      "amount": 79000000.0,
+      "delivery_status": "미입고",
+      "delay_days": null
+    },
     {
       "pr_no": "10200084",
       "material": "Power Supply (Pro Eco 240W 24V/10A)",
@@ -115,20 +143,6 @@
     },
     {
       "pr_no": "10200071",
-      "material": "금속 방수형 후렉시블 인서트 (GW, 16mm)",
-      "status": "결재완료",
-      "qty": 100.0,
-      "unit": "EA",
-      "delivery_date": "2026-09-29",
-      "receipt_date": "2026-09-22",
-      "vendor": "일도종합상사",
-      "po_no": "PO26090758",
-      "amount": 48000.0,
-      "delivery_status": "정시입고",
-      "delay_days": null
-    },
-    {
-      "pr_no": "10200071",
       "material": "금속 방수형 후렉시블 커넥터 (GW, 28mm)",
       "status": "결재완료",
       "qty": 100.0,
@@ -212,6 +226,20 @@
       "delay_days": null
     },
     {
+      "pr_no": "10200071",
+      "material": "금속 방수형 후렉시블 인서트 (GW, 16mm)",
+      "status": "결재완료",
+      "qty": 100.0,
+      "unit": "EA",
+      "delivery_date": "2026-09-29",
+      "receipt_date": "2026-09-22",
+      "vendor": "일도종합상사",
+      "po_no": "PO26090758",
+      "amount": 48000.0,
+      "delivery_status": "정시입고",
+      "delay_days": null
+    },
+    {
       "pr_no": "10198635",
       "material": "JCOE 1,2차 UT Probe block blowing plate",
       "status": "결재완료",
@@ -227,7 +255,7 @@
     },
     {
       "pr_no": "10197114",
-      "material": "세이프티 도어 락 스위치 ",
+      "material": "세이프티 슬라이드 키 유닛",
       "status": "결재완료",
       "qty": 5.0,
       "unit": "EA",
@@ -241,7 +269,7 @@
     },
     {
       "pr_no": "10197114",
-      "material": "세이프티 슬라이드 키 유닛",
+      "material": "세이프티 도어 락 스위치 ",
       "status": "결재완료",
       "qty": 5.0,
       "unit": "EA",
@@ -264,20 +292,6 @@
       "vendor": "일도종합상사",
       "po_no": "PO26090334",
       "amount": 2290000.0,
-      "delivery_status": "정시입고",
-      "delay_days": null
-    },
-    {
-      "pr_no": "10196625",
-      "material": "Laser Bracket",
-      "status": "결재완료",
-      "qty": 1.0,
-      "unit": "EA",
-      "delivery_date": "2026-09-01",
-      "receipt_date": "2026-09-10",
-      "vendor": "(주) 레이닉스",
-      "po_no": "PO26080816",
-      "amount": 50000.0,
       "delivery_status": "정시입고",
       "delay_days": null
     },
@@ -310,17 +324,17 @@
       "delay_days": 5
     },
     {
-      "pr_no": "10196062",
-      "material": "PM53 Coil 자동 투입 보고 시스템 구축",
+      "pr_no": "10196625",
+      "material": "Laser Bracket",
       "status": "결재완료",
       "qty": 1.0,
-      "unit": "식 ",
-      "delivery_date": "2026-09-11",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "unit": "EA",
+      "delivery_date": "2026-09-01",
+      "receipt_date": "2026-09-10",
+      "vendor": "(주) 레이닉스",
+      "po_no": "PO26080816",
+      "amount": 50000.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
