@@ -1,14 +1,14 @@
 {
-  "collected_at": "2026-10-16 09:00",
-  "deployed_at": "2026-10-16 09:00",
+  "collected_at": "2026-10-20 13:55",
+  "deployed_at": "2026-10-20 13:55",
   "data_age_hours": 0.0,
   "kpi": {
     "total": 86,
     "approved": 84,
     "approval_rate": 97.7,
-    "total_amount": 246716920,
+    "total_amount": 247715420,
     "pending_receipt": 8,
-    "ontime_rate": 81.2
+    "ontime_rate": 82.7
   },
   "status_counts": {
     "결재완료": 84,
@@ -22,11 +22,11 @@
       "qty": 50.0,
       "unit": "M",
       "delivery_date": "2026-10-22",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "receipt_date": "2026-10-20",
+      "vendor": "(주)신창전기",
+      "po_no": "PO26100494",
+      "amount": 43000.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -36,11 +36,11 @@
       "qty": 50.0,
       "unit": "M",
       "delivery_date": "2026-10-22",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "receipt_date": "2026-10-20",
+      "vendor": "(주)신창전기",
+      "po_no": "PO26100494",
+      "amount": 30500.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -50,11 +50,11 @@
       "qty": 250.0,
       "unit": "M",
       "delivery_date": "2026-10-22",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "receipt_date": "2026-10-20",
+      "vendor": "(주)신창전기",
+      "po_no": "PO26100494",
+      "amount": 110000.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -64,11 +64,11 @@
       "qty": 100.0,
       "unit": "M",
       "delivery_date": "2026-10-22",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "receipt_date": "2026-10-20",
+      "vendor": "(주)신창전기",
+      "po_no": "PO26100494",
+      "amount": 44000.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -78,11 +78,11 @@
       "qty": 300.0,
       "unit": "M",
       "delivery_date": "2026-10-22",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "receipt_date": "2026-10-20",
+      "vendor": "(주)신창전기",
+      "po_no": "PO26100494",
+      "amount": 330000.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -92,11 +92,11 @@
       "qty": 600.0,
       "unit": "M",
       "delivery_date": "2026-10-22",
-      "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
-      "delivery_status": "미입고",
+      "receipt_date": "2026-10-20",
+      "vendor": "(주)신창전기",
+      "po_no": "PO26100494",
+      "amount": 441000.0,
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
