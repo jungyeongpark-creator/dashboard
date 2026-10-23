@@ -1,13 +1,13 @@
 {
-  "collected_at": "2026-10-22 10:11",
-  "deployed_at": "2026-10-22 10:11",
+  "collected_at": "2026-10-23 09:00",
+  "deployed_at": "2026-10-23 09:00",
   "data_age_hours": 0.0,
   "kpi": {
     "total": 86,
     "approved": 84,
     "approval_rate": 97.7,
-    "total_amount": 247715420,
-    "pending_receipt": 8,
+    "total_amount": 248065420,
+    "pending_receipt": 9,
     "ontime_rate": 82.7
   },
   "status_counts": {
@@ -177,9 +177,9 @@
       "unit": "EA",
       "delivery_date": "2026-10-30",
       "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
+      "vendor": "엔디티엔지니어링(주)남산점",
+      "po_no": "PO26100697",
+      "amount": 350000.0,
       "delivery_status": "미입고",
       "delay_days": null
     },
