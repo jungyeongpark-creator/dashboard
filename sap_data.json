@@ -1,14 +1,14 @@
 {
-  "collected_at": "2026-10-23 09:00",
-  "deployed_at": "2026-10-23 09:00",
+  "collected_at": "2026-10-26 08:42",
+  "deployed_at": "2026-10-26 08:42",
   "data_age_hours": 0.0,
   "kpi": {
     "total": 86,
     "approved": 84,
     "approval_rate": 97.7,
     "total_amount": 248065420,
-    "pending_receipt": 9,
-    "ontime_rate": 82.7
+    "pending_receipt": 6,
+    "ontime_rate": 82.1
   },
   "status_counts": {
     "결재완료": 84,
@@ -134,11 +134,11 @@
       "qty": 1.0,
       "unit": "EA",
       "delivery_date": "2026-10-21",
-      "receipt_date": null,
+      "receipt_date": "2026-10-23",
       "vendor": "일도종합상사",
       "po_no": "PO26100438",
       "amount": 55500.0,
-      "delivery_status": "미입고",
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -148,11 +148,11 @@
       "qty": 3.0,
       "unit": "EA",
       "delivery_date": "2026-10-21",
-      "receipt_date": null,
+      "receipt_date": "2026-10-23",
       "vendor": "일도종합상사",
       "po_no": "PO26100438",
       "amount": 67410.0,
-      "delivery_status": "미입고",
+      "delivery_status": "정시입고",
       "delay_days": null
     },
     {
@@ -400,12 +400,12 @@
       "qty": 1.0,
       "unit": "식 ",
       "delivery_date": "2026-09-11",
-      "receipt_date": null,
+      "receipt_date": "2026-10-23",
       "vendor": "엔디티엔지니어링(주)남산점",
       "po_no": "PO26090853",
       "amount": 4140000.0,
-      "delivery_status": "미입고",
-      "delay_days": null
+      "delivery_status": "지연입고",
+      "delay_days": 7
     },
     {
       "pr_no": "10197114",
