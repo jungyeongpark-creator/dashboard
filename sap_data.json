@@ -1,20 +1,35 @@
 {
-  "collected_at": "2026-11-19 14:40",
-  "deployed_at": "2026-11-19 14:40",
+  "collected_at": "2026-11-20 09:31",
+  "deployed_at": "2026-11-20 09:31",
   "data_age_hours": 0.0,
   "kpi": {
-    "total": 87,
+    "total": 88,
     "approved": 85,
-    "approval_rate": 97.7,
+    "approval_rate": 96.6,
     "total_amount": 248065420,
     "pending_receipt": 3,
     "ontime_rate": 82.7
   },
   "status_counts": {
     "결재완료": 85,
-    "결재요청전 ": 2
+    "결재요청전 ": 2,
+    "결재진행중 ": 1
   },
   "items": [
+    {
+      "pr_no": "10209633",
+      "material": "PM22 FB UT 핀치롤 구동화 및 로터 유닛 이동속도 개선",
+      "status": "결재진행중 ",
+      "qty": 1.0,
+      "unit": "식 ",
+      "delivery_date": "2026-12-31",
+      "receipt_date": null,
+      "vendor": "",
+      "po_no": null,
+      "amount": 0.0,
+      "delivery_status": "미입고",
+      "delay_days": null
+    },
     {
       "pr_no": "10208881",
       "material": "JCOE 18M 프레스, 최종 UT CCTV 설치",
@@ -213,7 +228,7 @@
     },
     {
       "pr_no": "10200071",
-      "material": "금속 방수형 후렉시블 커넥터 (GW, 28mm)",
+      "material": "금속 방수형 후렉시블 인서트 (GW, 16mm)",
       "status": "결재완료",
       "qty": 100.0,
       "unit": "EA",
@@ -221,7 +236,7 @@
       "receipt_date": "2026-09-22",
       "vendor": "일도종합상사",
       "po_no": "PO26090758",
-      "amount": 362000.0,
+      "amount": 48000.0,
       "delivery_status": "정시입고",
       "delay_days": null
     },
@@ -297,7 +312,7 @@
     },
     {
       "pr_no": "10200071",
-      "material": "금속 방수형 후렉시블 인서트 (GW, 16mm)",
+      "material": "금속 방수형 후렉시블 커넥터 (GW, 28mm)",
       "status": "결재완료",
       "qty": 100.0,
       "unit": "EA",
@@ -305,13 +320,13 @@
       "receipt_date": "2026-09-22",
       "vendor": "일도종합상사",
       "po_no": "PO26090758",
-      "amount": 48000.0,
+      "amount": 362000.0,
       "delivery_status": "정시입고",
       "delay_days": null
     },
     {
       "pr_no": "10200071",
-      "material": "금속 방수형 후렉시블 인서트 (GW, 22mm)",
+      "material": "금속 방수형 후렉시블 인서트 (GW, 12mm)",
       "status": "결재완료",
       "qty": 100.0,
       "unit": "EA",
@@ -319,7 +334,7 @@
       "receipt_date": "2026-09-22",
       "vendor": "일도종합상사",
       "po_no": "PO26090758",
-      "amount": 52000.0,
+      "amount": 44000.0,
       "delivery_status": "정시입고",
       "delay_days": null
     },
@@ -395,7 +410,7 @@
     },
     {
       "pr_no": "10200071",
-      "material": "금속 방수형 후렉시블 인서트 (GW, 12mm)",
+      "material": "금속 방수형 후렉시블 인서트 (GW, 22mm)",
       "status": "결재완료",
       "qty": 100.0,
       "unit": "EA",
@@ -403,7 +418,7 @@
       "receipt_date": "2026-09-22",
       "vendor": "일도종합상사",
       "po_no": "PO26090758",
-      "amount": 44000.0,
+      "amount": 52000.0,
       "delivery_status": "정시입고",
       "delay_days": null
     },
@@ -577,6 +592,20 @@
     },
     {
       "pr_no": "10176537",
+      "material": "TFR-CV 2.5SQ X 4C Cable",
+      "status": "결재완료",
+      "qty": 300.0,
+      "unit": "M",
+      "delivery_date": "2026-06-02",
+      "receipt_date": "2026-06-05",
+      "vendor": "(주)국제전기",
+      "po_no": "PO26050870",
+      "amount": 834000.0,
+      "delivery_status": "정시입고",
+      "delay_days": null
+    },
+    {
+      "pr_no": "10176537",
       "material": "금속 방수형 후렉시블 커넥터 (16mm)",
       "status": "결재완료",
       "qty": 50.0,
@@ -600,20 +629,6 @@
       "vendor": "(주)국제전기",
       "po_no": "PO26050870",
       "amount": 129000.0,
-      "delivery_status": "정시입고",
-      "delay_days": null
-    },
-    {
-      "pr_no": "10176537",
-      "material": "TFR-CV 2.5SQ X 4C Cable",
-      "status": "결재완료",
-      "qty": 300.0,
-      "unit": "M",
-      "delivery_date": "2026-06-02",
-      "receipt_date": "2026-06-05",
-      "vendor": "(주)국제전기",
-      "po_no": "PO26050870",
-      "amount": 834000.0,
       "delivery_status": "정시입고",
       "delay_days": null
     },
@@ -716,20 +731,6 @@
       "delay_days": null
     },
     {
-      "pr_no": "10165260",
-      "material": "모방학습 로봇 PCB 조립용 핸디형 전자 인두기 ",
-      "status": "결재완료",
-      "qty": 1.0,
-      "unit": "EA",
-      "delivery_date": "2026-04-03",
-      "receipt_date": "2026-04-15",
-      "vendor": "만능엠앤티",
-      "po_no": "PO26030936",
-      "amount": 38800.0,
-      "delivery_status": "정시입고",
-      "delay_days": null
-    },
-    {
       "pr_no": "10165144",
       "material": "모방학습 6축 로봇암 작업대 제작 및 설치",
       "status": "결재완료",
@@ -740,6 +741,20 @@
       "vendor": "화목엔지니어링",
       "po_no": "PO26040625",
       "amount": 4000000.0,
+      "delivery_status": "정시입고",
+      "delay_days": null
+    },
+    {
+      "pr_no": "10165260",
+      "material": "모방학습 로봇 PCB 조립용 핸디형 전자 인두기 ",
+      "status": "결재완료",
+      "qty": 1.0,
+      "unit": "EA",
+      "delivery_date": "2026-04-03",
+      "receipt_date": "2026-04-15",
+      "vendor": "만능엠앤티",
+      "po_no": "PO26030936",
+      "amount": 38800.0,
       "delivery_status": "정시입고",
       "delay_days": null
     },
