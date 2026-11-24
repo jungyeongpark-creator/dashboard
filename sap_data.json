@@ -1,25 +1,24 @@
 {
-  "collected_at": "2026-11-23 09:07",
-  "deployed_at": "2026-11-23 09:07",
+  "collected_at": "2026-11-24 09:53",
+  "deployed_at": "2026-11-24 09:53",
   "data_age_hours": 0.0,
   "kpi": {
     "total": 88,
     "approved": 85,
     "approval_rate": 96.6,
-    "total_amount": 248065420,
-    "pending_receipt": 3,
+    "total_amount": 254635420,
+    "pending_receipt": 4,
     "ontime_rate": 82.7
   },
   "status_counts": {
     "결재완료": 85,
-    "결재요청전 ": 2,
-    "결재진행중 ": 1
+    "결재요청전 ": 3
   },
   "items": [
     {
       "pr_no": "10209633",
       "material": "PM22 FB UT 핀치롤 구동화 및 로터 유닛 이동속도 개선",
-      "status": "결재진행중 ",
+      "status": "결재요청전 ",
       "qty": 1.0,
       "unit": "식 ",
       "delivery_date": "2026-12-31",
@@ -38,9 +37,9 @@
       "unit": "식 ",
       "delivery_date": "2026-11-30",
       "receipt_date": null,
-      "vendor": "",
-      "po_no": null,
-      "amount": 0.0,
+      "vendor": "하나통신",
+      "po_no": "PO26110734",
+      "amount": 6570000.0,
       "delivery_status": "미입고",
       "delay_days": null
     },
